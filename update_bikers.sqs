@@ -1,0 +1,169 @@
+; Update-Script für Bikers
+; Cops == RESISTANCE
+; Biker == WEST
+; Mafia == EAST
+
+; nur Clients
+? !(local player): exit
+
+; nur Bikes
+? (side player == RESISTANCE): exit;
+? (side player == EAST): exit;
+
+
+;---------------------------------------
+
+;zur überprüfung, welche actions aktiv sind: 
+
+
+;ren für remove barrier
+_ren=0;
+
+;rec für recruitment
+_rec=0;
+
+;bossc für boss-chat
+_bossc=0;
+
+;Hanf actions aktiv
+_hanfaktiv = false; 
+
+; Bank Actions aktiv
+_bankaktiv = false;
+
+;Bankraub aktiv
+_bankraubaktiv = false;
+
+; baractions
+_baractions=0;
+
+;casinoact
+_casinoact=false;
+
+;brothelact
+_brothelact=false
+
+; Shed Action "Build weed" aktiv?
+_shedactiv = false;
+
+
+;Gebäude übernehmen
+_captureaktiv = false;
+
+;autoradio
+vradio = 0;
+
+
+;---------------------------------------
+
+
+#loop
+	~2
+	
+	if (player hasweapon "pepcanister") then {hascan=true} else {hascan=false};
+		
+	; Barrieren wieder abbauchen dürfen		
+	
+		_wire = nearestobject [player,"wire"]
+		? ((player Distance _wire<=4) AND (_ren==0)): rbarrier = player AddAction [localize "STR_ACTION_REMOVEBARRIER","removeb.sqs"]; _ren=1;
+		? ((player Distance _wire>4) AND (_ren==1)): player RemoveAction rbarrier; _ren=0;
+	
+
+	; autoradio:
+	? ((vehicle player != player) AND (vradio==0)): vradioon = player AddAction ["[RADIO]","radio_on.sqs"]; vradio = 1;
+	? ((vehicle player == player) AND (vradio==1)): [] exec "radio_off.sqs"; vradio = 0; player removeaction vradioon; 
+
+	
+	;near boss?
+	? ((player Distance dirtyhare<=3) AND (_bossc==0)): bosschat= player AddAction ["TALK TO THE BOSS","talktoboss.sqs"]; _bossc=1;
+	? ((player Distance dirtyhare>3) AND (_bossc==1)): player RemoveAction bosschat; _bossc=0;
+	
+	; Recruitment
+	
+		? ((player Distance bikers_hq >5) AND (_rec==1)): goto "norecruitment"
+		? ((player Distance bikers_hq <=5) AND (_rec==0)): goto "recruitment"
+		
+		#backfromrecruitment
+	
+	; Search for Drugs
+	
+	; Gangster entwaffnen
+	
+	; Gangster verhaften
+	
+	; Geld bei Bank abheben, Geld bei Bank einzahlen, Achtung externe Datei wird genutzt.... sinnvoll?
+		? (!_bankaktiv AND ((player Distance BankComputerL<=3) OR (player Distance BankComputerP<=3))): [] exec "bank_actionson.sqs"; _bankaktiv = true;
+		? (_bankaktiv AND (player Distance BankComputerL>3) AND (player Distance BankComputerP>3)): [] exec "bank_actionsoff.sqs"; _bankaktiv = false; 
+	
+	; Bankraub am Haufen
+		? (!_bankraubaktiv AND ((player Distance geldhaufenP<=2.5) OR (player distance geldhaufenL<=2.5))): player removeAction bankraub; bankraub = player Addaction["Steal this money","bank_robbery2.sqs"]; _bankraubaktiv = true;
+		? (_bankraubaktiv AND (player Distance geldhaufenP>2.5) AND (player distance geldhaufenL>2.5)): player removeAction bankraub; _bankraubaktiv = false;
+		
+		
+		; Variablennamen falsch aber egal
+		_barbiker = nearestObject [player, "nc_bar_red"];
+		_casinobiker = nearestObject [player, "nc_casino_red"];
+				? (!_captureaktiv AND ((player distance _barbiker <=10) OR (player distance _casinobiker <=10))): player removeAction docapture; docapture = player AddAction ["Capture this building!","Player\capture_building.sqs"];  _captureaktiv = true;
+		? (_captureaktiv  AND (player distance _barbiker >10) AND (player distance _casinobiker >10)): player removeAction docapture; _captureaktiv = false;
+
+	;bar
+		_bar = nearestobject [player,"nc_bar_blue"]
+		?((_baractions==0) AND (player distance _bar<=10)): [] exec "bar_actionson.sqs"; _baractions = 1; 
+		?((_baractions==1) AND (player distance _bar>10)): [] exec "bar_actionsoff.sqs"; _baractions = 0;
+
+	;casino
+		_casino = nearestobject [player,"nc_casino_blue"]
+		?(!_casinoact AND (player distance _casino<=10)): [] exec "cas_actionson.sqs"; _casinoact = true; 
+		?(_casinoact AND (player distance _casino>10)): [] exec "cas_actionsoff.sqs"; _casinoact = false;
+
+	;brothel
+		_brothel = nearestobject [player,"nc_brothel_blue"]
+		?(!_brothelact AND (player distance _brothel<=10)): [] exec "bro_actionson.sqs"; _brothelact = true; 
+		?(_brothelact AND (player distance _brothel>10)): [] exec "bro_actionsoff.sqs"; _brothelact = false;
+
+	;shed
+		_shed = nearestobject [player,"MAP_Schuppen"]
+		?(!_shedactiv AND (player distance _shed<=10)): [] exec "shed_actionson.sqs"; _shedactiv = true; 
+		?(_shedactiv AND (player distance _shed>10)): [] exec "shed_actionsoff.sqs"; _shedactiv = false;
+
+
+goto "loop"
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+; Hop-Gedöhns.... damit das oben nicht so voll wird
+
+#recruitment
+	_rec=1
+	atm = player addAction["[Withdraw 100$]","cash_withdraw.sqs"];
+	buyTokarev = player AddAction ["[Buy Cz75 - 50$]","BuyCz75.sqs"]
+	buyhgAmmo = player AddAction ["[Buy Handgun Ammo - 40$]","BuyHGAmmo.sqs"]
+	rec1e = player AddAction ["[Recruit Gang Member - 250$","GGrec1.sqs"]
+	rec2e = player AddAction ["[Recruit Gang Chief - 500$]","GGrec2.sqs"]
+	cs_redskoda = player addAction["[Buy red Skoda - 300$]","buycar.sqs"];
+	synthesize = player Addaction ["[Synthesize drugs]","ktw_synthesize.sqs"]
+	If (bikerlawyer) then {nolawyer = player Addaction ["[Fire the lawyer - 100$]","lawyerfire.sqs"]} else {getlawyer = player Addaction ["[Hire a lawyer - 100$]","lawyerhire.sqs"]} 
+goto "backfromrecruitment"
+
+
+#norecruitment
+	_rec=0
+	player RemoveAction atm
+	player RemoveAction rec1e
+	player RemoveAction rec2e
+	player RemoveAction cs_redskoda
+	player RemoveAction buyTokarev
+	player RemoveAction buyhgAmmo
+	player removeaction synthesize
+	player removeaction nolawyer
+	player removeaction getlawyer
+goto "backfromrecruitment"
+
+
+exit;
+
+
+
+
+
+

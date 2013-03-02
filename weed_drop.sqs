@@ -1,0 +1,21 @@
+; drop weed
+; by HT
+
+? (weedpackages >= 10):goto "erfolgreich";
+	hint "You don't have enough weed to drop.";
+exit
+
+#erfolgreich
+	_pos = getpos player
+	_posx = _pos select 0
+	_posy = _pos select 1
+	_posz = _pos select 2
+	_dir = getdir player
+	
+	thesebucks = "nc_drugspackage" CreateVehicle [0,0,0];
+	thesebucks setpos [_posx,_posy,_posz]
+	
+	weedpackages = weedpackages - 10;
+	hint "You dropped 10 packages of weed.";
+	
+exit;

@@ -1,0 +1,44 @@
+; Läuft überall außer Server und empfängt Daten für die Statistik
+
+? !(local player): exit
+
+
+;cops
+statistics_data set [0,[[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0]]]
+
+;mafia
+statistics_data set [1,[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]]
+
+;bikers
+statistics_data set [2,[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]]
+
+#loop
+
+@(pvStatistics != -1)
+
+
+	_value = pvStatistics
+	pvStatistics = -1
+	
+	;	player globalchat format["%1",_value];
+	
+	_anzahl = _value % 100
+	_value = _value - _anzahl
+	
+	_kategorie = (_value % (100*100))/100
+	_value = _value - _kategorie*100
+	
+	_player = (_value % (100*100*18))/(100*100)
+	_value = _value - _player*(100*100)
+	
+	_side = _value/(100*100*18)
+	
+	;player globalchat format["stat_receive.sqs: _side=%1, _player=%2, _kategorie=%3, _anzahl=%4", _side, _player, _kategorie, _anzahl]
+	
+
+	
+	_anzahl = (((statistics_data select _side) select _player) select _kategorie) + _anzahl
+	
+	((statistics_data select _side) select _player) set [_kategorie, _anzahl]
+
+goto "loop";

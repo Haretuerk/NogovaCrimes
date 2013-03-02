@@ -1,0 +1,49 @@
+; Loopt und wartet auf requests
+; by Haretuerk
+
+
+; nur aufm Server, 
+	? !(local server): exit
+	
+	
+
+
+#loop			
+				
+		@!(isNull junkierequest)
+		
+		_gesuchterjunkie = junkierequest
+		junkierequest = Objnull;
+		publicvariable "junkierequest"
+		
+		
+	
+		
+		_count = count junkies;
+		_i = 0;
+		
+				#next
+				
+					? (( _gesuchterjunkie) == ( junkies select _i)): goto "gefunden"
+					_i = _i + 1
+					
+				? (_i < _count) : goto "next"
+					player globalChat "Junkie not found"
+				goto "loop"
+
+			
+	#gefunden
+	
+	_hungerbisher = junkieshunger select _i 
+	junkieanswer = _hungerbisher;
+	publicvariable "junkieanswer"
+	
+	junkieshunger set [_i,0];
+
+	
+goto "loop"
+
+
+
+
+exit

@@ -1,0 +1,20 @@
+? !(local server): exit
+
+_man = _this select 0
+
+removeallweapons _man
+
+_man AddMagazine "ak74"
+_man AddWeapon "ak74"
+_man AddMagazine "ak74"
+_man AddMagazine "ak74"
+_man AddMagazine "ak74"
+_man AddMagazine "ak74"
+
+_man SetCombatMode "yellow"
+
+_man AddEventHandler ["killed",{ _this exec "securitydead.sqs" }]
+
+_man AllowFleeing  0
+
+exit

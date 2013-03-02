@@ -1,0 +1,177 @@
+
+; Buymenu by Haretuerk
+~0.1
+; raus aus dem Auto!
+	? !(vehicle player == player): hint localize "str_self_incar"; exit
+
+
+; Anhand des Actionamens wird festgestellt, ob Carshop oder Cardealer
+_shoptyp = _this select 2;
+_largeshop = (_shoptyp == carshop)
+
+~0.5
+
+buy = false;
+_unit = player
+_dlg = createDialog "CarshopDialog"
+~0.5
+; Cash- und Weedbug beheben, bevor Geld ausgegeben wird
+[] exec "cashbug.sqs";
+
+
+; PRICES ~~~~~~~~~~~~~~~~
+
+_price_skoda = 300;
+_price_jawa = 250;
+_price_trabant = 200;
+_price_mini = 250;
+_price_repairtruck = 500;
+_price_gaz24 = 400;
+_price_vwbus = 350;
+
+
+lbClear 203
+
+_id = lbAdd [203, format["Skoda Red %1$",_price_skoda]];
+_id = lbAdd [203, format["Skoda Blue %1$",_price_skoda]];
+_id = lbAdd [203, format["Skoda Yellow %1$",_price_skoda]];
+_id = lbAdd [203, format["Skoda Green %1$",_price_skoda]];
+_id = lbAdd [203, format["Trabant %1$",_price_trabant]];
+_id = lbAdd [203, format["Jawa Red %1$",_price_jawa]];
+_id = lbAdd [203, format["Jawa Blue %1$",_price_jawa]];
+_id = lbAdd [203, format["Jawa Black %1$",_price_jawa]];
+_id = lbAdd [203, format["Mini %1$",_price_mini]];
+?_largeshop: _id = lbAdd [203, format["GAZ 24 white %1$",_price_gaz24]];
+?_largeshop: _id = lbAdd [203, format["VW Bus white %1$",_price_vwbus]];
+?_largeshop: _id = lbAdd [203, format["VW Bus green %1$",_price_vwbus]];
+?_largeshop: _id = lbAdd [203, format["Repair Truck %1$",_price_repairtruck]];
+
+
+lbSetValue [203, 0, 0];
+lbSetValue [203, 1, 1];
+lbSetValue [203, 2, 2];
+lbSetValue [203, 3, 3];
+lbSetValue [203, 4, 4];
+lbSetValue [203, 5, 5];
+lbSetValue [203, 6, 6];
+lbSetValue [203, 7, 7];
+lbSetValue [203, 8, 8];
+?_largeshop: lbSetValue [203, 9, 9];
+?_largeshop: lbSetValue [203, 10, 10];
+?_largeshop: lbSetValue [203, 11, 11];
+?_largeshop: lbSetValue [203, 12, 12];
+
+lbSetCurSel [203,0];
+
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+
+	? buy : goto "buy";
+	
+	ctrlSetText [204,(format["Your cash: %1$",cash])];
+	
+	_value = lbValue [203,lbCurSel 203]  
+	
+	
+	? (_value == 0) : ctrlSetText [206,"pics\skoda_r.paa"]; ctrlSetText[205,"Top speed\nStreet: 130 km/h\nOffroad: 40 km/h"];
+	? (_value == 1) : ctrlSetText [206,"pics\skoda_b.paa"];	ctrlSetText[205,"Top speed\nStreet: 130 km/h\nOffroad: 40 km/h"];
+	? (_value == 2) : ctrlSetText [206,"pics\skoda_y.paa"];ctrlSetText[205,"Top speed\nStreet: 130 km/h\nOffroad: 40 km/h"];
+	? (_value == 3) : ctrlSetText [206,"pics\skoda_g.paa"];ctrlSetText[205,"Top speed\nStreet: 130 km/h\nOffroad: 40 km/h"];	
+	? (_value == 4) : ctrlSetText [206,"pics\trabant.paa"]; ctrlSetText[205,"Top speed\nStreet: 115 km/h\nOffroad: 50 km/h"];
+	? (_value == 5) : ctrlSetText [206,"pics\jawa_r.paa"]; ctrlSetText[205,"Top speed\nStreet: 110 km/h\nOffroad: 85 km/h"];
+	? (_value == 6) : ctrlSetText [206,"pics\jawa_b.paa"];ctrlSetText[205,"Top speed\nStreet: 110 km/h\nOffroad: 85 km/h"];
+	? (_value == 7) : ctrlSetText [206,"pics\jawa_bl.paa"];ctrlSetText[205,"Top speed\nStreet: 110 km/h\nOffroad: 85 km/h"];
+	? (_value == 8) : ctrlSetText [206,"pics\mini.paa"];ctrlSetText[205,"Top speed\nStreet: 130 km/h\nOffroad: 30 km/h"];
+	? (_value == 9) : ctrlSetText [206,"pics\gaz24w.paa"];ctrlSetText[205,"Top speed\nStreet: 150 km/h\nOffroad: 45 km/h"];	
+	? (_value == 10) : ctrlSetText [206,"pics\vwbus_white.paa"];ctrlSetText[205,"Top speed\nStreet: 120 km/h\nOffroad: 50 km/h"];
+	? (_value == 11) : ctrlSetText [206,"pics\vwbus_green.paa"];	ctrlSetText[205,"Top speed\nStreet: 120 km/h\nOffroad: 50 km/h"];
+	? (_value == 12) : ctrlSetText [206,"pics\reptruck.paa"]; ctrlSetText[205,"Top speed\nStreet: 55 km/h\nOffroad: 30 km/h"];
+	
+~0.5
+goto "Update"
+
+	
+	
+
+#buy
+
+	
+	? (_value == 0): _price = _price_skoda; _car = "pepskodar";
+	? (_value == 1): _price = _price_skoda; _car = "pepskodab";
+	? (_value == 2): _price = _price_skoda; _car = "pepskoday";
+	? (_value == 3): _price = _price_skoda; _car = "pepskodag";
+	? (_value == 4): _price = _price_trabant; _car = "peptrabant";		
+	? (_value == 5): _price = _price_jawa; _car = "pepjawa";
+	? (_value == 6): _price = _price_jawa; _car = "pepjawablue";
+	? (_value == 7): _price = _price_jawa; _car = "pepjawablack";
+	? (_value == 8): _price = _price_mini; _car = "pepmini";
+	? (_value == 9): _price = _price_gaz24; _car = "pepGaz24w";			
+	? (_value == 10): _price = _price_vwbus; _car = "pepvwwhite";
+	? (_value == 11): _price = _price_vwbus; _car = "pepvwgreen";
+	? (_value == 12): _price = _price_repairtruck; _car = "peptruckV3SGRep";	
+		
+	? (cash<_price): goto "pleite"
+	
+	cash = cash - _price;
+
+	#return5
+	
+	;herausfinden, wo das nächste H ist
+	;script bleibt damit flexibel
+	
+	_karre = _car CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	; Fenster schließen	
+	closeDialog 0
+	 
+	 buy = false;
+	
+goto "Update";
+	
+
+#pleite
+
+? ((crimeranking >=5) AND (side player==east)): "goto checkaccM"
+? ((crimeranking >=5) AND (side player==west)): "goto checkaccB"
+
+	ctrlSetText [204,localize "str_money_notenough"];
+	buy = false;
+	~2
+	goto "Update";
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	
+	player groupchat localize "str_money_payperbank"
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	goto "return5"
+
+exit
+
+#checkaccB
+	?(accountbikers<_price): goto "wirklichpleite"
+
+	player groupchat localize "str_money_payperbank"
+	accountbikers = accountbikers - _price
+	publicvariable "accountbikers"	
+	goto "return5"
+
+exit
+
+
+
+
+#wirklichpleite
+
+	ctrlSetText [204,localize "str_money_notenough"];
+	buy = false;
+	~2
+	goto "Update";
+exit
+	
+	

@@ -1,0 +1,18 @@
+? !(local player): exit
+
+? (side player==east): goto "mafia"
+
+player removeaction buildweedfarm
+
+
+exit
+
+
+#mafia
+
+player removeaction buildweedfarm
+
+
+
+exit
+

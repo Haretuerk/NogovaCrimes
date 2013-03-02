@@ -1,0 +1,15 @@
+_zivi = _this select 0
+
+
+[_zivi] join grpnull
+
+
+_zivi removeaction freehost
+takeman = _zivi addaction [localize "STR_ACTION_MAKEFOLLOW","Zivihostage.sqs"]
+robman = _zivi addaction [localize "STR_ACTION_ROBMAN","Zivirob.sqs"]
+
+; funzt nicht: _nextgl = NearestObject[_zivi,"logic"]... wahrscheinlich wegen entfernung...
+
+; exgeisel bwewegt sich zum nächsten Ort...
+
+exit

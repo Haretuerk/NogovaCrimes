@@ -1,0 +1,21 @@
+; inits the Actions for Carshop....
+;haretuerk
+_carstore = _this select 0;
+
+	sellcar = _carstore addaction [(localize "STR_CARSHOP_SELLCAR"),"sellcar.sqs"];
+
+
+	cardealer = _carstore addAction["Buy a car","open_carshop.sqs"];
+
+
+	;cs_redbike  = _carstore addAction[(localize "STR_CARSHOP_REDBIKE"),"buycar.sqs"];
+	;cs_bluebike = _carstore addAction[(localize "STR_CARSHOP_BLUEBIKE"),"buycar.sqs"];
+	;cs_blackbike = _carstore addAction[(localize "STR_CARSHOP_BLACKBIKE"),"buycar.sqs"];
+		
+	;cs_redskoda = _carstore addAction[(localize "STR_CARSHOP_REDCAR"),"buycar.sqs"];
+	;cs_blueskoda = _carstore addAction[(localize "STR_CARSHOP_BLUECAR"),"buycar.sqs"];
+	;cs_yellowskoda = _carstore addAction[(localize "STR_CARSHOP_YELCAR"),"buycar.sqs"];
+	;cs_greenskoda = _carstore addAction[(localize "STR_CARSHOP_GREENCAR"),"buycar.sqs"];
+
+
+exit;

@@ -1,0 +1,52 @@
+; buy Cessna
+; by Haretuerk
+
+	_price = 10000;
+
+
+ 
+#yellowrapid
+	?(cash<_price):goto "pleite"
+	_car = "Cessna" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _price	
+	hint "Your new Cessna is waiting outsides";
+exit;
+
+
+#pleite
+
+? ((crimeranking >=5) AND (side player==east)): "goto checkaccM"
+? ((crimeranking >=5) AND (side player==west)): "goto checkaccB"
+
+	hint localize "str_money_notenough"
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	_car = "Cessna" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	player groupchat "I pay from the teamaccount."
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	hint "Your new Cessna is waiting outsides";
+
+exit
+
+#checkaccB
+	?(accountbikers<_price): goto "wirklichpleite"
+	_car = "Cessna" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	player groupchat "I pay from the teamaccount."
+	accountbikers = accountbikers - _price
+	publicvariable "accountbikers"	
+	hint "Your new Cessna is waiting outsides";
+
+exit
+
+
+
+
+#wirklichpleite
+
+	hint localize "str_money_notenough"
+
+exit

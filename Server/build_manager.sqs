@@ -1,0 +1,63 @@
+; Building-Manager
+; setzt den Status von Bar, Casino und Bordels auf 1, wenn gebaut wurde.
+; by Haretuerk
+
+
+; nur aufm Server
+ ? !(local server): exit
+ 
+
+ 
+ #loop
+ @ (newbuilding!=-1)
+ 
+ 	player globalchat format ["Build Manager: Neues Gebäude wird gebaut."]	
+
+ 	_neuesgebaude = newbuilding; 
+ 	newbuilding = -1;
+ 	_newobj = newbuilding_obj; 
+ 	newbuilding_obj = objNull;
+ 	publicVariable "newbuilding";
+	
+	? (_neuesgebaude == 11): goto "neue_mbar"; 
+	? (_neuesgebaude == 12): goto "neue_mcas"; 
+	? (_neuesgebaude == 21): goto "neue_bbar"; 
+	? (_neuesgebaude == 22): goto "neue_bcas"; 	
+	
+	#neue_mbar
+		mbar_status set [mbarpointer,1];
+		mbars set [mbarpointer,_newobj];
+		; Barpointer eins hochsetzen
+		mbarpointer = mbarpointer + 1;
+		publicVariable "mbarpointer";
+	goto "loop";
+	
+	#neue_bbar
+		bbar_status set [bbarpointer,1];
+		bbars set [bbarpointer,_newobj];		
+		; Barpointer eins hochsetzen
+		bbarpointer = bbarpointer + 1;
+		publicVariable "bbarpointer";
+	goto "loop";
+	
+	#neue_mcas
+		mcasino_status set [mcasinopointer,1];
+		mcasinos set [mcasinopointer,_newobj];
+		; Casinopointer eins hochsetzen
+		mcasinopointer = mcasinopointer + 1;
+		publicVariable "mcasinopointer";
+	goto "loop";
+	
+	#neue_bcas
+		bcasino_status set [bcasinopointer,1];
+		bcasinos set [bcasinopointer,_newobj];		
+		; Casinopointer eins hochsetzen
+		bcasinopointer = bcasinopointer + 1;
+		publicVariable "bcasinopointer";
+	goto "loop";
+	
+	
+ 
+ goto "loop";
+
+exit

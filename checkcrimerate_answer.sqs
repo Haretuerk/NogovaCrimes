@@ -1,0 +1,31 @@
+; Checkcrimerate 
+; by Haretuerk
+
+; nur auf den Clients, da der Server kriminell nie wird
+? !(local player): exit;
+
+#loop
+
+	@(!(isNull checkcrimerate) AND (checkcrimerate==player))
+	
+	
+	
+	checkcrimerate = objNull
+	publicVariable "checkcrimerate"
+	
+	
+	checkcrimerate_answer = crimerate;
+	publicVariable "checkcrimerate_answer"
+	
+	
+	;? (weedpackages > 0):goto "habick"
+	;	hint "Get your dirty fingers off me! You wont find any drugs!"
+	;	goto "loop"
+		
+	#habick
+	hint "Shit, that cop checks my identity.";
+
+	
+	
+
+goto "loop"

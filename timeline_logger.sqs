@@ -1,0 +1,55 @@
+; Läuft überall außer Server und empfängt Daten für die Timeline
+
+? !(local player): exit
+
+timeline_data = [0,0,0]
+;cops
+timeline_data set [0,[0,0,0,0,0,0,0,0,0,0]]
+
+;mafia
+timeline_data set [1,[0,0,0,0,0,0,0,0,0,0]]
+
+;bikers
+timeline_data set [2,[0,0,0,0,0,0,0,0,0,0]]
+
+_intervall = winninglimit / 10;
+
+; warten bis die Mission wirklich startet
+@(introready==1)
+
+? timelimit: goto "zeitschleife"
+goto "geldschleife"
+
+
+#zeitschleife
+	_i = 0;
+	#loop_z
+		~_intervall
+		? finish_this_mission2 : exit;
+		
+		(timeline_data select 0) set [_i,accountpolice];
+		(timeline_data select 1) set [_i,accountmafia];
+		(timeline_data select 2) set [_i,accountbikers];
+		_i = _i + 1;
+
+	goto "loop_z"
+	
+	
+	
+#geldschleife
+	_c = 0;
+	_m = 0;
+	_b = 0;
+	#loop_g
+		@ (accountpolice >= _intervall*(_c+1)) OR (accountmafia >= _intervall*(_m+1)) OR (accountbikers >= _intervall*(b+1))
+			? finish_this_mission2 : exit;
+			
+			? (accountpolice >= _intervall*(_c+1)) : (timeline_data select 0) set [_c,time]; _c = _c + 1;
+			? (accountmafia >= _intervall*(_m+1)) :  (timeline_data select 1) set [_m,time]; _m = _m + 1;
+			? (accountbikers >= _intervall*(b+1)) : (timeline_data select 2) set [_b,time]; _b = _b + 1;
+			
+	goto "loop_g"
+	
+
+
+

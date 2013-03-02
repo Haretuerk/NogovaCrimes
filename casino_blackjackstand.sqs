@@ -1,0 +1,8 @@
+; Stand. Take no more cards for Black Jack
+; by Haretuerk
+
+blackjackweiter = 2;
+
+
+
+exit;

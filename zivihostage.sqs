@@ -1,0 +1,52 @@
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+
+_zivi = _this select 0
+_count = count zivis
+_i = 0
+
+? !(alive _zivi): exit
+
+#whoisit
+? (_zivi == Zivis select _i): goto "hostman"
+_i = _i + 1
+
+? (_i > _count): hint "error with array"; exit
+
+goto "whoisit"
+
+#hostman
+
+
+_Zivi stop false
+_zivi setbehaviour "aware";
+[_zivi] join player
+
+_zivi setcaptive true
+_zivi DisableAI "autotarget"
+
+_zivi removeaction takeman 
+freehost = _zivi addaction [localize "STR_ACTION_LETGO","zivifree.sqs"]
+_zivi removeaction robman
+
+
+
+
+?(side player==RESISTANCE):goto "cops"
+
+
+[getpos _zivi,4] exec "crimescene_send.sqs"
+_zivi sidechat localize  "str_nsc_womanhost"
+crimerate=crimerate+5
+
+; playerscore ändern
+exit
+
+
+
+
+
+#cops
+
+_zivi sidechat localize "str_nsc_womanfree"
+
+exit

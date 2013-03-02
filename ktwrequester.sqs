@@ -1,0 +1,44 @@
+; nur aufm Server, 
+	? !(local server): exit
+	
+	
+
+
+#loop			
+				
+		@!(isNull ktwrequest)
+		
+		_zivi = ktwrequest
+		ktwrequest = Objnull;
+		publicvariable "ktwrequest"
+		
+				
+		_count = count ktws;
+		_i = 0;
+		
+				#next
+				
+					? (( _zivi) == ( ktws select _i)): goto "gefunden"
+					_i = _i + 1
+					
+				? (_i < _count) : goto "next"
+				player globalChat "man not found"
+				goto "loop"
+
+			
+	#gefunden
+	
+	_medis = ktwmedis select _i 
+
+	ktwanswer = _medis;
+	publicvariable "ktwanswer"
+	
+	ktwmedis set [_i,0];
+
+	
+goto "loop"
+
+
+
+
+exit

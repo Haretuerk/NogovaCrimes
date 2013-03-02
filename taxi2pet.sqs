@@ -1,0 +1,43 @@
+_taxi =  _this select 0
+
+; Taxi auswählen
+_count = count taxis
+_i = 0
+
+
+#taxiselect
+  ? (_taxi == taxis select _i): goto "thistaxi"
+
+  _i = _i + 1
+ 
+  ? (_i < _count) : goto "taxiselect"
+
+  hint "error with counter"; 
+exit
+
+#thistaxi
+
+  ? !(alive _taxi): hint "the taxi was destroyed."; goto "end";
+  ? !(alive (tdriver select _i)): hint "the taxidriver was killed."; goto "end"
+
+  ? !(vehicle player == _taxi): hint "get in the taxi first!"; exit
+
+  taxinr = _i
+  publicvariable "taxinr"
+  
+  taxigoal = glpet
+  publicvariable "taxigoal"
+
+  mtaxi = true
+  publicvariable "mtaxi"
+
+
+exit
+
+
+#end
+
+deletevehicle _taxi
+deletevehicle (tdriver select _i)
+
+exit

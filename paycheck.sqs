@@ -1,0 +1,193 @@
+; Paycheck for all sides
+; by Haretuerk & Dr.Pepper 
+
+
+; nur aufm Server
+ ? !(local server): exit
+
+_copinc_increased=0
+
+
+;------------------ Überprüfung ob es ein oder 2 Gangsterteams gibt, Gangster ohne Konkurrenz sind gefährlicher -----
+
+_copincomefactor=gcount
+? (((bikercount==0) OR (mafiacount==0)) AND gcount>1): _copincomefactor = _copincomefactor * 1.5
+
+
+#loop
+~c_loop_paycheck
+
+
+	; Wenn Mission zu Ende, gibts keine Kohle mehr: 
+	? finish_this_mission : exit;
+	
+;------------------ Cop-Einkommen ausrechnen ------------------
+
+; bei Gangwars kriegen die Cops kein Geld
+? (copcount == 0): accountpolice = 0; publicVariable "accountpolice"; goto "gangwar"
+
+
+
+	;---- Bonus nach CHS --- 
+	
+	? (crimehighscore/gcount < chs_1): goto "copspay"
+	? ((crimehighscore/gcount >= chs_1) AND (_copinc_increased==0)): _copinc_increased=1; c_pc_income_cops = c_pc_income_cops + 50;
+	? ((crimehighscore/gcount >= chs_2) AND (_copinc_increased==1)): _copinc_increased=2; c_pc_income_cops = c_pc_income_cops + 50;
+	? ((crimehighscore/gcount >= chs_3) AND (_copinc_increased==2)): _copinc_increased=3; c_pc_income_cops = c_pc_income_cops + 50;	
+	
+	
+	#copspay
+	accountpolice = accountpolice + (c_pc_income_cops * _copincomefactor);
+	publicVariable "accountpolice";
+	
+
+
+#gangwar
+;------------------ Bars ausrechnen ------------------
+
+	_mbarcount = 0;
+	_i = 0;
+	#mbarloop
+	
+		? ((mbar_status select _i)==1) : _mbarcount = _mbarcount + 1; 
+	  	_i = _i + 1;
+	  
+	? (_i < 5) : goto "mbarloop" 
+	
+	_bbarcount = 0;
+	_i = 0;
+	#bbarloop
+	
+		? ((bbar_status select _i)==1) : _bbarcount = _bbarcount + 1; 
+	  	_i = _i + 1;
+	  
+	? (_i < 5) : goto "bbarloop" 
+	
+
+	mafia_income_bars = _mbarcount * c_pc_income_bars;
+	bikers_income_bars = _bbarcount * c_pc_income_bars;
+	publicVariable "mafia_income_bars";
+	publicVariable "bikers_income_bars";
+
+
+;------------------ Casinos ausrechnen ------------------
+
+	_mcascount = 0;
+	_i = 0;
+	#mcasloop
+	
+		? ((mcasino_status select _i)==1) : _mcascount = _mcascount + 1; 
+	  	_i = _i + 1;
+	  
+	? (_i < 5) : goto "mcasloop" 
+	
+	_bcascount = 0;
+	_i = 0;
+	#bcasloop
+	
+		? ((bcasino_status select _i)==1) : _bcascount = _bcascount + 1; 
+	  	_i = _i + 1;
+	  
+	? (_i < 5) : goto "bcasloop" 
+	
+
+	mafia_income_casinos = _mcascount * c_pc_income_casinos;
+	bikers_income_casinos = _bcascount * c_pc_income_casinos;
+	publicVariable "mafia_income_casinos";
+	publicVariable "bikers_income_casinos";
+
+
+;------------------ Shops ausrechnen ------------------
+
+	_count = count Shopcontrol
+	;zähler
+	_i = 0
+	;kontrolle
+	_c = 0	
+	;kontrollierte shops für biker
+	_sb = 0
+	;kontrollierte shops für mafia
+	_sm = 0
+
+		#shoploop
+
+			_c = (Shopcontrol select _i)
+			?(_c==2): _sb=_sb+1
+			?(_c==1): _sm=_sm+1
+	
+			;hint format ["shops=%1\nbikercontrol=%2\nmafiacontrol=%3",_count,_sb,_sm]
+	
+			_i = _i + 1
+		? (_i < _count) : goto "shoploop"
+	
+	bikerprotection=_sb * c_pc_income_shopprotection
+	publicvariable "bikerprotection"
+	mafiaprotection=_sm * c_pc_income_shopprotection
+	publicvariable "mafiaprotection"
+
+;------------------ Hooker ausrechnen ------------------
+
+	_countw = count womencontrol
+	_i = 0
+	;kontrolle
+	_c = 0	
+	;kontrollierte hookers für biker
+	_hb = 0
+	;kontrollierte hookers für mafia
+	_hm = 0
+
+		#womenloop
+
+		_c = (womencontrol select _i)
+		?(_c==2): _hb=_hb+1
+		?(_c==1): _hm=_hm+1
+
+;hint format ["women=%1\nbikerhookers=%2\nmafiahookers=%3\nwomencontrol=%4",_countw,_hb,_hm,womencontrol]
+
+
+		_i = _i + 1
+		? (_i < _countw) : goto "womenloop"
+
+	bikerhookers=_hb*c_pc_income_hookers
+	publicvariable "bikerhookers"
+	mafiahookers=_hm*c_pc_income_hookers
+	publicvariable "mafiahookers"	
+
+
+;------------------ Crimelords ---------------------------
+
+bikerpateninc= bikerpaten*250
+publicvariable "bikerpateninc"
+mafiapateninc= mafiapaten*250
+publicvariable "mafiapateninc"
+
+
+
+;------------------ Anwalt aktiv oder nicht?  by Dr.Pepper -------------------
+
+If (bikerlawyer) then {banwaltskosten=c_price_lawyer*bikercount} else {banwaltskosten=0};
+If (mafialawyer) then {manwaltskosten=c_price_lawyer*mafiacount} else {manwaltskosten=0};
+
+publicvariable "banwaltskosten"
+publicvariable "manwaltskosten"
+	
+	
+;------------------ Und alles zusammenrechnen ------------------
+
+	accountbikers = accountbikers + bikerprotection + bikerhookers + bikers_income_casinos + bikers_income_bars + bikerpateninc-banwaltskosten;
+	publicVariable "accountbikers";
+	accountmafia = accountmafia + mafiaprotection + mafiahookers + mafia_income_casinos + mafia_income_bars + mafiapateninc-manwaltskosten;
+	publicVariable "accountmafia";
+
+
+
+; zeigen, dass da ein neuer Paycheck war
+
+
+	newpaycheck = true;
+	publicVariable "newpaycheck";
+
+goto "loop"; 
+
+
+exit

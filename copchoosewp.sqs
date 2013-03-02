@@ -1,0 +1,89 @@
+? !(local player): exit
+
+
+buy = false;
+_unit = player
+_dlg = createDialog "BuyWeaponDialog"
+
+_price = 0;
+
+lbClear 705
+
+_id = lbAdd [705, format["SPAS-12"]];
+_id = lbAdd [705, format["UZI"]];
+_id = lbAdd [705, format["AK 74"]];
+_id = lbAdd [705, format["M16"]];
+_id = lbAdd [705, format["Steyr"]];
+_id = lbAdd [705, format["AK 107"]];
+_id = lbAdd [705, format["Hunting Rifle %1 $",_price_HuntingRifle]];
+
+
+
+lbSetValue [705, 0, 0];
+lbSetValue [705, 1, 1];
+lbSetValue [705, 2, 2];
+lbSetValue [705, 3, 3];
+lbSetValue [705, 4, 4];
+lbSetValue [705, 5, 5];
+lbSetValue [705, 6, 6];
+
+lbSetCurSel [705,0];
+
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+
+	? buy : goto "buy";
+	
+	ctrlSetText [716,(format["Sponsored by NP"])];
+	
+	_value = lbValue [705,lbCurSel 705]  
+	
+	
+	? (_value == 0) : ctrlSetText [704,"\drg_shotgun\w_s12ext.paa"];ctrlSetText[717,"Cal.: 12mm\nRounds: 8\nRange: 50m"];
+	? (_value == 1) : ctrlSetText [704,"\o\Guns\w_uzi.paa"];ctrlSetText[717,"Cal.: 9mm\nRounds: 10\nRange: 50m"];
+	? (_value == 2) : ctrlSetText [704,"\dtaext\equip\w\w_ak74.paa"]; ctrlSetText[717,"Cal.: 5.45mm\nRounds: 30\nRange: 400m"];
+	? (_value == 3) : ctrlSetText [704,"\dtaext\equip\w\w_m16.paa"]; ctrlSetText[717,"Cal.: 5,56 x 45 mm\nRounds: 30\nRange: 400m"];
+	? (_value == 4) : ctrlSetText [704,"\steyr\w_steyr.paa"]; ctrlSetText[717,"Cal.: 5,56 x 45 mm\nRounds: 30\nRange: 400m"];
+	? (_value == 5) : ctrlSetText [704,"\KEGak107\gear1.paa"]; ctrlSetText[717,"Cal.: 5,56 x 45 mm\nRounds: 30\nRange: 450m"];
+	? (_value == 6) : ctrlSetText [704,"\o_wp\w_remigton.paa"];ctrlSetText[717,"Cal.: 7mm\nRounds: 6\nRange: 800m"];	
+
+	
+~0.5
+goto "Update"
+
+	
+	
+
+#buy
+
+	
+	? (_value == 0): _gun = "DRG_SPAS12ext";_ammo = "DRG_SPAS12mag";
+	? (_value == 1): _gun = "Uzi";_ammo = "UziMag";
+	? (_value == 2): _gun = "AK74";_ammo = "AK74";
+	? (_value == 3): _gun = "M16";_ammo = "m16";
+	? (_value == 4): _gun = "steyr";_ammo = "steyrmag";
+	? (_value == 5): _gun = "KEGak107";_ammo = "KEGak107Mag";	
+	? (_value == 6): _gun = "HuntingRifle";_ammo = "HuntingRifleMag";				
+	
+		
+
+	player addmagazine _ammo
+	player addweapon _gun
+	player addmagazine _ammo
+	player addmagazine _ammo
+	player addmagazine _ammo
+	player addmagazine _ammo
+	player addmagazine _ammo
+	player addmagazine _ammo
+	player addmagazine _ammo
+
+	
+	; Fenster schlieﬂen	
+	;closeDialog 0
+	buy = false;
+	
+goto "Update";
+	

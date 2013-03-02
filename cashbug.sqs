@@ -1,0 +1,17 @@
+; Check Cash und Weed
+; Script checkt, ob die Cash- und die Weedvariable zerstört worden sind. Wenn ja, werden beide auf 0 gesetzt. 
+; aufruf aus jedem Script mit [] exec "cashbug.sqs"
+; dieser Script behebt keine Ursachen des Cashbugs, sondern verhindert nur Schlimmeres. 
+; vergleiche: http://community.bistudio.com/wiki/scalar_bool_array_string_0xe0ffffef
+; Hare
+
+
+
+
+? (format ["%1", cash] == "scalar bool array string 0xfcffffef"): cash = 0; player groupchat "Cashbug detected!"
+
+? (format ["%1", weedpackages] == "scalar bool array string 0xfcffffef"): weedpackages = 0;
+
+
+
+exit; 

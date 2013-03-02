@@ -1,0 +1,14 @@
+; show Position of Player
+; for testing only
+
+_pos = getpos player; 
+
+_x = _pos select 0
+_y = _pos select 1
+_z = _pos select 2
+
+
+
+hint format["x: %1\ny: %2 \nz: %3",_x,_y,_z]
+
+exit; 

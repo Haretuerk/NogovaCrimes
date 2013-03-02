@@ -1,0 +1,11 @@
+#check
+@pf17
+gg6 playMove "standDying"
+GLPet globalChat format ["%1 was killed!",name gg6]
+Goto "check2"
+
+#check2
+@!pf17
+gg6 switchMove "lying"
+gg6 playMove "lyingToCombat"
+Goto "check"

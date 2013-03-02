@@ -1,0 +1,151 @@
+; args:  [unit, type, pos, dir, align]
+
+;hint "Build NOW!"
+_unit = _this Select 0
+_type = _this Select 1
+_posStruct = _this select 2
+_dirStruct = _this select 3
+_align = _this select 4
+
+_payfromacc=false
+
+_side = side _unit
+
+
+_cost = 0;
+? (_type == "nc_bar_red"): _cost = c_price_bar
+? (_type == "nc_bar_blue"): _cost = c_price_bar
+? (_type == "nc_casino_red"): _cost = c_price_casino
+? (_type == "nc_casino_blue"): _cost = c_price_casino
+? (_type == "nc_brothel_red"): _cost = c_price_brothel
+? (_type == "nc_brothel_blue"): _cost = c_price_brothel
+? (_type == "MAP_Schuppen"): _cost = c_price_weedshed
+? (_type == "Pep_hemp_medium"): _cost = c_price_weedfield
+
+;_radius = _desc select sdMaxRadius
+_radius = 30;
+
+? (count _posStruct > 0): goto "SkipCalcPos"
+_posUnit = getPos _unit
+_dirUnit = getDir _unit
+
+;_dist = _desc select sdDist
+_dist = 30;
+
+_posStruct = [(_posUnit Select 0) + _dist*(sin _dirUnit), (_posUnit Select 1) + _dist*(cos _dirUnit)]
+_dirStruct = _dirUnit
+
+? (_align): _res = [playerSideIndex, _type, _posStruct, _dirStruct] call funcCalcAlignPosDir; _posStruct = _res select 0; _dirStruct = _res select 1
+
+#SkipCalcPos
+
+_distance = ([_posStruct, [siWest, siEast, siRes]] call funcGetClosestTown) select 1
+? (_distance < (_radius+30)):Hint "Can't place structure here.\nToo close to a Town Flag";Exit
+
+
+_index = 0
+_count = count repairTrucks
+? (_count < 1):goto "CheckMHQ"
+
+#CheckRepairTruck
+
+	_reptruck = repairTrucks select _index
+	_pos = getPos _reptruck
+	_distance = sqrt (((_pos Select 0) - (_posStruct Select 0))^2 + ((_pos Select 1) - (_posStruct Select 1))^2)
+
+	? ((damage _reptruck) < 1) && (_distance < _radius): Hint "Can't place structure here.\nToo close to a Repair Truck"; Exit
+
+	_index = _index + 1
+	? (_index < _count):goto "CheckRepairTruck"
+
+#CheckMHQ
+
+	_pos = getPos mhq
+
+	_distance = [_posStruct, mhq] call funcCalcDistanceToObject
+
+	;_distance = sqrt (((_pos Select 0) - (_posStruct Select 0))^2 + ((_pos Select 1) - (_posStruct Select 1))^2)
+
+	? (_distance < _radius):Hint "Can't place structure here.\nToo close to MHQ";Exit
+
+
+_resources = (groupMoneyMatrix select playerSideIndex) select playerGroupIndex
+_needed = _cost - cash
+
+;If more resources are needed then available report an error to player.
+? ((_needed > 0) AND (crimeranking <5)):Hint Format[localize "STR_BUILD_MONEY", _needed, _cost];Exit
+? ((_needed > 0) AND (crimeranking >=5)):_payfromacc=true
+
+
+; Bars, Casinos und Puffs nur in unmittelbarer Nähe zu anderen Gebäuden
+
+_nachbarhaus =  nearestBuilding player;
+_minimal_distanz = 15;
+_maximal_distanz = 150;
+
+? ((_type=="nc_bar_red") OR (_type=="nc_bar_blue") OR (_type=="nc_casino_red") OR (_type=="nc_casino_blue") OR (_type=="nc_brothel_red") OR (_type=="nc_brothel_blue")) AND (player distance _nachbarhaus>_maximal_distanz): hint (localize "STR_BUILD_TOFAR"); exit; 
+
+? ((_type=="nc_bar_red") OR (_type=="nc_bar_blue") OR (_type=="nc_casino_red") OR (_type=="nc_casino_blue") OR (_type=="nc_brothel_red") OR (_type=="nc_brothel_blue")) AND (player distance _nachbarhaus<_minimal_distanz): hint (localize "STR_BUILD_TOCLOSE"); exit; 
+
+;-----------------------------------------
+
+		_building = _type createVehicle (getpos soldcars)
+		; Gebäude einen Eventhandler hinzufügen, damit es per Satchels oä zerstört werden kann.
+		_building AddEventHandler ["killed",{_this exec "buildingdestroyed.sqs"}]
+		_building setpos [(_posStruct select 0),(_posStruct select 1),(_posStruct select 2)]
+		_building SetDir (_dirStruct)
+		_h = "HeliHEmpty" createVehicle [(_posStruct select 0),(_posStruct select 1),(_posStruct select 2)]
+	
+
+		
+? (_type == "nc_bar_red"):  _cost = c_price_bar; newbuilding_obj = _building; publicVariable "newbuilding_obj"; newbuilding = 11; publicVariable "newbuilding";[11,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,14,1] exec "statistics_send.sqs"
+? (_type == "nc_bar_blue"):  _cost = c_price_bar; newbuilding_obj = _building; publicVariable "newbuilding_obj";newbuilding = 21; publicVariable "newbuilding"; [21,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,14,1] exec "statistics_send.sqs"
+? (_type == "nc_casino_red"):  _cost = c_price_casino; newbuilding_obj = _building; publicVariable "newbuilding_obj";newbuilding = 12;publicVariable "newbuilding"; [12,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,15,1] exec "statistics_send.sqs"
+? (_type == "nc_casino_blue"):  _cost = c_price_casino; newbuilding_obj = _building; publicVariable "newbuilding_obj";newbuilding = 22; publicVariable "newbuilding";[22,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,15,1] exec "statistics_send.sqs"
+? (_type == "nc_brothel_red"): _cost = c_price_brothel; [13,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,16,1] exec "statistics_send.sqs"
+? (_type == "nc_brothel_blue"): _cost = c_price_brothel; [23,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,16,1] exec "statistics_send.sqs"
+? ((_type == "MAP_Schuppen") AND (side player == EAST)): _cost = c_price_weedshed;  deleteVehicle _h; mshedpointer = mshedpointer + 1; publicVariable "mshedpointer"; [55,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,13,1] exec "statistics_send.sqs"
+? ((_type == "MAP_Schuppen") AND (side player == WEST)): _cost = c_price_weedshed;  deleteVehicle _h; bshedpointer = bshedpointer + 1; publicVariable "bshedpointer"; [56,_posStruct] exec "Player\set_build_marker.sqs"; 	[player,13,1] exec "statistics_send.sqs"
+? (_type == "Pep_hemp_medium"): _cost = c_price_weedfield; deleteVehicle _building; deleteVehicle _h; [_posStruct] exec "weed_buildfarm.sqs"; 	[player,3,1] exec "statistics_send.sqs"
+
+
+
+
+? ((side player==east) AND (_payfromacc)): goto "checkMacc"
+? ((side player==west) AND (_payfromacc)): goto "checkBacc"
+
+
+cash = cash - _cost;
+
+exit
+
+
+#checkMacc
+
+?(accountmafia<_cost):Hint Format[localize "STR_BUILD_MONEY", _needed, _cost];Exit
+	player groupchat localize "STR_BUILD_TEAMACCOUNT"
+	accountmafia = accountmafia - _cost
+	publicvariable "accountmafia"
+
+exit
+
+#checkBacc
+
+?(accountbikers<_cost):Hint Format[localize "STR_BUILD_MONEY", _needed, _cost];Exit
+	player groupchat localize "STR_BUILD_TEAMACCOUNT"
+	accountbikers = accountbikers - _cost
+	publicvariable "accountbikers"
+
+exit
+
+	
+
+exit;
+;Haretuerk bricht das mal ab
+pvBuildStruct_PosX = _posStruct Select 0; PublicVariable "pvBuildStruct_PosX"
+pvBuildStruct_PosY = _posStruct Select 1; PublicVariable "pvBuildStruct_PosY"
+pvBuildStruct_Dir = _dirStruct; PublicVariable "pvBuildStruct_Dir"
+pvBuildStruct_Type = _type + 1000*playerGroupIndex + (1000*18)*playerSideIndex; PublicVariable "pvBuildStruct_Type"
+
+;player globalchat format ["BuildGenericStructure.sqs: pvBuildStruct_Type=%1", pvBuildStruct_Type]
+Exit

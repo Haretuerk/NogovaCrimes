@@ -1,0 +1,12 @@
+
+#loop
+
+	@!(isnull lockthiscar)
+		
+	_diesesauto = lockthiscar;
+	lockthiscar = ObjNull; 
+	publicVariable "lockthiscar";
+	
+	_diesesauto lock true;
+	
+goto "loop"

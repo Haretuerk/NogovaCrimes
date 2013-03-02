@@ -1,0 +1,144 @@
+;// Dr.Pepper´s random weather-changer... ;)
+;// clientside script (required  serverside script)
+
+? !(local player): exit
+
+;hint "pepperweather running"
+
+SetViewDistance pepviewgood
+1 SetOvercast pcast
+1 setrain 0
+
+_weather="start"
+
+
+@(introready==1)
+~5
+
+; greetings... warum? na, weil es geht :P
+? (name player=="Dr.Pepper"): titlecut ["no cash no testing\nNarf!","plain",5]
+? (name player=="Haretuerk"): titlecut ["Huhu Robert!\nMal wieder einige neue Sachen (& Bugs?) zu entdecken!","plain",5]
+? (name player=="Camboil"): titlecut ["Grüße, Herr Kanonenvater...","plain",5]
+? (name player=="Mads"): titlecut ["Hey Suse!\nWieviel Drogen vertickst Du heute?","plain",5]
+? (name player=="Mad Bossy"): titlecut ["Guten Tag Marco\nViel Spaß wünscht der Doctor","plain",5]
+? (name player=="Mad Mushroom"): titlecut ["Na Pilz,\nWie ist deine Strategie heute?","plain",5]
+? (name player=="Mad God"): titlecut ["MAD MAD MAD MAD\nMAAAAD God!!!\Jetzt werden alle verrückt...","plain",5]
+? (name player=="Amex"): titlecut ["Schön, dass du da bist, Amex!","plain",5]
+? (name player=="Jethro"): titlecut ["Ready to rumble, Spongebob?","plain",5]
+? (name player=="edge2"): titlecut ["Huhu Patrick!\nhehe... look a starfish!","plain",5]
+? (name player=="Seppschrot"): titlecut ["Cool!\nDer Seppschrot ist da!","plain",5]
+? (name player=="Mad Rico"): titlecut ["Hi Ricardo\nImmer dran denken:\nIn der Ruhe liegt die Kraft!","plain",5]
+? (name player=="Mad Lopdog"): titlecut ["Hi Lopdog...\nNoch ein verrückter mehr!","plain",5]
+? (name player=="Randellman"): titlecut ["Hi Randellman\nGrüße vom Doctor","plain",5]
+? (name player=="RPGMicha"): titlecut ["Hi Micha\nSchön, dass Du dabei bist :)","plain",5]
+? (name player=="Sniperturtle"): titlecut ["Hi Sniperturtle\nWelcome to Nogova Crimes","plain",5]
+? (name player=="Sniper"): titlecut ["Hi Sniper\nWelcome to Nogova Crimes","plain",5]
+? (name player=="Mad Jack"): titlecut ["Build a Casino\nand play a round of black jack O'neill!","plain",5]
+? (name player=="Mad Fox"): titlecut ["Grüße, Mad Fox\nUnd willkommen bei Nogova Crimes","plain",5]
+? (name player=="Mad Leo"): titlecut ["Grüße, Leo\nKeine deutschen Panzer in dieser Mission!","plain",5]
+? (name player=="Gott sein Hofnarr"): titlecut ["Willkommen Narr!\nMöge der Wahnsinn mit Dir sein!","plain",5]
+? (name player=="Mad Vince"): titlecut ["Grüße, Mad Vince\nUnd willkommen bei Nogova Crimes","plain",5]
+? (name player=="Tropentoni"): titlecut ["Grüße, Tropentoni\nUnd willkommen bei Nogova Crimes","plain",5]
+
+#mainloop
+
+
+
+
+@wchange
+  wchange=false
+
+  ?(pcast >= .875): goto "stormy"
+  ?(pcast <= .325): goto "bluesky"
+  ?((pcast > .325) and (pcast < .65)): goto "lightrain" 
+  ?((pcast > .65) and (pcast < .875)): goto "heavyrain"
+
+
+#bluesky
+  ? (_weather=="clear"): goto "waitloop" 
+
+  300 SetOvercast pcast
+  ~15
+  SetViewDistance pepviewgood
+  300 setrain 0
+  ~15
+  SetViewDistance pepviewfar
+	
+  _weather="clear";
+  ~870 
+
+  ;special for nc-mission: timeskip	
+  skiptime .75	
+
+goto "mainloop"
+
+
+#stormy
+  ? (_weather=="storm"): goto "waitloop" 
+ 
+  300 SetOvercast pcast
+  ~10
+  ? (_weather=="clear"): _weather="lrain"; SetViewDistance pepviewgood;
+  ~10
+  ? (_weather=="lrain"): _weather="hrain"; SetViewDistance pepviewmed;
+  ~10
+  300 setrain 1
+  SetViewDistance pepviewlow
+
+  _weather="storm"; 	
+  ~870
+
+  ;special for nc-mission: timeskip	
+  skiptime .75	
+
+goto "mainloop"
+
+
+#lightrain
+  ? (_weather=="lrain"): goto "waitloop" 
+  300 SetOvercast pcast
+  ~15
+  300 setrain .25
+  ~15
+  SetViewDistance pepviewgood
+
+  _weather="lrain";
+  ~870
+
+  ;special for nc-mission: timeskip	
+  skiptime .75	
+
+goto "mainloop"
+
+
+#heavyrain
+  ? (_weather=="hrain"): goto "waitloop"
+  300 SetOvercast pcast
+  ~15
+  ? (_weather=="clear"): SetViewDistance pepviewgood;
+  300 setrain .7
+  ~15
+  SetViewDistance pepviewmed;
+  _weather="hrain";
+  ~870
+
+  ;special for nc-mission: timeskip	
+  skiptime .75	
+
+goto "mainloop"
+
+
+
+#waitloop
+;no weatherchange... just wait
+  ;hint "no change"
+  ~900
+  ;special for nc-mission: timeskip	
+  skiptime .75	
+
+goto "mainloop"
+
+
+
+
+

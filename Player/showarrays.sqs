@@ -1,0 +1,7 @@
+; Show Building
+
+pv_Showarrays = true;
+publicVariable "pv_Showarrays"
+
+
+exit; 

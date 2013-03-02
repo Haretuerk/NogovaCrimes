@@ -1,0 +1,79 @@
+? !(local player): exit;
+
+? (side player==RESISTANCE): goto "cops"
+
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+
+? ((side player!=RESISTANCE) AND (crimeranking ==0)): hint "You're just a small fish. Go and swim elsewhere!"; exit
+
+? gunrun: hint "you already have a package to deliver..."; exit
+
+
+   _gunshop = _this select 0
+   _count = count gunshops
+   _i = 0
+   ? !(alive _gunshop): hint "you cannot deal with a dead man..."; exit
+
+
+#whoisit
+   ? (_gunshop == gunshops select _i): goto "gungun"
+   _i = _i + 1;
+   ? (_i > _count): hint "error with array"; exit
+   goto "whoisit"
+
+
+#gungun
+   gunrun=true;
+   "_x removeaction gunruns" foreach gunshops;
+   "_x removeaction gunrunf" foreach gunshops;
+
+   [getpos _gunshop,13] exec "crimescene_send.sqs"
+   ;[player,0,1] exec "statistics_send.sqs"
+
+	#getgoal
+	_g = random 4;
+	_g = _g - (_g mod 1);
+	? (_g==_i): goto "getgoal";
+
+   _gunshop switchmove "EffectStandTalk"; 
+
+   gunrungoal = (gunshops select _g);
+   gunrunf = gunrungoal addAction["Deliver package","gunrunfin.sqs"];
+   "gunrungoalm" setmarkerpos getpos gunrungoal;
+   "gunrunstartm" setmarkerpos getpos _gunshop;
+   "gunrunstartm" setmarkertype "start";
+   "gunrungoalm" setmarkertype "End";	   
+   
+   _gunshop globalchat "Well well, Laddy. Bring this package to my friend...";
+   _gunshop globalchat "I marked his position on your map. He will give you your reward."
+
+
+
+   crimerate = crimerate + c_cr_gunrun;
+
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; exit;
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";exit;
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";exit;
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";exit;
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";exit;
+   
+exit
+
+
+
+#cops
+
+_gunshop globalchat "Would you just mind your own business?"
+
+exit
+
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;

@@ -1,0 +1,21 @@
+; Zeigt die Restspielzeit an. Das ist nur bei Timelimit möglich. Für Geldlimit könnte man sich bei Gelegenheit auch was überlegen. Ist ja manchmal absehbar..
+
+;nur server spielt zeigt Time Left
+
+? !(local server): exit;
+
+
+
+? !timelimit: goto "geldlimit"
+#loop
+
+ estimatedTimeLeft (winninglimit-time)
+
+~60
+goto "loop"
+
+
+
+#geldlimit
+ estimatedTimeLeft = 1800;
+exit;

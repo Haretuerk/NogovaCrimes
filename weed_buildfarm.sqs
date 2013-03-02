@@ -1,0 +1,98 @@
+; Build weed field
+; by haretuerk
+; wird in Player/BuildStructure.sqs aufgerufen.
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+; nur fuer Gangster
+	?(side player == RESISTANCE):goto "cops"
+
+
+
+
+; Player position holen
+	_pos = _this select 0
+ 		
+   	_posX = _pos select 0
+  	_posY = _pos select 1 
+   	_posZ = _pos select 2	
+
+	
+
+
+
+
+	
+; Checken, ob ein Shed in der nähe, der kapuut ist ->	 abbruch
+	? ( (damage nearestObject [player,"MAP_Schuppen"])>0.3):goto "kaputt"
+	
+	
+	
+	
+; Checken, ob ein ein anderes Feld in der nähe, bei < 7m abbruch
+	_distanz = player distance (nearestObject [player,"AK_hemp_medium"])
+	? (_distanz < 7) : goto "zunah"
+	
+	
+	;newweedx = _posX
+	;newweedy = _posY
+	;newweedz = _posZ
+
+	;publicVariable "newweedx"
+	;publicVariable "newweedy"
+	;publicVariable "newweedz"	
+	
+	
+		_weed1 = "Pep_hemp_medium" createVehicle [0,0,0]
+		_weed1 setpos [(_posX),(_posY),(_posz)-2]
+		_weed2 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed2 setpos [(_posX+5),(_posY),(_posz)-2]
+		_weed3 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed3 setpos [(_posX-5),(_posY),(_posz)-2]
+		_weed4 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed4 setpos [(_posX+5),(_posY+5),(_posz)-2]
+		_weed5 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed5 setpos [(_posX-5),(_posY-5),(_posz)-2]
+		_weed6 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed6 setpos [(_posX+5),(_posY-5),(_posz)-2]
+		_weed7 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed7 setpos [(_posX-5),(_posY+5),(_posz)-2]
+		_weed8 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed8 setpos [(_posX),(_posY+5),(_posz)-2]
+		_weed9 = "AK_hemp_medium" createVehicle [0,0,0]
+		_weed9 setpos [(_posX),(_posY-5),(_posz)-2]
+		
+	
+		_feld = [_weed1, _weed2, _weed3, _weed4, _weed5, _weed6, _weed7, _weed8, _weed9, 0 ]
+		weedfields = weedfields + [_feld]
+	
+	
+	hint "You built a weed field. Wait a little time and you will be able to enjoy it!"
+	;[player, 3,1] exec "statistics_send.sqs" -> schon erledigt in BuildStructure.sqs. 
+
+	
+exit
+
+#cops
+	hint "Don't do things like that! Get back to work!"
+exit
+
+
+#zuweit
+	hint "That's not a good place. Build near a weed shed!"
+	; Geld zurückzahlen
+	cash = cash + c_price_weedfield;
+exit 
+
+#zunah
+	hint "That's not a good place. Another weed farm ist to near"
+	; Geld zurückzahlen
+	cash = cash + c_price_weedfield;
+
+exit 
+#kaputt
+	hint "That's shed is damaged. Build a new one!"
+	; Geld zurückzahlen
+	cash = cash + c_price_weedfield;
+
+exit 

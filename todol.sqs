@@ -1,0 +1,25 @@
+? !(local player): exit
+? !(side player==RESISTANCE): exit
+
+_kicops = units group player
+_kicount = (count _kicops) -1
+_i=0
+
+
+#loop
+
+_i=_i+1
+? (_kicops select _i distance player <= 50) AND (_kicops select _i == vehicle (_kicops select _i)): _kicops select _i setpos getmarkerpos "ppdol";
+
+? (_i >= _kicount): goto "jump"
+
+goto "loop"
+
+#jump 
+
+~0.5
+player setpos getmarkerpos "ppdol"
+ 
+"player reveal _x" foreach polveh
+
+exit

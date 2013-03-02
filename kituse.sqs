@@ -1,0 +1,137 @@
+? !(haskit): "you have no repairkit"; exit
+
+
+_g = 0
+
+#whichcar
+_g = _g + 1
+
+; police-vehicles
+? (_g ==1) : goto "checkpolveh"
+
+; mafiacars
+? (_g ==2) : goto "checkgcars"
+
+; biker-vehicles
+? (_g ==3) : goto "checkgbikes"
+
+; targets for stealing ;)
+? (_g ==4) : goto "checktopcars"
+
+; cheap civilian cars
+? (_g ==5) : goto "checkccars"
+
+; busses, taxis, repairtrucks, ambulances
+? (_g ==6) : goto "checkservice"
+
+; civil traffic cars
+? (_g ==7) : goto "checkct"
+
+? (_g ==8) : hint "No Vehicle near..."; exit
+
+goto "whichcar"
+
+
+#checkpolveh
+_i = 0
+_count = count polveh
+  #whichP
+  _v = polveh select _i
+  ? (_v distance player < 5): goto "repaircar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichP"
+  goto "whichcar"
+
+
+#checkgcars
+_i = 0
+_count = count gcars
+  #whichM
+  _v = gcars select _i
+  ? (_v distance player < 5): goto "repaircar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichM"
+  goto "whichcar"
+
+
+#checkgbikes
+_i = 0
+_count = count gbikes
+  #whichB
+  _v = gbikes select _i
+  ? (_v distance player < 5): goto "repaircar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichB"
+  goto "whichcar"
+
+
+#checktopcars
+_i = 0
+_count = count topcars
+  #whichT
+  _v = topcars select _i
+  ? (_v distance player < 5): goto "repaircar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichT"
+  goto "whichcar"
+
+
+#checkccars
+_i = 0
+_count = count ccars
+  #whichC
+  _v = ccars select _i
+  ? (_v distance player < 5): goto "repaircar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichC"
+  goto "whichcar"
+
+
+#checkservice
+_i = 0
+_count = count Scars
+  #whichS
+  _v = Scars select _i
+  ? (_v distance player < 5): goto "repaircar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichS"
+  goto "whichcar"
+  
+  
+#checkct
+_i = 0
+_count = count ctcars
+  #whichCt
+  _v = ctcars select _i
+  ? (_v distance player < 5): goto "repaircar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichCt"
+  goto "whichcar"
+
+#repaircar
+
+_dam = getdammage _v
+
+? (_dam < 0.01) : hint "no use to repair"; exit
+? (_dam > 0.65) : hint "Cannot repair this damage. Call a Repair-Truck"; exit
+
+_wait = _dam * 25
+?(_wait < 5): _wait=5
+haskit=false
+player removeaction usekit
+player groupchat format ["repairing Car will take %1 sec",_wait]
+
+player switchmove "CombatToMedic" 
+~_wait
+_v setdammage 0
+player groupchat "Car repaired."
+
+exit
+
+
+ 
+
+
+
+
+

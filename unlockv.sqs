@@ -1,0 +1,11 @@
+v = _this select 0 
+
+	unlockthiscar = v
+	publicVariable "unlockthiscar";
+	~1
+
+	@(isNull unlockthiscar)
+
+	~1
+
+exit

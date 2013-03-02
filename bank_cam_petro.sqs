@@ -1,0 +1,18 @@
+; watch the Bank in Petrovic
+; by Haretuerk
+
+; Cops only
+	? !(side player == RESISTANCE): exit
+
+	_camera = "camera" camcreate [0,0,0]
+	_camera cameraeffect ["internal", "back"]
+	;_camera camSetTarget [3953,5120,0]
+	_camera camSetTarget [3943,5140,0]
+	_camera camSetPos [3970,5092,30]
+	_camera camSetFOV 0.800
+	_camera camCommit 0
+
+	~5
+	_camera cameraeffect ["terminate", "back"]
+	camdestroy _camera
+exit; 

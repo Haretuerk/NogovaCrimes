@@ -1,0 +1,38 @@
+_taxi =  _this select 0
+_count = count taxis
+_i = 0
+
+;hint "stopping"
+
+#Whichtaxi
+? (_taxi == taxis select _i): goto "stoptaxi"
+_i = _i + 1
+goto "Whichtaxi"
+
+exit
+
+#stoptaxi
+
+  ? !(alive _taxi): hint "the taxi was destroyed."; goto "end";
+  ? !(alive (tdriver select _i)): hint "the taxidriver was killed."; goto "end"
+
+  ? !(vehicle player == _taxi): hint "not your taxi"; exit
+
+;DoStop _taxi
+
+  carstopping = _i
+  publicvariable "carstopping"
+
+
+	; paybill
+
+
+exit
+
+
+#end
+
+deletevehicle _taxi
+deletevehicle (tdriver select _i)
+
+exit

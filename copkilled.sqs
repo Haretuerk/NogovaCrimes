@@ -1,0 +1,105 @@
+copkilled = _this select 0
+copkiller = _this select 1
+
+_victimpos = getpos copkilled
+removeallweapons copkilled
+
+; Opfer sitzt in Auto??
+? (copkilled==copkiller): goto "vehiclecheck"
+
+
+
+
+commissioner globalChat format ["%1 killed a Cop!",name copkiller]
+[getpos copkiller,7] exec "crimescene_send.sqs"
+[copkiller,12,1] exec "statistics_send.sqs"
+
+
+? (copkiller == gg1): ckg1=true; PublicVariable "ckg1"; exit
+? (copkiller == gg2): ckg2=true; PublicVariable "ckg2"; exit
+? (copkiller == gg3): ckg3=true; PublicVariable "ckg3"; exit
+? (copkiller == gg4): ckg4=true; PublicVariable "ckg4"; exit
+? (copkiller == gg5): ckg5=true; PublicVariable "ckg5"; exit
+? (copkiller == gg6): ckg6=true; PublicVariable "ckg6"; exit
+
+? (copkiller == ge1): cke1=true; PublicVariable "cke1"; exit
+? (copkiller == ge2): cke2=true; PublicVariable "cke2"; exit
+? (copkiller == ge3): cke3=true; PublicVariable "cke3"; exit
+? (copkiller == ge4): cke4=true; PublicVariable "cke4"; exit
+? (copkiller == ge5): cke5=true; PublicVariable "cke5"; exit
+? (copkiller == ge6): cke6=true; PublicVariable "cke6"; exit
+
+? (copkiller == po1): goto "arrestc"
+? (copkiller == po2): goto "arrestc"
+? (copkiller == po3): goto "arrestc"
+? (copkiller == po4): goto "arrestc"
+? (copkiller == po5): goto "arrestc"
+? (copkiller == po6): goto "arrestc"
+? (copkiller == po7): goto "arrestc"
+? (copkiller == po8): goto "arrestc"
+? (copkiller == po9): goto "arrestc"
+
+; Cop hat Selbstmord begangen... -> exit
+
+exit
+
+#vehiclecheck
+
+commissioner globalChat "Vehicle Check started..."
+
+? ((copkilled distance (vehicle gg1) < 15) AND !((vehicle gg1) == gg1)): ckg1=true; PublicVariable "ckg1"; goto "Coptroops"  
+? ((copkilled distance (vehicle gg2) < 15) AND !((vehicle gg2) == gg2)): ckg2=true; PublicVariable "ckg2"; goto "Coptroops" 
+? ((copkilled distance (vehicle gg3) < 15) AND !((vehicle gg3) == gg3)): ckg3=true; PublicVariable "ckg3"; goto "Coptroops" 
+? ((copkilled distance (vehicle gg4) < 15) AND !((vehicle gg4) == gg4)): ckg4=true; PublicVariable "ckg4"; goto "Coptroops" 
+? ((copkilled distance (vehicle gg5) < 15) AND !((vehicle gg5) == gg5)): ckg5=true; PublicVariable "ckg5"; goto "Coptroops" 
+? ((copkilled distance (vehicle gg6) < 15) AND !((vehicle gg6) == gg6)): ckg6=true; PublicVariable "ckg6"; goto "Coptroops" 
+
+? ((copkilled distance (vehicle ge1) < 15) AND !((vehicle ge1) == ge1)): cke1=true; PublicVariable "cke1"; goto "Coptroops" 
+? ((copkilled distance (vehicle ge2) < 15) AND !((vehicle ge2) == ge2)): cke2=true; PublicVariable "cke2"; goto "Coptroops" 
+? ((copkilled distance (vehicle ge3) < 15) AND !((vehicle ge3) == ge3)): cke3=true; PublicVariable "cke3"; goto "Coptroops" 
+? ((copkilled distance (vehicle ge4) < 15) AND !((vehicle ge4) == ge4)): cke4=true; PublicVariable "cke4"; goto "Coptroops" 
+? ((copkilled distance (vehicle ge5) < 15) AND !((vehicle ge5) == ge5)): cke5=true; PublicVariable "cke5"; goto "Coptroops" 
+? ((copkilled distance (vehicle ge6) < 15) AND !((vehicle ge6) == ge6)): cke6=true; PublicVariable "cke6"; goto "Coptroops" 
+
+commissioner globalChat "... erfolglos."
+goto "Coptroops"
+
+exit 
+
+
+#arrestc
+  copkiller setpos getpos (cells select cellnr)
+  cellnr = cellnr+1
+  ?(cellnr > 18): cellnr=0
+  publicvariable "cellnr"
+
+  titlecut ["Killing cops won't work for you.","BLACK IN",5]
+
+
+exit
+
+
+
+#Coptroops
+
+? !(player == copkilled): exit
+
+_cops = "Alive _x" Count units group copkilled
+
+? (_cops <= 1): exit
+
+
+? !(alive copkiller): "_x domove _victimpos" foreach units group copkilled
+
+
+"_x dofire copkiller" foreach units group copkilled
+
+
+@ ! (alive copkiller)
+"_x domove _victimpos" foreach units group copkilled
+
+exit
+
+
+
+

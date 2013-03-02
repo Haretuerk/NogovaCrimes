@@ -1,0 +1,134 @@
+; Steuert den Drugdealer über die Karte zum Ankauf von Drogen
+
+;drugdealer setcombatmode "green"
+drugdealer setbehaviour "careless";
+drugdealer addweapon "revolver";
+
+
+_r=0
+_rold=0
+
+? !(local server): exit;
+
+~60
+
+#loopserver
+
+~2
+
+; Einsteigen
+
+	? !(alive drugdealer): exit
+	drugdealers_benz setdammage 0
+	drugdealer setdammage 0
+
+	drugdealer assignAsDriver drugdealers_benz
+	[drugdealer] orderGetIn true
+
+	;hint "Steigt ein..."
+	~5
+
+	? !(alive drugdealer): exit
+	@ unitready drugdealer
+	;drugdealer setbehaviour "safe";
+
+
+; ziel wählen & losfahren
+	
+	#getrandom
+
+		_r = random 28;
+		_r = _r - (_r) mod 1;
+		;glpet globalchat format ["_r=%1\n_rold=%2",_r,_rold];
+		?(_rold==_r):goto "getrandmon";
+		_rold=_r 
+
+		? (_r<=1): _target = glbit; goto "goalpicked"
+		? (_r<=2): _target = gldav; goto "goalpicked"
+		? (_r<=3): _target = gldol; goto "goalpicked"
+		? (_r<=4): _target = gllan; goto "goalpicked"
+		? (_r<=5): _target = gljou; goto "goalpicked"
+		? (_r<=6): _target = glko; goto "goalpicked"
+		? (_r<=7): _target = glokr; goto "goalpicked"
+		? (_r<=8): _target = glop; goto "goalpicked"
+		? (_r<=9): _target = glpep; goto "goalpicked"
+		? (_r<=10): _target = glskal; goto "goalpicked"
+		? (_r<=11): _target = glslap; goto "goalpicked"
+		? (_r<=12): _target = glair; goto "goalpicked"
+		? (_r<=13): _target = glst; goto "goalpicked"
+		? (_r<=14): _target = gltros; goto "goalpicked"
+		? (_r<=15): _target = glvart; goto "goalpicked"
+		? (_r<=16): _target = glvel; goto "goalpicked"
+		? (_r<=17): _target = glvid; goto "goalpicked"
+		? (_r<=18): _target = glmir; goto "goalpicked"
+		? (_r<=19): _target = glbor; goto "goalpicked"
+		? (_r<=20): _target = glnev; goto "goalpicked"
+		? (_r<=21): _target = glmok; goto "goalpicked"
+		? (_r<=22): _target = gllouk; goto "goalpicked"
+		? (_r<=23): _target = glbla; goto "goalpicked"
+		? (_r<=24): _target = glmall; goto "goalpicked"
+		? (_r<=15): _target = glpet; goto "goalpicked"
+		? (_r<=26): _target = gllip; goto "goalpicked"
+		? (_r<=27): _target = gllil; goto "goalpicked"
+		_target = glmodra; goto "goalpicked"
+	
+	#goalpicked
+	? (drugdealer distance _target < 1000): goto "getrandom"
+	? (drugdealer distance _target > 4500): goto "getrandom"
+
+	_wire = nearestobject [drugdealer ,"wire"]
+	? (drugdealer distance _wire <=5): [_wire] exec "removeb_nsc.sqs";
+
+	drugdealers_benz setfuel 1
+	drugdealers_benz setdammage 0
+	
+	; fahren
+	_h = "HeliHEmpty" createVehicle (getpos _target)
+
+	drugdealer domove (getpos _h)
+	~5
+		
+; warten bis er ankommt		
+
+	@ unitready drugdealer
+	;@ (drugdealer distance _h <20)
+	
+	? !(alive drugdealer): exit
+	drugdealer setdammage 0	
+
+	deletevehicle _h
+	drugdealers_benz setdammage 0
+	~0.5
+  	drugdealers_benz setvelocity [0,0,0]
+	~0.5
+
+; aussteigen & auf käufer warten
+
+	;drugdealer setbehaviour "safe";	
+	unassignVehicle drugdealer
+	drugdealer action["GETOUT",drugdealers_benz];
+	
+	;hint "Steigt aus..."
+	~2
+	
+	; bekanntgeben
+	drugdealer_ist_bereit = true;
+	publicVariable "drugdealer_ist_bereit"
+	
+	;hint "Verkauft..."	
+	waitstart = time
+	
+	~3
+ 	@ (time > waitstart+280) OR !(drugdealer_ist_bereit)
+	~1
+
+	drugdealer_ist_bereit = false;
+	publicVariable "drugdealer_ist_bereit"
+		
+	
+	
+
+goto "loopserver"
+
+exit
+

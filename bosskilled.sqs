@@ -1,0 +1,10 @@
+victim = _this select 0 
+killer = _this select 1
+
+player globalchat "how stupid was that?"
+~1
+? ((side killer == EAST) AND (victim == donpepper)): killer setpos [(getpos killer select 0),(getpos killer select 1),500];
+? ((side player == WEST) AND (victim == dirtyhare)): killer setpos [(getpos killer select 0),(getpos killer select 1),500];
+
+
+exit

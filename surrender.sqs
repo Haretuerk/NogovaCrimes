@@ -1,0 +1,52 @@
+; by Dr.Pepper
+
+? !(local player): exit
+
+_unit = _this select 0
+
+
+hint "Entering a Police Station is a bad idea!"
+
+
+?(vehicle _unit==player): goto "jail"
+
+_crew = crew _unit
+_unit setvelocity [0,0,0]
+~1
+"(_x) call GetOut" foreach _crew
+~1
+?(_unit != player): _unit setpos getpos schrotti; _unit setdammage 1; 
+
+_c=0
+_count = count _crew
+
+#loop
+? !((_crew select _c) == player): (_crew select _c) setdammage 1
+? ((_crew select _c) == player) : goto "jail"
+~0.5
+_c = _c+1
+? (_c < _count): goto "loop"
+
+exit
+
+
+#jail
+
+? !(alive player): exit
+~0.5
+hint format["%1, you surrender and go to jail...",name player];
+			~1
+			crimerate = crimerate + 10;
+			
+			player setpos getpos (cells select cellnr)
+			cellnr = cellnr+1
+			?(cellnr > 18): cellnr=0
+			publicvariable "cellnr"	
+			gangsterinjail = player;
+			publicVariable "gangsterinjail"
+
+exit
+
+
+
+

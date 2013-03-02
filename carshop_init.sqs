@@ -1,0 +1,8 @@
+; inits the Actions for Carshop....
+;haretuerk
+_carstore = _this select 0;
+
+	carshop = _carstore addAction["Buy a car","open_carshop.sqs"];
+
+
+exit;

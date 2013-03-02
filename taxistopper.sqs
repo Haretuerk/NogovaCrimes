@@ -1,0 +1,30 @@
+? !(local server): exit
+
+#loop
+
+@ !(carstopping < 0 )
+
+hint "stopping"
+
+	_i = carstopping
+	_car = taxis select _i
+
+	
+  _car setvelocity [0,0,0]
+  ~0.3
+
+  _car stop true
+
+	getoutcar = _i
+	publicvariable "getoutcar"
+	~2
+
+	carstopping = -1
+	publicvariable "carstopping"
+
+	~2
+
+	taxiaktiv set [_i,0]
+
+
+goto "loop"

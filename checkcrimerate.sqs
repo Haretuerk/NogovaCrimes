@@ -1,0 +1,122 @@
+; checkcrimerate
+; by haretuerk
+
+
+_actionid = _this select 2
+
+? (_actionid == crcheckge1): _gangster = ge1;
+? (_actionid == crcheckge2): _gangster = ge2;
+? (_actionid == crcheckge3): _gangster = ge3;
+? (_actionid == crcheckge4): _gangster = ge4;
+? (_actionid == crcheckge5): _gangster = ge5;
+? (_actionid == crcheckge6): _gangster = ge6;
+
+? (_actionid == crcheckgg1): _gangster = gg1;
+? (_actionid == crcheckgg2): _gangster = gg2;
+? (_actionid == crcheckgg3): _gangster = gg3;
+? (_actionid == crcheckgg4): _gangster = gg4;
+? (_actionid == crcheckgg5): _gangster = gg5;
+? (_actionid == crcheckgg6): _gangster = gg6;
+
+	checkcrimerate = _gangster
+	publicVariable "checkcrimerate"
+	
+	@ (checkcrimerate_answer > -1)
+	
+	_crcrimerate = checkcrimerate_answer
+	checkcrimerate_answer = -1;
+	publicVariable "checkcrimerate_answer"
+	
+	? (_crcrimerate >= 360): goto "godfather"											
+	
+	? (_crcrimerate >= 300): goto "danger"											
+	
+	? (_crcrimerate >= 250): goto "chief"
+	
+	? (_crcrimerate >= 200): goto "dirty"
+	? (_crcrimerate >= 150): goto "crime"
+	? (_crcrimerate >= 120): goto "thug"
+	? (_crcrimerate >= 90): goto  "dog"
+
+	? (_crcrimerate >= 70): goto "wannabe"	
+	? (_crcrimerate >= 55): goto "cat"
+	? (_crcrimerate >= 40): goto "slap"
+	? (_crcrimerate >= 30): goto "littlefish"
+
+	? (_crcrimerate >= 25): goto "smoke"
+	? (_crcrimerate >= 20): goto "hiphop"
+	? (_crcrimerate >= 15): goto "gum"																	
+	? (_crcrimerate >= 10): goto  "notbad"
+	? (_crcrimerate >= 5): goto  "innocent"		
+	goto "fly"	
+	exit
+	
+																															
+	#fly
+		_crstring = localize "str_cr_fly"
+		goto "print"
+	#innocent
+		_crstring = localize "str_cr_inno"
+		goto "print"
+	#notbad
+		_crstring = localize "str_cr_notbad"
+		goto "print"
+	
+
+	#gum
+		_crstring = localize "str_cr_gum"
+		goto "print"
+	#hiphop
+		_crstring = localize "str_cr_hiphop"
+		goto "print"
+	#smoke
+		_crstring = localize "str_cr_smoke"
+		goto "print"
+	
+
+	#littlefish
+		_crstring = localize "str_cr_fish"
+		goto "print"
+	#slap
+		_crstring = localize "str_cr_slap"
+		goto "print"
+	#cat
+		_crstring = localize "str_cr_cat"
+		goto "print"
+	#wannabe
+		_crstring = localize "str_cr_wannabe"
+		goto "print"
+	
+
+	#dog
+		_crstring = localize "str_cr_dog"
+		goto "print"
+	#thug
+		_crstring = localize "str_cr_thug"
+		goto "print"
+	#crime
+		_crstring = localize "str_cr_crime"
+		goto "print"
+	#dirty	
+		_crstring = localize "str_cr_dirty"
+		goto "print"
+	#chief
+		_crstring = localize "str_cr_chief"
+		goto "print"
+
+
+	#danger	
+		_crstring = localize "str_cr_danger"
+		goto "print"
+	#godfather
+		_crstring = localize "str_cr_godfather"
+		goto "print"
+			
+	
+	#print
+		hint format [localize "STR_CR_WITHCR",name _gangster,_crstring,_crcrimerate]
+		player globalChat format ["%1 %2 ",name _gangster,_crstring]
+	
+	exit
+	
+

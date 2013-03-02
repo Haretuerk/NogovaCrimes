@@ -1,0 +1,9 @@
+? !(local player): exit
+
+player removeaction bank_transfers
+
+
+
+player removeaction robbank
+
+exit

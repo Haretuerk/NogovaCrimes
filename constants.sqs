@@ -1,0 +1,139 @@
+; Constants
+; alle Konstanten (globale Variablen), die in der Mission vorkommen zentral gesammelt. 
+; aufgerufen von init.sqs
+
+; === TIMES ===
+
+	c_loop_paycheck = 180;
+	c_bankclosed = 300;
+	c_weedgrowingrate = 20;	
+	c_razziatime = 300;
+	
+
+; === PRICES ===
+
+	c_price_bar = 3000;	
+	c_price_casino = 8000;
+	c_price_brothel = 5500;
+	c_price_weedshed = 200;
+	c_price_weedfield = 100;
+	
+	c_price_coprec1 = 250;
+	c_price_coprec2 = 500;
+	c_price_coprec3 = 750;
+	c_price_coprec4 = 1000;		
+	c_price_gangsterrec1 = 250;
+	c_price_gangsterrec2 = 500;
+	c_price_lawyer = 150;
+	c_price_lawyercommission = 100;
+	
+; === GANGSTER Income Stuff ===
+
+	c_pc_income_shopprotection = 200;
+	c_pc_income_cops = 150;
+	c_pc_income_bars = 500; 
+	c_pc_income_casinos = 1250;
+	c_pc_income_hookers = 400;
+	c_income_bankrob_min = 5000;	
+	c_income_bankrob_varianz = 3500; 
+
+; === CRIMERATES ===
+
+	c_cr_copkill = 90;
+	c_cr_robshop = 10;
+	c_cr_stealcar = 15;
+	c_cr_sellcar = 15;
+	c_cr_robbank = 30;
+	c_cr_sellweed = 10;
+	c_cr_beatwoman = 1;
+	c_cr_womanhostage = 10;
+	c_cr_zivrob = 2;
+	c_cr_civkill = 30;
+	c_cr_robktw = 5;
+	c_cr_gunrun = 5;
+	
+	crimeratesarray = [c_cr_stealcar,c_cr_sellweed,c_cr_robbank,c_cr_beatwoman,c_cr_womanhostage,c_cr_zivrob,c_cr_civkill,c_cr_copkill,c_cr_robshop,c_cr_civkill,c_cr_civkill,c_cr_robktw,c_cr_gunrun]
+
+	
+; === crimerankings ===
+
+	c_crank_fish = 0;
+	c_crank_rat = 30;
+	c_crank_vulture = 90;
+	c_crank_snake = 150;
+	c_crank_dog = 240;
+	c_crank_shark = 330;
+	c_crank_tiger = 450;
+	
+; === Crimehighscores ===
+
+	chs_1 = 35;
+	chs_2 = 90;
+	chs_3 = 160;
+	;chs_4 = 260;
+	;chs_5 = 400;
+
+
+; === CAR SHOP Prices ===
+
+	c_price_bike = 250;
+	c_price_skoda = 300;
+	c_price_trabant = 200;
+	c_price_rapid = 500;
+
+
+; === PRÄMIEN ===
+
+	c_pr_burnweed = 250; 	
+	c_pr_arrestgangster_faktor = 15;
+	c_pr_freeshop = 300;
+	c_pr_securecar = 1000;
+	c_pr_razzia = 300;
+	c_pr_free_woman = 500;
+	c_pr_drugs = 200;
+	c_pr_drugsonman = 20;
+	c_pr_copkilldead = 1000;
+	c_pr_gunrun = 200;
+	
+
+; === Duty Points ===
+
+	c_dp_arrest = 10;
+	c_dp_razzia = 5;
+	c_dp_securecar = 8;
+	c_dp_shopfree = 3;
+	c_dp_weedburn = 2;
+	c_dp_womanfree = 4;
+	c_dp_weedpack = 4;
+	c_dp_gunrun = 5;
+	
+
+; === Cop Ranks ===
+
+	c_coprank_constable = 0;
+	c_coprank_detective = 10;
+	c_coprank_sergeant = 25;
+	c_coprank_inspector = 50;
+	c_coprank_captian = 75;
+	c_coprank_commander = 100;
+	c_coprank_chief = 125;
+
+		
+; === OTHERS ===
+
+	c_earning_weed = 100;
+	c_price_canister = 50; 
+	c_price_repkit = 50;
+	c_shoprob_fearlimit = 29;
+	c_arrestlimit = 29;
+	c_narcotics = 150;
+	
+	
+; === PENALTIES ===
+	c_pen_killingunarmedgangster = 1500;
+	
+	
+	
+	
+	
+exit;

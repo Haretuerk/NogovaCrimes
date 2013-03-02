@@ -1,0 +1,11 @@
+#check
+@phu18
+po6 setCaptive true
+po6 switchmove"FXStandSur"
+Goto "check2"
+
+#check2
+@!phu18
+? (count weapons po6 > 1): po6 setCaptive false
+po6 switchmove"Normal"
+Goto "check"

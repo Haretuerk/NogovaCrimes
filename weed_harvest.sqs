@@ -1,0 +1,21 @@
+; weed harvest
+; by Haretuerk
+
+? !(vehicle player == player): hint localize "str_self_incar"; exit
+
+   _weed = _this select 0
+   
+   harvestthisfield = _weed
+   publicVariable "harvestthisfield"
+
+	_weed setpos [0,0,0]
+   
+	~1
+   
+   
+   		
+   		_ertrag = 5+ random 7;
+   		_ertrag = _ertrag - (_ertrag mod 1)
+   	weedpackages = weedpackages+_ertrag;
+   	hint format [localize "STR_SELF_G_HARVESTED",_ertrag]
+exit

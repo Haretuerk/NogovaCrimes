@@ -1,0 +1,23 @@
+?(side player==RESISTANCE):goto "cops"
+
+_zivi = _this select 0
+
+? !(alive _zivi): hint "beating a dead body? funny you."; exit
+
+player switchmove "StandStrokeFist"	
+player switchmove "StandStrokeFistEnd"
+
+_zivi setdammage getdammage _zivi +0.2
+_zivi globalchat "ouch !"
+
+crimerate = crimerate + 1;
+? !(alive _zivi) : [getpos _zivi,3] exec "crimescene_send.sqs"; [player] exec "crimecivkill.sqs";
+
+exit
+
+
+
+#cops
+titlecut ["You are here to protect and to serve.","BLACK IN",5]
+
+exit

@@ -1,0 +1,33 @@
+_victim = _this select 0
+_killer = _this select 1
+
+; wenn ein cop einen gangster tötet, gibt es eine untersuchung...
+	? (_killer == po1): goto "examine"
+	? (_killer == po2): goto "examine"
+	? (_killer == po3): goto "examine"
+	? (_killer == po4): goto "examine"
+	? (_killer == po5): goto "examine"
+	? (_killer == po6): goto "examine"
+	? (_killer == po7): goto "examine"
+	? (_killer == po8): goto "examine"
+	? (_killer == po9): goto "examine"
+	
+	exit
+
+#examine
+? !(_victim==player): exit
+
+? (mecopkiller): hint "You`ve been a copkiller...\nthink about it..."; mecopkiller=false; accountpolice = accountpolice + c_pr_copkilldead; publicVariable "accountpolice"; exit
+
+
+? (crimeranking >=4): "Your Reputation is bad enough and every cop knows your face!"; exit
+
+? (player!=vehicle player): "You have to get out of a vehicle, if a cop orders you to do it.\nOtherwise you are suspected to want to hit a cop with your car... \nbad luck."; exit
+
+? !(count weapons player==0): "You had a weapon in your hand when the cop shot, so the cop was right to shoot you."; exit;
+
+
+innocentdead=_victim
+publicvariable "innocentdead"
+
+exit

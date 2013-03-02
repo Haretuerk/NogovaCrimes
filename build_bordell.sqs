@@ -1,0 +1,100 @@
+;bordell bauen
+;by haretuerk
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+_price = c_price_bordell; 
+
+; nur fuer Gangster
+	?(side player == RESISTANCE):goto "cops"
+	
+; Geld vorhanden?
+	? (cash<_price): goto "pleite"
+
+; Player position holen
+	_posX = GetPos player select 0
+	_posY = GetPos player select 1
+	_posz = getpos player select 2
+	_dir = GetDir player
+	
+	
+; Checken, wie weit nächsten Haus entfernt, bei > 50m abbruch
+	_distanz = player distance (nearestBuilding player)
+	? (_distanz < 50) : goto "zunah"
+	
+; Checken, ob bereits Shed in der nähe, bei > 50m abbruch
+	_distanz = player distance (nearestObject [player,"MAP_Schuppen"])
+	? (_distanz < 50) : goto "zunah"
+
+; Checken, ob bereits anderes bordell in der nähe, bei < 100m abbruch
+	_distanz = player distance (nearestObject [player,"nc_brothel_red"])
+	? (_distanz < 100) : goto "zunahcasino"
+	_distanz = player distance (nearestObject [player,"nc_brothel_blue"])
+	? (_distanz < 100) : goto "zunahcasino"
+	
+; Checken, ob bereits anderes Casino in der nähe, bei < 100m abbruch
+	_distanz = player distance (nearestObject [player,"nc_casino_blue"])
+	? (_distanz < 100) : goto "zunahcasino"
+	_distanz = player distance (nearestObject [player,"nc_casino_red"])
+	? (_distanz < 100) : goto "zunahcasino"
+	
+; Checken, ob bereits anderes Bar in der nähe, bei < 100m abbruch
+	_distanz = player distance (nearestObject [player,"nc_bar_red"])
+	? (_distanz < 100) : goto "zunahcasino"
+	_distanz = player distance (nearestObject [player,"nc_bar_blue"])
+	? (_distanz < 100) : goto "zunahcasino"
+	
+
+	?(side player==east): goto "mafia"
+
+	
+	?(bbordellpointer >4): hint "max number of brothels built"; exit
+	_bordell = "nc_brothel_blue" createVehicle (getpos soldcars)
+	_htemp = "HeliHEmpty" createVehicle [_posX,_posY,_posZ] 
+	_bordell setpos getpos _htemp
+	deletevehicle _htemp 
+	_bordell SetDir (_dir)
+
+	_bordell AddEventHandler ["killed",{_this exec "buildingdestroyed.sqs"}]
+			
+	hint "You built a brandnew brothel. Now go and catch some hookers to work here. Without them there will be no income from the bordell."
+	cash = cash - _price;
+	bbordellpointer = bbordellpointer + 1;
+	publicVariable "bbordellpointer"
+
+   exit
+
+
+	#mafia
+
+	?(mbordellpointer >4): hint "max number of brothels built"; exit
+	_bordell = "nc_brothel_red" createVehicle (getpos soldcars)
+	_htemp = "HeliHEmpty" createVehicle [_posX,_posY,_posZ] 
+	_bordell setpos getpos _htemp
+	deletevehicle _htemp 
+	_bordell SetDir (_dir)
+
+	_bordell AddEventHandler ["killed",{_this exec "buildingdestroyed.sqs.sqs"}]
+			
+	hint "You built a brandnew brothel. Now go and catch some hookers to work here. Without them there will be no income from the bordell."
+	cash = cash - _price;
+	mbordellpointer = mbordellpointer + 1;
+	publicVariable "mbordellpointer"
+	
+	
+   exit
+
+#cops
+	hint "You don't need a brothel. Get back to work!"
+exit
+
+#pleite
+	hint "You don't have enough cash for that!"
+exit
+
+#zunah
+	hint "That's not a good place. Get away from those buildings round here!"
+exit 
+#zunahcasino
+	hint "That's not a good place. Another casino, bar or brothel is to near!"
+exit 

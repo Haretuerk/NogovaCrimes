@@ -1,0 +1,44 @@
+; nur aufm Server, 
+	? !(local server): exit
+	
+	
+
+
+#loop			
+				
+		@!(isNull zivirequest)
+		
+		_zivi = zivirequest
+		zivirequest = Objnull;
+		publicvariable "zivirequest"
+		
+				
+		_count = count zivis;
+		_i = 0;
+		
+				#next
+				
+					? (( _zivi) == ( zivis select _i)): goto "gefunden"
+					_i = _i + 1
+					
+				? (_i < _count) : goto "next"
+					player globalChat "man not found"
+				goto "loop"
+
+			
+	#gefunden
+	
+	_money = zivimoney select _i 
+
+	zivianswer = _money;
+	publicvariable "zivianswer"
+	
+	zivimoney set [_i,0];
+
+	
+goto "loop"
+
+
+
+
+exit

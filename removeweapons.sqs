@@ -1,0 +1,23 @@
+;removeweapons
+;by haretuerk
+_actionid = _this select 2
+
+? (_actionid == removeweaponsge1): _gangster = ge1;
+? (_actionid == removeweaponsge2): _gangster = ge2;
+? (_actionid == removeweaponsge3): _gangster = ge3;
+? (_actionid == removeweaponsge4): _gangster = ge4;
+? (_actionid == removeweaponsge5): _gangster = ge5;
+? (_actionid == removeweaponsge6): _gangster = ge6;
+
+? (_actionid == removeweaponsgg1): _gangster = gg1;
+? (_actionid == removeweaponsgg2): _gangster = gg2;
+? (_actionid == removeweaponsgg3): _gangster = gg3;
+? (_actionid == removeweaponsgg4): _gangster = gg4;
+? (_actionid == removeweaponsgg5): _gangster = gg5;
+? (_actionid == removeweaponsgg6): _gangster = gg6;
+
+
+	removethisWeapon=  _gangster;
+	publicVariable "removethisWeapon";
+
+exit;

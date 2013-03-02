@@ -1,0 +1,217 @@
+; sendet ein Signal an den Server, welcher Shop erpresst oder befreit werden soll.
+; Shoprequester.sqs fängt das auf
+; 0 = cops, 1 = mafia , 2 = bikers
+
+? !(local player): exit
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+shop_returncode = 0;
+
+player switchmove "CombatStillV1"
+
+?(side player==RESISTANCE): goto "cops"
+?(side player==East): goto "mafia"
+
+#biker
+
+	? ((side player!=RESISTANCE) AND (crimeranking ==0)): hint "You do not have a very frightening reputation... Leave me alone!"; exit
+
+	_shopowner = _this select 0
+	? !(alive _shopowner): goto "dead"
+	
+;hint "ist das der richtige shopowner?"
+;_shopowner switchmove "CombatToMedic" 
+;~2
+
+	Shopcontroler=2
+	publicvariable "Shopcontroler"
+
+	shoprequest = _shopowner;
+	publicvariable "shoprequest"
+	
+
+	@(shop_returncode!=0)
+	
+		? (shop_returncode==66): goto "b_erfolg"
+		? (shop_returncode==44): goto "b_misserfolg"
+			#b_erfolg
+			shop_returncode = 0;
+			publicVariable "shop_returncode"
+			hint "Don't hurt me... I will pay.";
+			
+			;[_shopowner] exec "crime.sqs"
+			;[getpos _shopowner,8] exec "crimescene_send.sqs"
+			[player,8,1] exec "statistics_send.sqs"
+		
+			crimerate=crimerate+c_cr_robshop
+
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; exit;
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";exit;
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";exit;
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";exit;
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";exit;
+	
+			exit
+			
+			
+			#b_misserfolg
+			shop_returncode = 0;
+			publicVariable "shop_returncode"
+	
+			hint "This shop is already your's."; 
+
+
+
+  exit
+
+
+
+#mafia
+
+	? ((side player!=RESISTANCE) AND (crimeranking ==0)): hint "You do not have a very frightening reputation... Leave me alone!"; exit
+
+	_shopowner = _this select 0
+	? !(alive _shopowner): goto "dead"
+	
+
+	Shopcontroler=1
+	publicvariable "Shopcontroler"
+
+	shoprequest = _shopowner;
+	publicvariable "shoprequest"
+	
+	@(shop_returncode!=0)
+	
+		? (shop_returncode==66): goto "m_erfolg"
+		? (shop_returncode==44): goto "m_misserfolg"
+			#m_erfolg
+			shop_returncode = 0;
+			publicVariable "shop_returncode"
+			hint "Don't hurt me... I will pay.";
+			
+			;[_shopowner] exec "crime.sqs"
+			;[getpos _shopowner,8] exec "crimescene_send.sqs"
+			[player,8,1] exec "statistics_send.sqs"			
+
+			crimerate=crimerate+c_cr_robshop
+			
+			? (crimerate >= 360 AND !mepate): goto "pate" 
+			? (crimerate >= 300 AND crimeranking<5): crimeranking=5; exit;
+			? (crimerate >= 250 AND crimeranking<4): crimeranking=4; exit;
+			? (crimerate >= 150 AND crimeranking<3): crimeranking=3; exit;
+			? (crimerate >= 90 AND crimeranking<2): crimeranking=2; exit;
+			? (crimerate >= 30 AND crimeranking<1): crimeranking=1; exit;
+		
+			
+	
+	
+			
+			exit
+			
+			
+			#m_misserfolg
+			shop_returncode = 0;
+			publicVariable "shop_returncode"
+	
+			hint "This shop is already your's."; 
+
+
+
+  exit
+
+
+
+
+
+#cops
+
+
+
+	_shopowner = _this select 0
+	? !(alive _shopowner): goto "dead"
+	
+
+	Shopcontroler=0
+	publicvariable "Shopcontroler"
+
+	shoprequest = _shopowner;
+	publicvariable "shoprequest"
+	
+	@(shop_returncode!=0)
+	
+		? (shop_returncode==66): goto "c_erfolg"
+		? (shop_returncode==44): goto "c_misserfolg"
+			#c_erfolg
+			shop_returncode = 0;
+			publicVariable "shop_returncode"
+			
+			
+			_reward=c_pr_freeshop
+			dutypoints=dutypoints+c_dp_shopfree;
+			
+			? (dutypoints >= c_coprank_chief AND coprank<6): coprank=6;
+			? (dutypoints >= c_coprank_commander AND coprank<5): coprank=5;
+			? (dutypoints >= c_coprank_captian AND coprank<4): coprank=4;
+			? (dutypoints >= c_coprank_inspector AND coprank<3): coprank=3;
+			? (dutypoints >= c_coprank_sergeant AND coprank<2): coprank=2;
+			? (dutypoints >= c_coprank_detective AND coprank<1): coprank=1;
+			
+			? (coprank >=3): _reward=c_pr_freeshop*1.2
+			
+			accountpolice = accountpolice +_reward ;
+			publicVariable "accountpolice"
+			hint format ["Thanks Officer, I feel safe now.\n%1$ reward",_reward];
+			[player,3,1] exec "statistics_send.sqs"
+			exit
+			
+			
+			#c_misserfolg
+			shop_returncode = 0;
+			publicVariable "shop_returncode"
+	
+			hint "This shop is not getting blackmailed."; 
+			
+			exit
+
+
+#dead
+
+	? !(side player==RESISTANCE): hint "A dead man cannot pay you...";
+	? (side player==RESISTANCE): hint "He's dead, Jim.";
+	
+	_shopowner removeaction intimidate
+
+	Shopcontroler=3
+	publicvariable "Shopcontroler"
+
+	shoprequest = _shopowner;
+	publicvariable "shoprequest"
+
+  exit
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;
+

@@ -1,0 +1,50 @@
+? !(local player): exit
+
+player removeaction actionsoff
+player removeaction actionson
+actionsoff = player addaction [(localize "STR_ACTION_CLOSE"),"actionsoff.sqs"]
+
+player removeaction stats
+player removeaction usekit
+player removeaction usefirstaid
+player removeaction putcan
+;player removeaction talkon
+player removeaction giveup
+player removeAction feign
+player removeaction hideweapon
+player removeaction openbuild
+player removeaction shscore
+player removeaction sscore
+player removeaction callcab
+player removeaction drop_money
+player removeaction drop_weed
+player removeaction callsquad
+
+; testing only
+; showpos = player addaction ["Show Position","showpos.sqs"] 
+
+;beam = player AddAction ["Beam","beam.sqs"]
+
+shscore = player AddAction [(localize "STR_ACTION_SCOREHINT"),"Showscore.sqs"]
+sscore = player AddAction [(localize "STR_ACTION_FULLSCORE"),"Player\open_score.sqs"]
+stats = player addaction [(localize "STR_ACTION_STATS"),"open_statistics.sqs"]
+Giveup = player addaction [(localize "STR_ACTION_HANDSUP"),"Hands.sqs"]
+Feign = player addaction [(localize "STR_ACTION_FEIGN"),"Feign.sqs"]
+? !(side player==RESISTANCE): hideweapon = player addaction [(localize "STR_ACTION_HIDEWEAPON"),"hideweapon.sqs"]
+? !(side player==RESISTANCE): openbuild = player addaction [(localize "STR_ACTION_BUILDMENU"),"open_buildmenu.sqs"]
+
+? (player hasweapon "peprepkit"): usekit = player AddAction ["[Use Repair Kit]","\pep_items\repair.sqs"]
+? (player hasweapon "pepcanister"): putcan = player AddAction ["[Put Canister]","\pep_items\canput.sqs"]
+? (player hasweapon "pepmedpack"): usefirstaid = player AddAction ["[Use Medpack]","\pep_items\firstaid.sqs"]
+
+;? (side player==RESISTANCE): talkon = player addaction ["Talkmenu","talkon.sqs"] 
+? (side player==RESISTANCE): cam_petro = player addaction [(localize "STR_ACTION_WATCH_P"),"bank_cam_petro.sqs"] 
+? (side player==RESISTANCE): cam_lipany = player addaction [(localize "STR_ACTION_WATCH_L"),"bank_cam_lipany.sqs"] 
+? ((side player==WEST) OR (side player==EAST)): drop_weed = player addaction [(localize "STR_ACTION_DROPWEED"),"weed_drop.sqs"] 
+drop_money = player addAction[(localize "STR_ACTION_DROPMONEY"),"bucks_drop.sqs"];
+? ((side player==RESISTANCE) AND (coprank == 6)): callsquad = player addaction [(localize "STR_ACTION_SWAT"),"copcallswat.sqs"] 
+
+callcab = player addaction [(localize "STR_ACTION_TAXI"),"taxicall.sqs"]
+? ((name player == "Haretuerk") OR (name player =="Dr.Pepper")) : camera = player Addaction ["Camera on!","cam.sqs"]
+
+exit

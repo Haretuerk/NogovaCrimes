@@ -1,0 +1,65 @@
+? !(local player): exit
+
+#loop
+
+	@ !(isNull civkiller)
+			
+			_killer = civkiller
+			civkiller = ObjNull
+			publicvariable "civkiller"
+			
+			_victim = civkilled
+			civkilled = ObjNull
+			publicvariable "civkilled"
+	
+	
+	
+	?((_victim==bankerp) OR (_victim==bankerl)): commissioner globalChat format ["%1 killed a BANKER!!!",name _killer]; goto "next"
+	?((typeof _victim == "ArtSecurity") AND (_victim distance GLPet) <= 600 ): commissioner globalChat "A Bankguard in Petrovice was killed!"; goto "next"
+	?((typeof _victim == "ArtSecurity") AND (_victim distance gllip) <= 600 ): commissioner globalChat "A Bankguard in Lipany was killed!"; goto "next"
+	
+	commissioner globalChat format ["%1 killed a civilian!",name _killer]
+	
+
+	#next
+
+	? !(_killer == player): goto "loop"
+		
+	? (_killer == po1): goto "west"
+	? (_killer == po2): goto "west"
+	? (_killer == po3): goto "west"
+	? (_killer == po4): goto "west"
+	? (_killer == po5): goto "west"
+	? (_killer == po6): goto "west"
+	? (_killer == po7): goto "west"
+	? (_killer == po8): goto "west"
+	? (_killer == po9): goto "west"
+	
+	? !(typeof _victim == "ArtSecurity"): hint "You just killed one of your means of income... not very clever.";
+	
+	? ((_killer==ge1) OR (_killer==ge2) OR (_killer==ge3) OR (_killer==ge4) OR (_killer==ge5) OR (_killer==ge6)) AND ((_victim==bankerp) OR (_victim==bankerl)): accountmafia = accountmafia-10000; publicVariable "accountmafia";
+	
+	
+	
+	crimerate=crimerate+30
+	;+crimetoprate erhöhen
+
+goto "loop"
+
+exit
+
+
+#west
+
+civkills=civkills+1
+
+? (civkills==1): hint format ["You killed a civilian!\nBe Careful!\nyou killed %1 civilians",civkills];
+? (civkills==2): hint format ["You killed a civilian!\nYou are questioned at the PD\nyou killed %1 civilians",civkills]; player setpos getmarkerpos "phqsw"; removeallweapons player;
+? (civkills==3): hint format ["You killed a civilian!\nIs it gettin a habit?\nyou killed %1 civilians",civkills]; player setpos (getpos jailflag1); removeallweapons player;
+? (civkills==4): hint format ["You killed a civilian!\nSo now you´re in jail.\nyou killed %1 civilians",civkills]; player setpos (getpos cellcop); removeallweapons player;
+? (civkills>=5): hint format ["stupid you...\nWhat do you think a cop should do?\nyou killed %1 civilians",civkills]; player setpos (getpos banished); removeallweapons player;
+
+
+goto "loop"
+
+exit

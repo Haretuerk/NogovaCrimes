@@ -1,0 +1,35 @@
+- neues messaging system, dass durch parameterübergabe funktioniert (mehrsprachig)
+- globale Arrays:
+	- Straftaten (Strings)
+	- Ortsnamen (Stings mit Koordinaten)
+	- gamelogics der Orte (in gleicher reihenfolge wie Ortsnamen zur einfacheren Bestimmung)
+
++ statistik !
+* wie oft geschah welches verbrechen? - gesamt & pro gangsterteam
+* in welcher stadt geschahen die meisten verbrechen?
+
+
++ im score:
+beschreibung, was man vom crimerank hat (vor- & nachteile)
+
+
+Statistik:
+
+begangene Verbrechen pro Team
+Autodiebstähle
+Autoverkäufe
+Raubüberfälle
+Bankraube
+Verkaufte Drogen
+getötete Zivilisten
+getötete Bankwachen
+getötete Cops
+
+
+Verhaftungen
+sichergestellte Autos
+Razzien
+Befreite Shops
+Befreite Frauen
+getötete Gangster
+Abgebrannte Hanffelder

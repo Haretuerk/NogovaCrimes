@@ -1,0 +1,21 @@
+; drop bucks
+; by HT
+
+? (cash >= 500):goto "erfolgreich";
+	hint "You don't have enough money to drop.";
+exit
+
+#erfolgreich
+	_pos = getpos player
+	_posx = _pos select 0
+	_posy = _pos select 1
+	_posz = _pos select 2
+	_dir = getdir player
+	
+	thesebucks = "nc_moneypackage" CreateVehicle [0,0,0];
+	thesebucks setpos [_posx,_posy,_posz]
+	
+	cash = cash - 500;
+	hint "You dropped 500$";
+	
+exit;

@@ -1,0 +1,36 @@
+;muss auf allen localen rechnern laufen... außer auf dem server
+
+? !(local player): exit
+
+#main
+
+_counter = 0
+
+@ cke6
+
+TitleText ["A Cop was killed. The Murderer is marked on the map !","plain down"]
+"cke6m" setmarkertype "destroy"
+
+cke6 = false
+
+
+#loop
+
+"cke6m" setMarkerPos getpos ge6
+_flag = nearestObject[ge6,"FlagCarrier"]
+~2
+? ((_flag == jailflag1) OR (_flag == jailflag2) OR (_flag == jailflag3)): goto "quit" 
+
+? _counter > 150 : goto "quit"
+? !alive ge6: goto "quit"	
+_counter = _counter + 1
+? cke6: _counter = _counter-150; cke6 = false;
+
+goto "loop"
+
+
+
+#quit
+"cke6m" setmarkertype "empty"
+_counter = 0
+goto "main"

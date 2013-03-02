@@ -1,0 +1,98 @@
+; Destroy-Manager
+; setzt den Status von Bar, Casino  auf 3, wenn gebaut wurde.
+; by Haretuerk
+
+
+; nur aufm Server
+ ? !(local server): exit
+ 
+
+ 
+ #loop
+ @!(isNull destroyedbuilding)
+ 
+ 	 hint format["Ein Gebäude wurde zerstört: %1 \n\n\n\nmbars: %2",destroyedbuilding, mbars];
+ 
+ 	_obj = destroyedbuilding; 
+ 	destroyedbuilding = objNull;
+ 	publicVariable "destroyedbuilding";
+	
+~5
+	; wir begeben uns auf die Suche nach dem richtigen Gebäude in 4 Arrays
+		_i = 0;
+		_temp = 10;
+		#nexta
+			? (( _obj) == ( mbars select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < count mbars) : goto "nexta"
+		
+		_temp = 20;
+		_i = 0;
+		#nextb
+			? (( _obj) == ( bbars select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < count bbars) : goto "nextb"
+		
+		_temp = 30;
+		_i = 0;
+		#nextc
+			? (( _obj) == ( mcasinos select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < count mcasinos) : goto "nextc"
+		
+		_temp = 40;
+		_i = 0;
+		#nextd
+			? (( _obj) == ( bcasinos select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < count bcasinos) : goto "nextd"
+			
+			hint "nix gefunden";		
+		goto "loop";
+			
+	#gefunden
+
+	destroy_this = _temp + _i + 1;
+	
+	hint format["Gebäude %1",destroy_this];
+	
+		
+		; Status auf 3 setzen (Gebäude zerstört)
+		?(destroy_this==11): mbar_status set [0,3];
+		?(destroy_this==12): mbar_status set [1,3];
+		?(destroy_this==13): mbar_status set [2,3];		
+		?(destroy_this==14): mbar_status set [3,3];
+		?(destroy_this==15): mbar_status set [4,3];				
+		
+		?(destroy_this==21): bbar_status set [0,3];
+		?(destroy_this==22): bbar_status set [1,3];
+		?(destroy_this==23): bbar_status set [2,3];		
+		?(destroy_this==24): bbar_status set [3,3];
+		?(destroy_this==25): bbar_status set [4,3];				
+				
+		?(destroy_this==31): mcasino_status set [0,3];
+		?(destroy_this==32): mcasino_status set [1,3];
+		?(destroy_this==33): mcasino_status set [2,3];		
+		?(destroy_this==34): mcasino_status set [3,3];
+		?(destroy_this==35): mcasino_status set [4,3];								
+		
+		?(destroy_this==41): bcasino_status set [0,3];
+		?(destroy_this==42): bcasino_status set [1,3];
+		?(destroy_this==43): bcasino_status set [2,3];		
+		?(destroy_this==44): bcasino_status set [3,3];
+		?(destroy_this==45): bcasino_status set [4,3];						
+		
+		
+	
+		
+	goto "loop";
+	
+	
+	
+ 
+ 	
+exit

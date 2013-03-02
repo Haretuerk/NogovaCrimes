@@ -1,0 +1,161 @@
+
+
+? (po1 == Player) : Goto "playa1"
+? (po2 == Player) : Goto "playa2"
+? (po3 == Player) : Goto "playa3"
+? (po4 == Player) : Goto "playa4"
+? (po5 == Player) : Goto "playa5"
+? (po6 == Player) : Goto "playa18"
+? (po7 == Player) : Goto "playa19"
+? (po8 == Player) : Goto "playa20"
+? (po9 == Player) : Goto "playa21"
+
+? (ge1 == Player) : Goto "playa6"
+? (ge2 == Player) : Goto "playa7"
+? (ge3 == Player) : Goto "playa8"
+? (ge4 == Player) : Goto "playa9"
+? (ge5 == Player) : Goto "playa10"
+? (ge6 == Player) : Goto "playa11"
+
+? (gg1 == Player) : Goto "playa12"
+? (gg2 == Player) : Goto "playa13"
+? (gg3 == Player) : Goto "playa14"
+? (gg4 == Player) : Goto "playa15"
+? (gg5 == Player) : Goto "playa16"
+? (gg6 == Player) : Goto "playa17"
+
+Goto "end"
+
+#playa1
+pf1 = FALSE
+0.5
+PublicVariable "pf1"
+Goto "end"
+
+#playa2
+pf2 = FALSE
+0.5
+PublicVariable "pf2"
+Goto "end"
+
+#playa3
+pf3 = FALSE
+0.5
+PublicVariable "pf3"
+Goto "end"
+
+#playa4
+pf4 = FALSE
+0.5
+PublicVariable "pf4"
+Goto "end"
+
+#playa5
+pf5 = FALSE
+0.5
+PublicVariable "pf5"
+Goto "end"
+
+#playa6
+pf6 = FALSE
+0.5
+PublicVariable "pf6"
+Goto "end"
+
+#playa7
+pf7 = FALSE
+0.5
+PublicVariable "pf7"
+Goto "end"
+
+#playa8
+pf8 = FALSE
+0.5
+PublicVariable "pf8"
+Goto "end"
+
+#playa9
+pf9 = FALSE
+0.5
+PublicVariable "pf9"
+Goto "end"
+
+#playa10
+pf10 = FALSE
+0.5
+PublicVariable "pf10"
+Goto "end"
+
+#playa11
+pf11 = FALSE
+0.5
+PublicVariable "pf11"
+Goto "end"
+
+#playa12
+pf12 = FALSE
+0.5
+PublicVariable "pf12"
+Goto "end"
+
+#playa13
+pf13 = FALSE
+0.5
+PublicVariable "pf13"
+Goto "end"
+
+#playa14
+pf14 = FALSE
+0.5
+PublicVariable "pf14"
+Goto "end"
+
+#playa15
+pf15 = FALSE
+0.5
+PublicVariable "pf15"
+Goto "end"
+
+#playa16
+pf16 = FALSE
+0.5
+PublicVariable "pf16"
+Goto "end"
+
+#playa17
+pf17 = FALSE
+0.5
+PublicVariable "pf17"
+Goto "end"
+
+#playa18
+pf18 = FALSE
+0.5
+PublicVariable "pf18"
+Goto "end"
+
+#playa19
+pf19 = FALSE
+0.5
+PublicVariable "pf19"
+Goto "end"
+
+#playa20
+pf20 = FALSE
+0.5
+PublicVariable "pf20"
+Goto "end"
+
+#playa21
+pf21 = FALSE
+0.5
+PublicVariable "pf21"
+Goto "end"
+
+#end
+
+player removeAction feign;
+player removeaction getup
+Feign = player addaction [localize "STR_ACTION_FEIGN","Feign.sqs"];
+
+Exit

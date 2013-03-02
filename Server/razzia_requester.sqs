@@ -1,0 +1,144 @@
+;razzia_requester.sqs
+; managt den Status der Bars und Casinos
+
+; script läuft nur auf dem Server, weil hier die Daten verwaltet werden
+
+;init for all.... clients and servers...
+	mbars_razziacounter = 0;
+	bbars_razziacounter = 0;
+	mcasinos_razziacounter = 0;
+	bcasinos_razziacounter = 0;
+
+? !(local server): exit
+
+#loop
+
+@!(isNull do_the_razzia_here_obj)
+
+	_obj = do_the_razzia_here_obj; 
+	
+	do_the_razzia_here_obj = ObjNull;
+	publicVariable "do_the_razzia_here_obj";
+	
+	
+	_count = 5;
+	
+	_temp = 10;
+	
+	; wir begeben uns auf die Suche nach dem richtigen Gebäude in 4 Arrays
+		_i = 0;
+		#nexta
+			? (( _obj) == ( mbars select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nexta"
+		
+		_temp = 20;
+		_i = 0;
+		#nextb
+			? (( _obj) == ( bbars select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextb"
+		
+		_temp = 30;
+		_i = 0;
+		#nextc
+			? (( _obj) == ( mcasinos select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextc"
+		
+		_temp = 40;
+		_i = 0;
+		#nextd
+			? (( _obj) == ( bcasinos select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextd"
+			
+			hint "nix gefunden";		
+		exit;
+			
+	#gefunden
+	
+	;Nummer wird zusammengestückelt. Tricky Flickwerk hier, weil ich zu faul bin. HT
+	do_the_razzia_here = _temp + _i + 1;
+	
+	_posStruct = position _obj;
+	[do_the_razzia_here,_posStruct] exec "Server\set_razzia_marker.sqs";
+	
+	hint format["Server Gebäude %1",do_the_razzia_here];
+	
+	?(do_the_razzia_here==11): _status = (mbar_status select 0);
+	?(do_the_razzia_here==12): _status = (mbar_status select 1);
+	?(do_the_razzia_here==13): _status = (mbar_status select 2);
+	?(do_the_razzia_here==14): _status = (mbar_status select 3);
+	?(do_the_razzia_here==15): _status = (mbar_status select 4);
+	
+	?(do_the_razzia_here==21): _status = (bbar_status select 0);
+	?(do_the_razzia_here==22): _status = (bbar_status select 1);
+	?(do_the_razzia_here==23): _status = (bbar_status select 2);
+	?(do_the_razzia_here==24): _status = (bbar_status select 3);
+	?(do_the_razzia_here==25): _status = (bbar_status select 4);		
+	
+	?(do_the_razzia_here==31): _status = (mcasino_status select 0);			
+	?(do_the_razzia_here==32): _status = (mcasino_status select 1);			
+	?(do_the_razzia_here==33): _status = (mcasino_status select 2);		
+	?(do_the_razzia_here==34): _status = (mcasino_status select 3);		
+	?(do_the_razzia_here==35): _status = (mcasino_status select 4);		
+	
+	?(do_the_razzia_here==41): _status = (bcasino_status select 0);			
+	?(do_the_razzia_here==42): _status = (bcasino_status select 1);			
+	?(do_the_razzia_here==43): _status = (bcasino_status select 2);		
+	?(do_the_razzia_here==44): _status = (bcasino_status select 3);		
+	?(do_the_razzia_here==45): _status = (bcasino_status select 4);			
+	
+		
+	; Razzia schon im Gange?
+	?(_status == 2): goto "gibtschonrazzia";
+	
+	; ansonsten -> setzen
+	#keinerazziaimgange
+		; Status auf 2 setzen (Razzia im Gange)
+		?(do_the_razzia_here==11): mbar_status set [0,2]; mbars_razziacounter = mbars_razziacounter + 1; publicVariable "mbars_razziacounter";
+		?(do_the_razzia_here==12): mbar_status set [1,2]; mbars_razziacounter = mbars_razziacounter + 1; publicVariable "mbars_razziacounter";
+		?(do_the_razzia_here==13): mbar_status set [2,2]; mbars_razziacounter = mbars_razziacounter + 1; publicVariable "mbars_razziacounter";		
+		?(do_the_razzia_here==14): mbar_status set [3,2]; mbars_razziacounter = mbars_razziacounter + 1; publicVariable "mbars_razziacounter";
+		?(do_the_razzia_here==15): mbar_status set [4,2]; mbars_razziacounter = mbars_razziacounter + 1; publicVariable "mbars_razziacounter";				
+		
+		?(do_the_razzia_here==21): bbar_status set [0,2]; bbars_razziacounter = bbars_razziacounter + 1; publicVariable "bbars_razziacounter";
+		?(do_the_razzia_here==22): bbar_status set [1,2]; bbars_razziacounter = bbars_razziacounter + 1; publicVariable "bbars_razziacounter";
+		?(do_the_razzia_here==23): bbar_status set [2,2]; bbars_razziacounter = bbars_razziacounter + 1; publicVariable "bbars_razziacounter";		
+		?(do_the_razzia_here==24): bbar_status set [3,2]; bbars_razziacounter = bbars_razziacounter + 1; publicVariable "bbars_razziacounter";
+		?(do_the_razzia_here==25): bbar_status set [4,2]; bbars_razziacounter = bbars_razziacounter + 1; publicVariable "bbars_razziacounter";				
+				
+		?(do_the_razzia_here==31): mcasino_status set [0,2]; mcasinos_razziacounter = mcasinos_razziacounter + 1; publicVariable "mcasinos_razziacounter";
+		?(do_the_razzia_here==32): mcasino_status set [1,2]; mcasinos_razziacounter = mcasinos_razziacounter + 1; publicVariable "mcasinos_razziacounter";
+		?(do_the_razzia_here==33): mcasino_status set [2,2]; mcasinos_razziacounter = mcasinos_razziacounter + 1; publicVariable "mcasinos_razziacounter";		
+		?(do_the_razzia_here==34): mcasino_status set [3,2]; mcasinos_razziacounter = mcasinos_razziacounter + 1; publicVariable "mcasinos_razziacounter";
+		?(do_the_razzia_here==35): mcasino_status set [4,2]; mcasinos_razziacounter = mcasinos_razziacounter + 1; publicVariable "mcasinos_razziacounter";								
+		
+		?(do_the_razzia_here==41): bcasino_status set [0,2]; bcasinos_razziacounter = bcasinos_razziacounter + 1; publicVariable "bcasinos_razziacounter";
+		?(do_the_razzia_here==42): bcasino_status set [1,2]; bcasinos_razziacounter = bcasinos_razziacounter + 1; publicVariable "bcasinos_razziacounter";
+		?(do_the_razzia_here==43): bcasino_status set [2,2]; bcasinos_razziacounter = bcasinos_razziacounter + 1; publicVariable "bcasinos_razziacounter";		
+		?(do_the_razzia_here==44): bcasino_status set [3,2]; bcasinos_razziacounter = bcasinos_razziacounter + 1; publicVariable "bcasinos_razziacounter";
+		?(do_the_razzia_here==45): bcasino_status set [4,2]; bcasinos_razziacounter = bcasinos_razziacounter + 1; publicVariable "bcasinos_razziacounter";						
+		
+
+		
+		; anderes Script übernimmt das Zurücksetzen
+		[do_the_razzia_here] exec "Server\razzia_annuller.sqs";
+		; und Antwort senden
+		do_the_razzia_here = 81;
+		publicVariable "do_the_razzia_here";
+	goto "loop";
+	
+	#gibtschonrazzia
+		do_the_razzia_here = 82;
+		publicVariable "do_the_razzia_here";
+	goto "loop";	
+	
+
+
+exit

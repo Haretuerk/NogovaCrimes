@@ -1,0 +1,120 @@
+; Buildmenu by Haretuerk
+
+? !(vehicle player == player): goto "getoutofthecar";
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+; Gelände zu tief? Verdacht auf Bau am Wasser -> Abbruch
+_hoehe = Player call ASLHeight;
+? (_hoehe < -1): hint format["Ground is too bad for building here. Choose another area!\nHöhe: %1",_hoehe]; exit;
+
+; Keine Gebäude in Petrovic oder Lipany (Gefahr des Bauens in der Bank!)
+? ((player distance GLLip) < 300): hint (localize "STR_BUILD_DENY_LIPANY"); exit; 
+? ((player distance GLPet) < 300): hint (localize "STR_BUILD_DENY_PETRO"); exit; 
+
+_object = _this select 0
+_object = player; 
+; das is für die Parameterübergabe an das CrCTI Script... muss alive sein... (original = MHQ?)
+
+_unit = player; 
+_dlg = createDialog "BuildmenuDialog"
+~0.5
+
+; Cash- und Weedbug beheben, bevor Geld ausgegeben wird
+[] exec "cashbug.sqs";
+
+zahl = -1;
+
+? (side player != EAST): goto "skip";
+
+	ctrlSetText [444,"pics\bar_mafia.paa"];
+	ctrlSetText [445,"pics\casino_mafia.paa"];
+	ctrlSetText [446,"pics\brothel_mafia.paa"];
+
+#skip
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+	
+	ctrlSetText [447,format["Cash: %1",cash]];  
+
+	? (zahl > -1) : goto "build";
+	
+~0.2
+goto "Update"
+
+	
+	
+
+#build
+
+	?(side player == RESISTANCE):goto "cops"
+	;? !(vehicle player == player): goto "geoutofthecar"; 
+	
+	
+	?((zahl == 1) AND (side player == east)): _type = "nc_bar_red"; _price = c_price_bar; 
+	?((zahl == 1) AND (side player == west)): _type = "nc_bar_blue"; _price = c_price_bar; 
+	
+	?((zahl == 2) AND (side player == east)): _type = "nc_casino_red"; _price = c_price_casino; 
+	?((zahl == 2) AND (side player == west)): _type = "nc_casino_blue"; _price = c_price_casino; 
+	
+	?((zahl == 3) AND (side player == east)): _type = "nc_brothel_red"; _price = c_price_bordell; 
+	?((zahl == 3) AND (side player == west)): _type = "nc_brothel_blue"; _price = c_price_bordell; 
+	
+	?(zahl == 4) : _type = "MAP_Schuppen"; _price = c_price_weedshed; 
+	
+	?(zahl == 5) : _type = "Pep_hemp_medium"; _price = c_price_weedfield; goto "weed";
+	
+	#hopback
+	; Checken, ob genug Kohle da ist
+	? (cash<_price): goto "pleite"
+	
+	[] exec "actionsoff.sqs"	
+	[_object, _unit, _type, false, 30] exec "Player\PlaceAndBuildStructure.sqs"
+	
+	
+	closeDialog 0
+	zahl = -1;
+	
+goto "Update";
+	
+#weed	
+	_dis =  player distance (nearestObject  [player, "MAP_Schuppen"])
+	? (_dis < 20): goto "hopback";
+	
+	ctrlSetText [447,(localize "STR_BUILD_WEED_NEARSHED")];  
+	~2 
+	
+	zahl = -1;
+goto "Update"	
+
+#pleite
+	ctrlSetText [447,(localize "STR_NOMONEY")];  
+	~2 
+	
+	zahl = -1;
+goto "Update"
+
+#getoutofthecar
+	closeDialog 0
+	hint (localize "STR_OUTOFCAR"); 
+exit; 
+
+#cops
+	closeDialog 0
+	hint (localize "STR_BUILD_COPS");
+exit; 

@@ -1,0 +1,31 @@
+? !(local player): exit
+
+#loop
+
+@ !(getoutcar < 0 )
+
+	_i = getoutcar
+	_car = taxis select _i
+
+	
+_crew = crew _car
+_c = 0
+
+;hint format ["getout working\n_i=%1\ncar=%2\ncrew=%3",_i,_car,_crew]
+
+#getoutloop
+? !((side (_crew select _c)) == civilian): (_crew select _c) call GetOut
+;hint format ["_c=%1, crewman=%2",_c,(_crew select _c)]
+~0.1
+_c = _c+1
+? (_c < count _crew) : goto "getoutloop"
+
+;player call getout
+;[_x] call getout foreach units group player
+
+	getoutcar = -1
+	publicvariable "getoutcar"
+
+goto "loop"
+
+

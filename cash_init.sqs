@@ -1,0 +1,29 @@
+; cash_init.sqs
+; Initialisiert alle 3 Konten und das Barvermoegen der Spieler
+; by Haretuerk
+
+; nur aufm Server
+ ? !(local server): exit
+ 
+accountmafia = 0;
+accountbikers = 0;
+accountpolice = 0;
+
+
+publicVariable "accountmafia";
+publicVariable "accountpolice";
+publicVariable "accountbikers";
+
+cash = 50; 
+publicVariable "cash";
+
+
+newpaycheck = false; 
+publicVariable "newpaycheck";
+
+
+; Pepper was here
+;nur noch ein paycheck-loop für alle
+[] exec "paycheck.sqs"
+
+exit

@@ -1,0 +1,26 @@
+_woman = _this select 0
+
+
+[_woman] join grpnull
+
+
+_woman removeaction freehostess
+_woman removeaction takeher
+_woman removeaction robwoman
+takeher = _woman addaction ["Make her Follow","womenhostage.sqs"]
+robwoman = _woman addaction ["Rob this woman","womenrob.sqs"]
+
+;----- alles in NSC_checkloop.sqs ----------
+;hint "Thank you very much!";
+;? (side player != RESISTANCE): exit
+;hint format["You get %1$.",c_pr_free_woman];
+;accountpolice = accountpolice + c_pr_free_woman;
+;publicVariable "accountpolice";
+;-------------------------------------------
+
+
+; funzt nicht: _nextgl = NearestObject[_woman,"logic"]
+
+; exgeisel bewegt sich zum nächsten Ort...
+
+exit

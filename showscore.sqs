@@ -1,0 +1,54 @@
+; Cash- und Weedbug beheben, bevor Geld ausgegeben wird
+; [] exec "cashbug.sqs";
+
+
+? Side Player == EAST : goto "score_mafia"
+? Side Player == west : goto "Score_biker"
+
+
+;#score_cops
+
+	hcan = "no"
+	hkit = "no"
+	
+	? (player hasweapon "pepcanister"): hcan ="yes" 
+	? (player hasweapon "peprepkit"): hkit ="yes" 
+	
+	hint format ["Your own scores:\n\nBarriers left: %1 \n\nCanister: %2 \nRepairkit: %3\n\nYour Rank is: %4\nYour Dutypoints: %5",barriers,hcan,hkit,coprank,dutypoints]
+
+exit
+
+
+#score_mafia
+
+	hcan = "no"
+	hkit = "no"
+	grun = "no"
+	lawyer = "no"
+	
+	? (player hasweapon "pepcanister"): hcan ="yes" 
+	? (player hasweapon "peprepkit"): hkit ="yes" 
+	?gunrun : grun ="yes"
+	?mafialawyer : lawyer = "yes"
+	
+	hint format ["Your own scores:\n\nCash: %1 $\nWeed packages: %2\nmedicines: %3\nAngel Dust: %4\n\nCanister: %5 \nRepairkit: %6 \nGunpackage: %7 \n\nTeam-Lawyer:%8\n\nYour CrimeRate: %9\nYour CrimeRank: %10",cash,weedpackages,medicines,narcotics,hcan,hkit,grun,lawyer,crimerate,crimeranking]
+
+exit
+
+
+
+#Score_biker
+
+	hcan = "no"
+	hkit = "no"
+	grun = "no"
+	lawyer = "no"
+	
+	? (player hasweapon "pepcanister"): hcan ="yes" 
+	? (player hasweapon "peprepkit"): hkit ="yes" 
+	?gunrun : grun ="yes" 
+	?bikerlawyer : lawyer = "yes"
+	
+	hint format ["Your own scores:\n\nCash: %1 $\nWeed packages: %2\nmedicines: %3\nAngel Dust: %4\n\nCanister: %5 \nRepairkit: %6 \nGunpackage: %7 \n\nTeam-Lawyer:%8\n\nYour CrimeRate: %9\nYour CrimeRank: %10",cash,weedpackages,medicines,narcotics,hcan,hkit,grun,lawyer,crimerate,crimeranking]
+ 
+exit

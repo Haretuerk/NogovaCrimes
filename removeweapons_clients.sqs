@@ -1,0 +1,32 @@
+; removeweapons
+; by Haretuerk
+
+; nur auf den Clients, da der Server nie Waffen bei sich hat
+? !(local player): exit;
+
+#loop
+
+	@(!(isNull removethisweapon) AND (removethisweapon==player))
+	
+	
+
+	removethisweapon = objNull
+	publicVariable "removethisweapon"
+	
+
+
+	
+	hint localize  "str_self_g_tookweapon";
+	removeAllweapons player
+	
+	; auch versteckte Waffen werden gefunden
+	hiddenweapon = "no"
+
+	
+	; Faust darf er behalten
+	player AddMagazine "strokefist"
+	player AddWeapon "strokefist"
+	player AddMagazine "strokefist"
+	
+
+goto "loop"

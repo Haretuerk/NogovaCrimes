@@ -1,0 +1,9 @@
+? !(local player): exit
+
+? !(side player== east):exit
+
+player setpos getpos mafiavhq;
+
+"player reveal _x" foreach gcars;
+
+exit

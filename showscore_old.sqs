@@ -1,0 +1,53 @@
+? timelimit: timeleft = ((winninglimit - time)/60) - (((winninglimit - time)/60) mod 1)+1; winninglimittext = format ["Time left: %1 min",timeleft];
+? !timelimit: winninglimittext = format ["~~~~~~~~~~~~~~~~\nWin Limit: %1 $",winninglimit];
+
+; Cash- und Weedbug beheben, bevor Geld ausgegeben wird
+[] exec "cashbug.sqs";
+
+
+? Side Player == EAST : goto "score_mafia"
+? Side Player == west : goto "Score_biker"
+
+
+;#score_cops
+
+hcan = "no"
+hkit = "no"
+
+?hascan : hcan ="yes" 
+?haskit : hkit ="yes" 
+
+hint format ["NOGOVA CRIMES beta\n\n~ Money ~~~~~~~~~\nMoney on Bank: %4 $\nCash: %5 $\n\n~ Stuff ~~~~~~~~~\nBarriers left: %1 \nCanister: %2 \nRepairkit: %3\n\n\n~ TeamScores: ~~\nPolice: %6 $\nMafia: %7 $\nBikers: %8 \n\nTotal Crimerate: %9\nCrime Highscore: %10\nRecent Crimescore: %11\n\n%12",barriers,hcan,hkit,accountpolice,cash,accountpolice,accountmafia,accountbikers,crimeratetotal,crimehighscore,recentcrimescore,winninglimittext]
+
+exit
+
+
+#score_mafia
+
+hcan = "no"
+hkit = "no"
+
+?hascan : hcan ="yes" 
+?haskit : hkit ="yes" 
+
+
+
+hint format ["NOGOVA CRIMES beta\n\n~ Money ~~~~~~~~~\nMoney on Bank: %3 $\nCash: %4 $\n\n~ Buildings ~~~~~~~~~\nBars: %6\nCasinos: %7\n\n~ Drugs ~~~~~~~~~\nWeed packages: %5\n\n~ Stuff ~~~~~~~~~\nCanister: %1 \nRepairkit: %2\n\n\n~ TeamScores: ~~\nPolice: %8 $\nMafia: %9 $\nBikers: %10 \n\nYour CrimeRate: %11\n\nTotal Crimerate: %12\nCrime Highscore: %13\nRecent Crimescore: %14\n\n%15",hcan,hkit,accountmafia,cash,weedpackages,mbarpointer,mcasinopointer,accountpolice,accountmafia,accountbikers,crimerate,crimeratetotal,recentcrimescore,crimehighscore,winninglimittext]
+;~1
+
+;hint format["X: %1\nY. %2\nZ: %3",getpos player select 0,getpos player select 1,getpos player select 2]
+exit
+
+
+
+#Score_biker
+
+hcan = "no"
+hkit = "no"
+
+?hascan : hcan ="yes" 
+?haskit : hkit ="yes" 
+
+hint format ["NOGOVA CRIMES beta\n\n~ Money ~~~~~~~~~\nMoney on Bank: %3 $\nCash: %4 $\n\n~ Buildings ~~~~~~~~~\nBars: %6\nCasinos: %7\n\n~ Drugs ~~~~~~~~~\nWeed packages: %5\n\n~ Stuff ~~~~~~~~~\nCanister: %1 \nRepairkit: %2\n\n\n~ TeamScores: ~~\nPolice: %8 $\nMafia: %9 $\nBikers: %10 \n\nYour CrimeRate: %11\n\nTotal Crimerate: %12\nCrime Highscore: %13\nRecent Crimescore: %14\n\n%15",hcan,hkit,accountbikers,cash,weedpackages,bbarpointer,bcasinopointer,accountpolice,accountmafia,accountbikers,crimerate,winninglimittext,crimeratetotal,recentcrimescore, crimehighscore]
+ 
+exit

@@ -1,0 +1,10 @@
+? !(local server): exit
+
+_counter = _this select 0
+
+~30
+
+  _tused = taxiaktiv select _counter
+  ? !(_tused == 2): taxiaktiv set [_counter,0]; exit
+
+exit

@@ -1,0 +1,176 @@
+; Update-Script für Cops
+; Cops == RESISTANCE
+; Biker == WEST
+; Mafia == EAST
+
+; nur Clients
+? !(local player): exit
+
+; nur Cops
+? (side player == EAST): exit;
+? (side player == WEST): exit;
+
+
+;---------------------------------------
+
+;zur überprüfung, welche actions aktiv sind: 
+
+;ben für build barrier  
+_ben=0;
+
+;ren für remove barrier
+_ren=0;
+
+;rec für recruitment
+_rec=0;
+
+;copd für search for drugs
+;_copd=0
+
+;copu für unarm
+;_copu=0												
+
+;copa für arrest
+;_copa=0
+
+;Hanf verbrennen aktiv
+_hanfaktiv = false; 
+
+; Bank Actions aktiv
+_bankaktiv = false;
+
+; razzia kram aktiv
+_razziaktiv = false;
+
+; Rausschmeiss Funktion
+_forcedoutaction = false;
+
+;autoradio
+vradio = 0;
+
+;---------------------------------------
+
+
+#loop
+	~2
+	
+	if (player hasweapon "pepcanister") then {hascan=true} else {hascan=false};
+	
+	; Barrieren aus Fahrzeugen bauen können
+
+		_poga = nearestobject [player,"pepdmxgaz"]
+		_pobrdm = nearestobject [player,"pepdmxbrdm"]
+		_pouaz = nearestobject [player,"pepdmxuaz"]
+		_poheli = nearestobject [player,"pepmi2p"]
+		_pojeep = nearestobject [player,"pepdmxjeep"]
+		_povw = nearestobject [player,"pepvwpolice"]
+		_porap = nearestobject [player,"peprappol"]		
+		
+		
+		
+		? ((_ben==0) AND ((player Distance _poga<=30) OR (player Distance _pobrdm<=30) OR (player Distance _pouaz<=30) OR (player Distance _poheli<=30) OR (player Distance _pojeep<=30) OR (player Distance _povw<=30) OR (player Distance _porap<=30))): player RemoveAction bbarrier; bbarrier = player AddAction [localize "STR_ACTION_BUILDBARRIER","buildbarrier.sqs"]; _ben=1;
+		
+		? ((_ben==1) AND (player Distance _poga>30) AND (player Distance _pobrdm>30) AND (player Distance _pouaz>30) AND (player Distance _poheli>30) AND (player Distance _pojeep>30) AND (player Distance _povw>30) AND (player Distance _porap>30)): player RemoveAction bbarrier; _ben=0;
+		
+	; Barrieren wieder abbauchen dürfen		
+	
+		_wire = nearestobject [player,"wire"]
+		? ((player Distance _wire<=4) AND (_ren==0)): rbarrier = player AddAction [localize "STR_ACTION_REMOVEBARRIER","removeb.sqs"]; _ren=1;
+		? ((player Distance _wire>4) AND (_ren==1)): player RemoveAction rbarrier; _ren=0;
+	
+
+	; autoradio:
+	? ((vehicle player != player) AND (vradio==0)): vradioon = player AddAction ["[RADIO]","radio_on.sqs"]; vradio = 1;
+	? ((vehicle player == player) AND (vradio==1)): [] exec "radio_off.sqs"; vradio = 0; player removeaction vradioon; 
+	
+	; Recruitment
+	
+		? (((player Distance phqsw <=5) OR (player Distance phqnw <=5) OR (player Distance phqse <=5)) AND (_rec==0)): goto "recruitment"
+		? (((player Distance phqsw >5) AND (player Distance phqnw >5) AND (player Distance phqse >5)) AND (_rec==1)): goto "norecruitment"
+		
+		#backfromrecruitment
+	
+
+		
+	; Razzia an Gebäuden durchführen
+	
+		_barmafia = nearestObject [player, "nc_bar_red"];
+		_barbiker = nearestObject [player, "nc_bar_blue"];
+		_casinomafia = nearestObject [player, "nc_casino_red"];
+		_casinobiker = nearestObject [player, "nc_casino_blue"];
+		? (!_razziaktiv AND ((player distance _barmafia <=10) OR (player distance _barbiker <=10) OR (player distance _casinomafia <=10) OR (player distance _casinobiker <=10))): player removeAction dorazzia; dorazzia = player AddAction [localize "STR_ACTION_DORAZZIA","razzia.sqs"];  _razziaktiv = true;
+		? (_razziaktiv AND (player distance _barmafia >10) AND (player distance _barbiker >10) AND (player distance _casinomafia >10) AND(player distance _casinobiker >10)): player removeAction dorazzia; _razziaktiv = false;
+		
+	
+	; Search for Drugs
+	
+	; Gangster entwaffnen
+	
+	; Gangster verhaften
+	
+	; Geld bei Bank abheben, Geld bei Bank einzahlen, Achtung externe Datei wird genutzt.... sinnvoll? hmm, wäre dir ein goto, wie beim recruitment lieber?
+		? (!_bankaktiv AND ((player Distance BankComputerL<=3) OR (player Distance BankComputerP<=3))): _bankaktiv=true; [] exec "bank_actionson.sqs"; 
+		? (_bankaktiv AND (player Distance BankComputerL>3) AND (player Distance BankComputerP>3)): _bankaktiv=false; [] exec "bank_actionsoff.sqs"; 
+	
+
+	; Auto rausszerren Script
+	_depp = ge1;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = ge2;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = ge3;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = ge4;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = ge5;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = ge6;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+
+	_depp = gg1;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp;  _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = gg2;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = gg3;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = gg4;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = gg5;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+	_depp = gg6;
+	? ((player Distance _depp<=4) AND !(vehicle _depp == _depp) AND !_forcedoutaction): rausda = player AddAction [localize "STR_ACTION_GETHIMOUT","forcedout.sqs"]; forcedout = _depp; _forcedoutaction=true;
+	? ((player Distance _depp>4) OR (vehicle _depp == _depp)  AND _forcedoutaction): player RemoveAction rausda; _forcedoutaction=false;
+
+	
+
+
+goto "loop"
+
+;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+; Hop-Gedöhns.... damit das oben nicht so voll wird
+
+#recruitment
+	_rec=1
+
+	rec = player AddAction [format [localize "STR_ACTION_RECRUIT"],"open_copshop.sqs"]
+goto "backfromrecruitment"
+
+
+#norecruitment
+	_rec=0
+	player RemoveAction rec
+goto "backfromrecruitment"
+
+

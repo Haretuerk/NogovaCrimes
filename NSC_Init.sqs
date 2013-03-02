@@ -1,0 +1,203 @@
+; All-in-one for better performance - I hope ;) 
+; by Dr.Pepper
+
+; sorgt dafür, dass die NSCs ihre actions haben
+; Zivilisten & Frauen mit Geld versorgt sind & einen Mutwert besitzen.
+; gibt den Junkies "Hunger"
+; den shops ihre "Kontrolle"
+
+
+;------ civil traffic ----------------------------
+
+	_count = count ctdrivers;
+	ctchecksex=[];
+	_i = 0
+	
+
+	#ctinit
+
+		_ctd = (ctdrivers select _i)
+		_ctc = (ctcars select _i)
+		
+		; weil nachdem moveindriver die unit nicht mehr im array ist und EH glöscht werden:
+		if (_ctd in women) then {ctchecksex=ctchecksex+[0]} else {ctchecksex=ctchecksex+[1]} 
+		if ((ctchecksex select _i)==0) then {women=women-[(ctdrivers select _i)]} else {zivis=zivis-[(ctdrivers select _i)]}
+		
+		removeallweapons _ctd;
+		_ctd setbehaviour "careless";
+		_ctd setcaptive true;
+				
+		_ctd moveindriver _ctc;
+		
+		; weil nachdem moveindriver die unit nicht mehr im array ist und EH glöscht werden:
+		ctdrivers set [_i, driver _ctc]
+		;(ctdrivers select _i) AddEventHandler ["killed",{_this exec "zividead.sqs"}]
+		if ((ctchecksex select _i)==0) then {women=women+[(ctdrivers select _i)]} else {zivis=zivis+[(ctdrivers select _i)]}
+					
+		_i = _i + 1
+
+	? (_i < _count) : goto "ctinit"
+
+
+~1
+
+
+
+
+;------ Zivis ----------------------------
+
+
+	? (local server): Zivimoney = [];
+	Zivicourage = []
+	_count = count Zivis
+	_i = 0
+
+	#ziviinit
+
+		? (local server): _m=((random 110) + 40); _m = _m - (_m) mod 1; Zivimoney = Zivimoney +[_m]
+		_c = random 3.7
+		Zivicourage = Zivicourage + [_c]
+
+		_z = Zivis select _i
+		
+		_z AddEventHandler [ "killed", { _this exec "zividead.sqs" } ]
+		_z setbehaviour "careless"
+		_z setcaptive true
+		
+		robman = _z addaction ["Rob this man","Zivirob.sqs"]
+		;beathim = _z addaction ["Beat him up","Zivibeat.sqs"]
+		;takeman = _z addaction ["make him follow","Zivihostage.sqs"]
+
+		_i = _i + 1
+
+	? (_i < _count) : goto "ziviinit"
+
+
+~1
+
+;------ Women ----------------------------
+
+	? (local server): womenmoney = []; womencontrol = [];
+	womencourage = []
+	_count = count women
+	_i = 0
+
+	#womeninit
+
+		;zivigehalt:
+		? (local server): _m =((random 110) + 40); _m = _m - (_m) mod 1; womenmoney = womenmoney +[_m]
+		;für prostitution:
+		? (local server): womencontrol = womencontrol + [0]
+		_c = random 3.5
+		womencourage = womencourage + [_c]
+
+		_z = women select _i
+
+		_z AddEventHandler [ "killed", { _this exec "zividead.sqs" } ]
+		_z setbehaviour "careless"
+		_z setcaptive true
+		
+		robwoman = _z addaction ["Rob this woman","womenrob.sqs"]
+		;beather = _z addaction ["Beat her up","womenbeat.sqs"]
+		takewoman = _z addaction ["make her follow","womenhostage.sqs"]
+
+		_i = _i + 1
+
+	? (_i < _count) : goto "womeninit"
+
+
+~1
+
+;------ Junkies ----------------------------
+
+	? (local server): junkieshunger = [];
+	_count = count junkies;
+	_i = 0;
+
+	#junkiesinit
+
+		? (local server): _hunger = (random 7)+3; _hunger = _hunger - (_hunger mod 1); junkieshunger = junkieshunger + [_hunger];
+		
+		_z = junkies select _i
+		
+		_z AddEventHandler [ "killed", { _this exec "zividead.sqs" } ]
+		_z setbehaviour "careless"
+		_z setcaptive true
+
+		removeallweapons _z
+		sellweed = _z addAction["Sell weed","weed_sell.sqs"];
+		sellnarcotics = _z addAction["Sell narcotics","ktwnarc_sell.sqs"];
+		
+		_i = _i + 1
+	
+	? (_i < _count) : goto "junkiesinit"
+
+
+~1
+
+;------- Shops ----------------------------
+
+	? (local server): shopcontrol = [];
+	_count = count Shopowners
+	_i = 0
+
+	#shopsinit
+
+		? (local server): Shopcontrol = Shopcontrol + [0]	
+		
+		_z = Shopowners select _i
+		
+		_z AddEventHandler [ "killed", { _this exec "zividead.sqs" } ]
+		_z setbehaviour "careless"
+		_z setcaptive true
+
+		intimidate = _z addaction ["Offer Protection","Shoprob.sqs"]
+		
+		_i = _i + 1
+
+	? (_i < _count) : goto "shopsinit"
+
+~1
+
+
+;------ KTWs ----------------------------
+
+	? (local server): ktwmedis = [];
+	_count = count ktws
+	_i = 0
+	ktwdrivers=[]
+
+	#KTWsinit
+
+		;medizin zum stehlen... "medicines" -> können in Bars zu "narcotics" gemacht werden.
+		? (local server): _m =((random 9) + 6); _m = _m - (_m) mod 1; ktwmedis = ktwmedis +[_m]
+
+		_ktw = (KTWs select _i)
+		_z = driver (KTWs select _i)
+		ktwdrivers=ktwdrivers+[_z]
+
+		_z AddEventHandler [ "killed", { _this exec "zividead.sqs" } ]
+		_z setbehaviour "careless"
+		_z setcaptive true
+		
+		
+		;takeman = _z addaction ["make him follow","Zivihostage.sqs"]
+		;stopambulance = _ktw addaction ["Stop Ambulance","ktwstop.sqs"]
+		robambulance = _ktw addaction ["Rob Ambulance","ktwrob.sqs"]
+		buymedi = _ktw addaction ["[buy medpack - 25$]","medpackbuy.sqs"]
+
+		_i = _i + 1
+
+	? (_i < _count) : goto "KTWsinit"
+
+
+~1
+
+;-------------------------------------------
+
+	
+
+
+? (local server): [] exec "NSC_checkloop.sqs"
+
+exit

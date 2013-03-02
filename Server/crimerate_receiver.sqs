@@ -1,0 +1,68 @@
+; CrimeRate Receiver
+; bekommt von PLayer/crimerate_sender.sqs die Crimarets geschickt und verwaltet diese
+
+; nur server
+? !(local server): exit; 
+
+
+	_cr_ge1 = 0;
+	_cr_ge2 = 0; 
+	_cr_ge3 = 0; 
+	_cr_ge4 = 0;
+	_cr_ge5 = 0;
+	_cr_ge6 = 0; 
+	_cr_gg1 = 0; 
+	_cr_gg2 = 0;
+	_cr_gg3 = 0;
+	_cr_gg4 = 0;
+	_cr_gg5 = 0; 
+	_cr_gg6 = 0;
+	
+	helisda = false;
+	gatesareopen = false;
+	; warten, bis alle werte mindestens 1x gefüllt sind
+	~60
+
+#loop
+
+	~30
+	
+	
+	; werte annehmen
+   ?(!(cr_ge1==-1)):  _cr_ge1 = cr_ge1; cr_ge1 = -1; 
+   ?(!(cr_ge2==-1)):  _cr_ge2 = cr_ge2; cr_ge2 = -1; 
+   ?(!(cr_ge3==-1)):  _cr_ge3 = cr_ge3; cr_ge3 = -1; 
+   ?(!(cr_ge4==-1)):  _cr_ge4 = cr_ge4; cr_ge4 = -1; 
+   ?(!(cr_ge5==-1)):  _cr_ge5 = cr_ge5; cr_ge5 = -1; 
+   ?(!(cr_ge6==-1)):  _cr_ge6 = cr_ge6; cr_ge6 = -1; 
+
+   ?(!(cr_gg1==-1)):  _cr_gg1 = cr_gg1; cr_gg1 = -1; 
+   ?(!(cr_gg2==-1)):  _cr_gg2 = cr_gg2; cr_gg2 = -1; 
+   ?(!(cr_gg3==-1)):  _cr_gg3 = cr_gg3; cr_gg3 = -1; 
+   ?(!(cr_gg4==-1)):  _cr_gg4 = cr_gg4; cr_gg4 = -1; 
+   ?(!(cr_gg5==-1)):  _cr_gg5 = cr_gg5; cr_gg5 = -1; 
+   ?(!(cr_gg6==-1)):  _cr_gg6 = cr_gg6; cr_gg6 = -1; 
+
+   
+   
+   recentcrimescore = _cr_ge1 + _cr_ge2 + _cr_ge3 + _cr_ge4 + _cr_ge5 + _cr_ge6 + _cr_gg1 + _cr_gg2 + _cr_gg3 + _cr_gg4 + _cr_gg5 + _cr_gg6;
+   
+   ; neuer Highscore??
+   ? (recentcrimescore > crimehighscore): crimehighscore = recentcrimescore; goto "checkcopstuff"
+   
+   #hopback
+   publicVariable "recentcrimescore"
+   publicVariable "crimehighscore"
+   
+
+
+goto "loop"
+
+
+
+#checkcopstuff
+
+	? (!helisda AND (crimehighscore/gcount >= chs_1)): polh1 setpos getpos hpadpet; polh1 setpos getpos hpadpet; polh1 setpos getpos hpadpet; polh2 setpos getpos hpadmod; polh3 setpos getpos hpadlip; polh1 setpos getpos hpadpet; helisda=true;
+	? (!gatesareopen AND (crimehighscore/gcount >= chs_3)): {_x animate ["Component03",1]} foreach polgaras; {_x animate ["Component04",1]} foreach polgaras; gatesareopen=true;
+
+goto "hopback"

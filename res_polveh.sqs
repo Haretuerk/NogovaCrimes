@@ -1,0 +1,67 @@
+;By Doolittle (modified...)
+
+? !(local server): exit
+
+_vlogic = []
+_count = count polveh
+_i = 0
+
+
+#load
+_v = polveh select _i
+
+? (_v == polh1): _vl= hpadpet; goto "load2"
+? (_v == polh2): _vl= hpadmod; goto "load2"
+? (_v == polh3): _vl= hpadlip; goto "load2"
+
+_vl = "Logic" createVehicle [0,0,0]
+_vl setpos getPos _v
+_vl setDir getDir _v
+
+#load2
+_vlogic = _vlogic + [_vl]
+_i = _i + 1
+?_i < _count : goto "load"
+
+
+#init
+_i = 0
+~30
+
+
+#alive
+_v = polveh select _i
+
+? alive _v : goto "continue"
+? !alive _v : goto "notalive"
+
+
+#continue
+_i = _i + 1
+?_i < _count : goto "alive"
+goto "init"
+
+
+#notalive
+_vtype = typeOf _v
+~1
+deleteVehicle _v
+~1
+_vl = _vlogic select _i
+_v = _vtype createVehicle getpos spawnpos
+_v setpos getPos _vl
+
+;? (_i==18): _v setpos getpos hpadpet
+;? (_i==19): _v setpos getpos hpadmod
+;? (_i==20): _v setpos getpos hpadlip
+
+_v lock true
+
+publicvariable "_v"
+
+_v setDir getDir _vl
+polveh set [_i, _v]
+
+;publicvariable "polveh"
+
+goto "continue"

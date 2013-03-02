@@ -1,0 +1,9 @@
+onMapSingleClick {}
+
+_pos = _this select 0
+
+{[_x,_pos,120,false,"Absprung im Zielgebiet!",getMarkerPos "phqsw"] exec "Fallschirm.sqs"} foreach units group player
+
+
+exit
+

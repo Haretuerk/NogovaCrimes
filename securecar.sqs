@@ -1,0 +1,65 @@
+? !(local player): exit
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+_cardealer = _this select 0
+_cardealer removeaction securecar
+
+_i = 0
+_count = count topcars
+  #whichT
+  _vv = topcars select _i
+  ? (_vv distance player < 5): goto "sellcar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichT"
+  goto "quit"
+
+
+#sellcar
+
+? !(alive _vv): goto "quit"
+
+; #checkcardamage... - abzug beim verkaufspreis
+
+
+_crew = crew _vv
+"(_x) call GetOut" foreach _crew
+~2
+
+_vv setpos getpos soldcars
+deletevehicle _vv
+
+_reward=c_pr_securecar
+dutypoints=dutypoints+c_dp_securecar;
+
+			? (dutypoints >= c_coprank_chief AND coprank<6): coprank=6;
+			? (dutypoints >= c_coprank_commander AND coprank<5): coprank=5;
+			? (dutypoints >= c_coprank_captian AND coprank<4): coprank=4;
+			? (dutypoints >= c_coprank_inspector AND coprank<3): coprank=3;
+			? (dutypoints >= c_coprank_sergeant AND coprank<2): coprank=2;
+			? (dutypoints >= c_coprank_detective AND coprank<1): coprank=1;
+
+? (coprank >=3): _reward=c_pr_securecar*1.2
+
+accountpolice = accountpolice + _reward;
+publicVariable "accountpolice"
+~2
+hint format ["Good job. \nCops earned %1$ for securing a stolen car!",_reward]
+	[player,1,1] exec "statistics_send.sqs"
+
+;später: bezahlung abhängig von vehicletype... type of _vv == bla...
+
+securecar = _cardealer addaction ["Secure Stolen Car","securecar.sqs"];
+
+exit
+
+#quit
+
+hint "no car close enough"
+securecar = _cardealer addaction ["Secure Stolen Car","securecar.sqs"];
+
+exit
+
+
+
+

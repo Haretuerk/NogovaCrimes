@@ -1,0 +1,62 @@
+; loop Bank auf dem Client!
+; by Haretuerk
+; wartet, bis die Bank ausgeraubt wurde. Wenn ja, gibt das Script eine Meldung aus und aktiviert die Sirene
+
+; nur aufm Client
+	? !(local player): exit
+ 
+#loop
+	    
+   
+    @bankwasrobbed
+
+    ?(bankpwasrobbed): goto "bankp"
+    ?(banklwasrobbed): goto "bankl"
+
+	hint "error with which bank... blub"
+
+
+
+
+	#bankp    
+    
+		glpet globalchat "The Bank in Petrovice has been robbed!";
+		
+		_i = 0
+		#fori
+			alarmanlageP say "alarm1" 
+			 
+			~3.1
+			_i = _i + 1
+		? (_i<10): goto "fori"
+
+		bankpwasrobbed = false;
+		publicVariable "bankpwasrobbed"
+			
+		@!bankwasrobbed
+
+
+	goto "loop"
+
+
+	#bankl    
+    
+		glpet globalchat "The Bank in Lipany has been robbed!"
+		
+		_j = 0
+		#forj
+			alarmanlageL say "alarm1"     
+			 
+			~3.1
+			_j = _j + 1
+		? (_j<10): goto "forj"
+
+		banklwasrobbed = false;
+		publicVariable "banklwasrobbed"
+		
+		@!bankwasrobbed
+
+
+	goto "loop"
+
+exit

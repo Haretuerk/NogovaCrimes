@@ -1,0 +1,92 @@
+? !(local server): exit
+
+#mainloop
+
+@ !(isNull taxicaller)
+
+	_taxispawnpos = getpos taxicaller
+
+	taxicaller = objNull
+  	publicvariable "taxicaller"
+
+
+; Abfrage ob taxis und Fahrer noch leben	
+_Talive = "Alive _x" Count taxis
+? (_Talive < 1): goto "taxisdead"
+_Dalive = "Alive _x" Count tdriver
+? (_Dalive < 1): goto "taxisdead"
+
+
+; Taxi auswählen
+_count = count taxis
+_i = 0
+
+
+#taxiselect
+  _taxi = taxis select _i
+  _taxidriver = tdriver select _i
+
+  ? (isNull _taxi): goto "skip"
+  ? !(alive _taxi) OR !(alive _taxidriver): goto "deltax"
+
+  _tused = taxiaktiv select _i
+
+  ? (_tused == 0): goto "thistaxi"
+
+  #skip
+  _i = _i + 1
+ 
+? (_i < _count) : goto "taxiselect"
+
+; Abfrage ob taxis und Fahrer noch leben	
+_Talive = "Alive _x" Count taxis
+? (_Talive < 1): goto "taxisdead"
+_Dalive = "Alive _x" Count tdriver
+? (_Dalive < 1): goto "taxisdead"
+
+hint "All taxis are on the way. Try again later..."; 
+
+goto "mainloop"
+	
+
+#thistaxi
+  taxiaktiv set [_i,1]
+
+  _taxi setdammage 0
+  _taxi setfuel 1
+  _taxidriver setdammage 0
+
+  _taxidriver MoveInDriver _taxi
+
+  hint format ["Taxi %1 on the way...\ntaxis=%2",_i,taxis]
+
+  _placehere = "HeliHEmpty" createvehicle _taxispawnpos
+~1
+  _taxi setpos getpos _placehere
+~1
+  deletevehicle _placehere
+
+  [_i] exec "taxiwait.sqs"
+
+  
+
+
+goto "mainloop"
+
+exit
+
+#taxisdead
+
+hint "stupid players killed all the taxis or drivers... \nHave a nice walk..."
+
+exit
+
+
+#deltax
+
+deletevehicle _taxi
+deletevehicle _taxidriver
+
+_i = _i + 1; 
+goto "taxiselect"
+

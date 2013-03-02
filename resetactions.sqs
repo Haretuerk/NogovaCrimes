@@ -1,0 +1,42 @@
+? !(local player): exit;
+
+player removeaction stats;
+player removeaction talkon;
+player removeaction cam_petro;
+player removeaction cam_lipany;
+player removeaction showpos;
+player removeaction giveup;
+player removeAction feign;
+player removeaction hideweapon;
+player removeaction openbuild;
+player removeaction sscore;
+player removeaction shscore;
+player removeaction callcab;
+player removeaction drop_money;
+player removeaction drop_weed;
+player removeaction callsquad;
+player removeaction camera;
+player removeaction usekit;
+player removeaction usefirstaid;
+player removeaction putcan;
+
+player RemoveAction atm;
+player RemoveAction rec1e;
+player RemoveAction rec2e;
+player RemoveAction cs_redskoda;
+player RemoveAction buyTokarev;
+player RemoveAction buyhgAmmo;
+player removeaction synthesize;
+player removeaction nolawyer;
+player removeaction getlawyer;
+
+player RemoveAction bbarrier;
+player RemoveAction rbarrier;
+
+[] exec "radio_off.sqs"
+
+player removeaction actionsoff;
+player removeaction actionson;
+actionson = player addaction [(localize "STR_ACTION_OPEN"),"actionson.sqs"];
+
+exit;

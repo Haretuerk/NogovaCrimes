@@ -1,0 +1,142 @@
+; by Dr.Pepper
+? !(local player): exit
+
+_price = 100
+
+? (crimeranking >=4): _price=50; glpet sidechat "Because of your reputation, you get this gun for 50$."
+
+
+_pWeap = primaryWeapon player
+? (_pWeap==""): hint "get a weapon first!"; exit
+
+;Geld vorhanden?
+	? (cash<_price): goto "pleite"
+
+	cash = cash - _price;
+	
+#return5
+
+hint format["You bought ammo for your %1",_pWeap]
+
+? (_pWeap=="m4"): goto "simple"
+? (_pWeap=="m16"): goto "simple"
+? (_pWeap=="ak47"): goto "simple"
+? (_pWeap=="ak74"): goto "simple"
+? (_pWeap=="hk"): goto "simple"
+? (_pWeap=="m60"): goto "simple"
+? (_pWeap=="SVDDragunov"): goto "simple"
+? (_pWeap=="pk"): goto "simple"
+? (_pWeap=="m21"): goto "simple"
+
+?(_pWeap=="KEGak103"): goto "buymags"
+?(_pWeap=="KEGak107"): goto "buymags"
+?(_pWeap=="Bizon"): goto "buymags"
+?(_pWeap=="G36A"): goto "buymags"
+?(_pWeap=="Steyr"):goto "buymags"
+?(_pWeap=="FAL"): goto "buymags"
+?(_pWeap=="HKG3"): goto "buymags"
+?(_pWeap=="UZI"): goto "buymags"
+?(_pWeap=="Drg_m870"): goto "buymags"
+?(_pWeap=="Drg_590"): goto "buymags"
+?(_pWeap=="DRG_Spas12"): goto "buymags"
+?(_pWeap=="HuntingRifle"): goto "buymags"
+?(_pWeap=="cmo_M82A1"): goto "buymags"
+
+?(_pWeap=="XMS"): _pmags="m4"; goto "buyspec"
+?(_pWeap=="AK74SU"): _pmags="ak74"; goto "buyspec"
+?(_pWeap=="AK47CZ"): _pmags="AK47"; goto "buyspec"
+?(_pWeap=="MM1"): _pmags="MM1Magazine "; goto "buyspec"
+?(_pWeap=="6G30"): _pmags="6G30Magazine"; goto "buyspec"
+?(_pWeap=="Drg_870"): _pmags="Drg_m870mag"; goto "buyspec"
+?(_pWeap=="Drg_590s"): _pmags="Drg_590mag"; goto "buyspec"
+?(_pWeap=="DRG_Spas12ext"): _pmags="DRG_Spas12mag"; goto "buyspec"
+?(_pWeap=="pep_tommy"): _pmags="pep_TommyDrumMag"; goto "buyspec"
+
+;?(_pWeap=="M16grenadelauncher"): _pmags="m16"; _pmags2="GrenadeLauncher"; goto "buyspec2"
+;?(_pWeap=="AK74GrenadeLauncher"): _pmags="ak74"; _pmags2="GrenadeLauncher"; goto "buyspec2"
+;?(_pWeap=="AK47GrenadeLauncher"): _pmags="AK47"; _pmags2="GrenadeLauncher"; goto "buyspec2"
+?(_pWeap=="Kozlice"): _pmags="KozliceShell"; _pmags2="Kozliceball"; goto "buyspec2"
+
+
+#buymags
+_pmags="x"
+_pmags=_pWeap+"mag"
+
+#buyspec
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+player addMagazine _pmags
+exit
+
+#buyspec2
+player addMagazine _pmags
+player addMagazine _pmags2
+player addMagazine _pmags
+player addMagazine _pmags2
+player addMagazine _pmags
+player addMagazine _pmags2
+player addMagazine _pmags
+player addMagazine _pmags2
+player addMagazine _pmags
+player addMagazine _pmags2
+exit
+
+
+#simple
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+player addMagazine _pWeap
+
+exit;
+
+
+#pleite
+
+? ((crimeranking >=5) AND (side player==east)): "goto checkaccM"
+? ((crimeranking >=5) AND (side player==west)): "goto checkaccB"
+
+	hint "You don't have enough money for that!";
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	
+	player groupchat "I pay from the teamaccount."
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	goto "return5"
+
+exit
+
+#checkaccB
+	?(accountbikers<_price): goto "wirklichpleite"
+
+	player groupchat "I pay from the teamaccount."
+	accountbikers = accountbikers - _price
+	publicvariable "accountbikers"	
+	goto "return5"
+
+exit
+
+
+
+
+#wirklichpleite
+
+hint "you cannot afford that."
+exit
+

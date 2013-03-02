@@ -1,0 +1,15 @@
+_saywhat = _this select 2;
+
+? (_saywhat == say_halt): player say ["alarm1",15]; player globalchat "HALT !"; exit
+? (_saywhat == say_halt): player say "say_halt"; player globalchat "HALT !"; exit
+? (_saywhat == say_getout): player say "say_getout"; player globalchat "Get OUT !"; exit
+? (_saywhat == say_holdyourfire): player say "say_holdyourfire"; player globalchat "HOLD YOUR FIRE !"; exit
+? (_saywhat == say_getdown): player say "say_getDown"; player globalchat "Get DOWN !"; exit
+? (_saywhat == say_underfire): player say "say_underfire"; player globalchat "UNDER FIRE !"; exit
+? (_saywhat == say_standup): player say "say_standup"; player globalchat "STAND UP !"; exit
+? (_saywhat == say_atease): player say "say_atease"; player globalchat "AT EASE !"; exit
+? (_saywhat == say_ivegothim): player say "say_ivegothim"; player globalchat "I'VE GOT HIM !"; exit
+
+
+
+exit

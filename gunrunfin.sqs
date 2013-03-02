@@ -1,0 +1,77 @@
+? !(local player): exit;
+
+? (side player==RESISTANCE): goto "cops"
+
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+
+? ((side player!=RESISTANCE) AND (crimeranking ==0)): hint "You're just a small fish. Go and swim elsewhere!"; exit
+
+? !gunrun: hint "Well, seems there is something wrong... you do not have a package"; exit
+
+gunrun=false;
+gunrunstarter= Objnull
+"_x removeaction gunruns" foreach gunshops;
+"_x removeaction gunrunf" foreach gunshops;
+
+   _gunshop = _this select 0
+   ? !(alive _gunshop): hint "You cannot deal with a dead man..."; {gunruns = _x addAction["Get a mission","gunrunstart.sqs"];} foreach units gunshops; _gunshop removeaction gunruns; exit
+
+
+   _gunshop switchmove "EffectStandTalk"; 
+
+   "gunrungoalm" setmarkertype "empty";
+   "gunrunstartm" setmarkertype "empty";
+
+   
+   _gstart = "HeliHEmpty" createVehicle getMarkerPos "gunrunstartm"
+   _r = _gunshop distance _gstart
+   deletevehicle _gstart
+   _reward = _r/2
+   _reward = _reward - (_reward mod 1)   
+
+   _gunshop globalchat format ["Well done. here is your reward: %1 $",_reward];
+
+   cash= cash+_reward
+
+   crimerate = crimerate + c_cr_gunrun;
+   
+   
+   	; Statistikeintrag
+		[player,21,1] exec "statistics_send.sqs"
+
+
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; goto "wait";
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached"; goto "wait";
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached"; goto "wait";
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached"; goto "wait";
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached"; goto "wait";
+
+
+
+
+#wait
+
+~300
+
+{gunruns = _x addAction["Get a mission","gunrunstart.sqs"];} foreach gunshops;
+   
+exit
+
+
+
+#cops
+
+_gunshop globalchat "Would you just mind your own business?"
+
+exit
+
+
+#pate
+	
+	crimeranking=6; 
+	mepate=true;
+	?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+	?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+goto "wait";

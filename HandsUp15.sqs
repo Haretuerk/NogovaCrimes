@@ -1,0 +1,11 @@
+#check
+@phu15
+gg4 setCaptive true
+gg4 switchmove"FXStandSur"
+Goto "check2"
+
+#check2
+@!phu15
+? (count weapons gg4 > 1): gg4 setCaptive false
+gg4 switchmove"Normal"
+Goto "check"

@@ -1,0 +1,33 @@
+? !(local player): exit;
+
+player removeaction vradioon; 
+
+? (vehicle player == player): exit
+
+player removeaction playAD;
+player removeaction playBW;
+player removeaction playdis;
+player removeaction playget;
+player removeaction playglor;
+player removeaction playhigh;
+player removeaction playkill;
+player removeaction playpaint;
+player removeaction playpara;
+player removeaction playprot;
+player removeaction playsweet;
+player removeaction playword;
+
+playAD = player addAction["After Dark","radio_play.sqs"];
+playBW = player addAction["Born 2 b Wild","radio_play.sqs"];
+playdis = player addAction["Disarm","radio_play.sqs"];
+playget = player addAction["Get it On","radio_play.sqs"];
+playglor = player addAction["Gloriuous","radio_play.sqs"];
+playhigh = player addAction["Highway 2 Hell","radio_play.sqs"];
+playkill = player addAction["Killing Moon","radio_play.sqs"];
+playpaint = player addAction["Painted on my Heart","radio_play.sqs"];
+playpara = player addAction["Paranoid","radio_play.sqs"];
+playprot = player addAction["Protection","radio_play.sqs"];
+playsweet = player addAction["Sweet Child","radio_play.sqs"];
+playword = player addAction["Word Up","radio_play.sqs"];
+
+exit

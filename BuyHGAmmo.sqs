@@ -1,0 +1,46 @@
+; by Dr.Pepper
+
+? !(local player): exit
+
+_price = 40
+
+? (crimeranking >=4): _price=0; glpet sidechat localize "STR_SELF_G_REPUTATION"
+
+;Geld vorhanden?
+	? (cash<_price): goto "pleite"
+
+_handgun =""
+
+? (player hasWeapon "Tokarev") : _handgun = "Tokarev"
+? (player hasWeapon "Beretta") : _handgun = "Beretta"
+? (player hasWeapon "CZ75") : _handgun = "CZ75"
+? (player hasWeapon "Glock") : _handgun = "Glock"
+? (player hasWeapon "GlockS") : _handgun = "GlockS"
+? (player hasWeapon "Ingram") : _handgun = "Ingram"
+? (player hasWeapon "Revolver") : _handgun = "Revolver"
+? (player hasWeapon "Skorpion") : _handgun = "Skorpion" 
+? (player hasWeapon "KEGmakarov") : _handgun = "KEGmakarov" 
+
+? (_handgun==""): hint "get a weapon first!"; exit
+
+
+
+	cash = cash - _price;
+	hint format[localize "STR_SELF_G_AMMO",_handgun]
+
+
+_hgmags="x"
+_hgmags=_handgun+"mag"
+
+player addMagazine _hgmags
+player addMagazine _hgmags
+player addMagazine _hgmags
+player addMagazine _hgmags
+
+exit
+
+
+
+#pleite
+	hint localize "str_money_notenough"
+exit

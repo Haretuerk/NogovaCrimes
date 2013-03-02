@@ -1,0 +1,68 @@
+; check4drugs
+; by haretuerk
+
+
+_actionid = _this select 2
+
+? (_actionid == drugcheckge1): _gangster = ge1;
+? (_actionid == drugcheckge2): _gangster = ge2;
+? (_actionid == drugcheckge3): _gangster = ge3;
+? (_actionid == drugcheckge4): _gangster = ge4;
+? (_actionid == drugcheckge5): _gangster = ge5;
+? (_actionid == drugcheckge6): _gangster = ge6;
+
+? (_actionid == drugcheckgg1): _gangster = gg1;
+? (_actionid == drugcheckgg2): _gangster = gg2;
+? (_actionid == drugcheckgg3): _gangster = gg3;
+? (_actionid == drugcheckgg4): _gangster = gg4;
+? (_actionid == drugcheckgg5): _gangster = gg5;
+? (_actionid == drugcheckgg6): _gangster = gg6;
+
+	ask4drugs = _gangster
+	publicVariable "ask4drugs"
+	
+	@ (ask4drugsanswer > -1) OR (ask4drugsanswerA > -1)
+	
+	_weedanzahl = ask4drugsanswer
+	ask4drugsanswer = -1;
+	publicVariable "ask4drugsanswer"
+
+	_ADanzahl = ask4drugsanswerA
+	ask4drugsanswerA = -1;
+	publicVariable "ask4drugsanswerA"
+	
+	? (_weedanzahl > 0) OR (_ADanzahl > 0) : goto "hasdrugs"																																			
+	hint format ["%1 has no drugs!",name _gangster]
+	
+	exit
+	
+	#hasdrugs
+
+
+	? (_weedanzahl == 1) AND (_ADanzahl < 1): hint format ["%1 has only one joint...\nleave him.",_ganster]; exit
+
+	? (_weedanzahl > 1) AND (_ADanzahl < 1): _drugsanzahl=_weedanzahl; goto "gotya"
+	? (_weedanzahl > 1) AND (_ADanzahl > 0): _drugsanzahl=_weedanzahl+_ADanzahl; goto "gotya"
+	? (_weedanzahl < 2) AND (_ADanzahl > 0): _drugsanzahl=_ADanzahl; goto "gotya"	
+
+
+	#gotya
+	_drugsreward=_drugsanzahl*c_pr_drugsonman
+	dutypoints=dutypoints+c_dp_weedpack;
+	
+			? (dutypoints >= 210 AND coprank<6): coprank=6;
+			? (dutypoints >= 150 AND coprank<5): coprank=5;
+			? (dutypoints >= 100 AND coprank<4): coprank=4;
+			? (dutypoints >= 60 AND coprank<3): coprank=3;
+			? (dutypoints >= 30 AND coprank<2): coprank=2;
+			? (dutypoints >= 10 AND coprank<1): coprank=1;
+			
+			? (coprank >=3): _reward=_drugsreward*1.2
+	
+	hint format ["%1 has %2 packages of weed and %3 doses of Angel Dust!\nWell done!\%4 $ for the cops!",name _gangster, _weedanzahl,_ADanzahl,_reward]
+	accountpolice = accountpolice + _reward ;
+	publicVariable "accountpolice";
+	[player,7,_weedanzahl+_ADanzahl] exec "statistics_send.sqs"
+
+	exit;
+

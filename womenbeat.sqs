@@ -1,0 +1,24 @@
+?(side player==RESISTANCE):goto "cops"
+
+_woman= _this select 0
+
+? !(alive _woman): hint "are you kind of necrophil?"; exit
+
+player switchmove "StandStrokeFist"	
+player switchmove "StandStrokeFistEnd"
+
+_woman setdammage getdammage _woman +0.2
+_woman globalchat "ouch !"
+
+crimerate = crimerate + c_cr_beatwoman;
+? !(alive _woman) : 	[getpos _woman,3] exec "crimescene_send.sqs"; [player] exec "crimecivkill.sqs";
+
+exit
+
+
+
+
+#cops
+	titlecut ["You are here to protect and to serve.","BLACK IN",5]
+
+exit

@@ -1,0 +1,86 @@
+; Razzia Script
+; by Haretuerk
+
+; übergabe-variable
+
+
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+? (side player != RESISTANCE): goto "gangster"
+
+	; erstmal rausfinden, welches Gebäude denn überhaupt am nächsten ist...
+		_barmafia = ObjNull;
+		_barbiker = ObjNull;
+		_casinomafia = ObjNull;
+		_casinobiker = ObjNull;
+		_barmafia = nearestObject [player, "nc_bar_red"];
+		_barbiker = nearestObject [player, "nc_bar_blue"];
+		_casinomafia = nearestObject [player, "nc_casino_red"];
+		_casinobiker = nearestObject [player, "nc_casino_blue"];
+
+	_nearest = _barmafia
+	? ((player distance _barbiker)<(player distance _nearest)): _nearest = _barbiker
+	? ((player distance _casinomafia)<(player distance _nearest)): _nearest = _casinomafia
+	? ((player distance _casinobiker)<(player distance _nearest)): _nearest = _casinobiker
+
+	; für die Statistik
+	_gebaeudeart = 15;
+	? (typeof _nearest == "nc_bar_red") OR (typeof _nearest == "nc_bar_blue"): 	_gebaeudeart = 14;
+
+
+	
+	do_the_razzia_here_obj = _nearest;
+
+; hint format["BM: %1\nBB: %2\nCM: %3\nCB: %4",_barmafia,_barbiker,_casinomafia, _casinobiker];
+
+
+;	commissioner globalchat format["Razzia-Versuch: %1",do_the_razzia_here_obj];
+	
+	; und senden
+	publicVariable "do_the_razzia_here_obj";
+	
+
+	; Antwort abwarten (es kommt ne 81 oder 82 zurück)
+	@ (do_the_razzia_here > 80)
+		? (do_the_razzia_here == 81): goto "erfolgreich";
+
+		#nichterfolgreich	
+			hint "Sorry, there was another razzia some minutes ago. Come back later!";
+		goto "finito";
+	
+		#erfolgreich
+			_reward=c_pr_razzia
+			dutypoints=dutypoints+c_dp_razzia;
+			
+			? (dutypoints >= c_coprank_chief AND coprank<6): coprank=6;
+			? (dutypoints >= c_coprank_commander AND coprank<5): coprank=5;
+			? (dutypoints >= c_coprank_captian AND coprank<4): coprank=4;
+			? (dutypoints >= c_coprank_inspector AND coprank<3): coprank=3;
+			? (dutypoints >= c_coprank_sergeant AND coprank<2): coprank=2;
+			? (dutypoints >= c_coprank_detective AND coprank<1): coprank=1;
+			
+			? (coprank >=3): _reward=c_pr_razzia*1.2
+		
+		
+			hint format["Success! You did a razzia. This building won't make money for 5 min. You get %1$.",_reward];;
+			accountpolice = accountpolice + _reward; 
+			publicVariable "accountpolice";
+			
+			[player,2,1] exec "statistics_send.sqs"
+		goto "finito";
+		
+		
+	#finito
+		do_the_razzia_here = -1;
+		publicVariable "do_the_razzia_here";		
+		
+			
+	
+exit;
+	
+	
+
+
+
+#gangster
+	hint "Only cops can do a razzia... You could itch your balls...";
+exit;

@@ -1,0 +1,76 @@
+? !(local player): exit
+
+? (side player == EAST): _boss = donpepper; _ownacc = accountmafia; _otheracc = accountbikers; 
+? (side player == WEST): _boss = dirtyhare; _ownacc = accountbikers; _otheracc = accountmafia;
+? (side player == RESISTANCE): exit
+
+_boss dowatch player;
+
+; checken: crimerate, crimeranking, accountpolice, accountbikers, accountmafia
+
+;zeit zwischen letztem gespräch & jetzt 
+
+? (time < 180): _boss switchmove "CommandForward"; _boss globalchat "WHAT NOW? Go and do something to be proud of!"; goto "quit"
+? (time-lasttalktime<=180): _boss globalchat "Do not annoy me! Come back later!"; goto "quit"
+lasttalktime=time
+
+? (time>=600 AND crimeranking<1): _boss setmimic "angry"; _boss addmagazine "revolvermag"; _boss addweapon "revolver"; _boss setbehaviour "aware"; _boss selectweapon "revolver"; _boss dofire player; _boss globalchat "You are so useless!"; goto "quit"
+
+? ((crimeranking>=2) AND (crimerate < c_crank_vulture)): _boss setmimic "Cynic"; _boss switchmove "FXStandAttVar1"; boss globalchat "Try not to spend to much time in jail, will you?"; goto "quit"
+
+? ((_ownacc > _otheracc) AND (_ownacc > accountpolice)): _boss setmimic "Smile"; _boss switchmove "EffectStandSaluteEnd"; _boss globalchat "Looks like you're doing a good job. Go on like this."; goto "quit"
+
+? ((_ownacc < _otheracc) AND (_otheracc > accountpolice)): _boss setmimic "Surprised"; _boss switchmove "FXStandBug"; _boss globalchat "Go and kill some of our rivals! NOW!"; goto "quit"
+
+? ((_ownacc < accountpolice) AND (_otheracc < accountpolice)): _boss setmimic "Surprised"; _boss switchmove "FXStandhip"; _boss globalchat "What kind of police state is this?"; goto "quit"
+
+
+
+#quit
+~5
+removeallweapons _boss;
+_boss setbehaviour "careless";
+_boss switchmove "Default";
+_boss setmimic "Default";
+
+
+exit
+
+
+
+
+EffectStandmove 			Steht Locker 
+
+EffectStandSalute          	Grüßt kurz
+EffectStandSaluteEnd       	Grüßt kurz
+
+EffectStandTalk            	Steht und Unterhält sich
+
+FXangel                    	Steht im Stillgestanden
+FXangel2           			Hält sich die Eier 
+FXStandAtt                 	Steht im Rührt Euch
+FXStandAttVar1		   		Steht rum und Labert
+
+FXStandBug		   			Steht Breitbeinig und Labert rum
+
+FXStandhip                 	Schaut umher
+
+StandStrokeFist				Schlägt zu
+StandStrokeFistEnd			Schlägt zu
+
+StandVar2
+
+
+
+mimics:
+    *  "Default"
+    * "Normal"
+    * "Smile"
+    * "Hurt"
+    * "Ironic"
+    * "Sad"
+    * "Cynic"
+    * "Surprised"
+    * "Agresive"
+    * "Angry" 
+

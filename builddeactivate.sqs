@@ -1,0 +1,20 @@
+? !(local player): exit
+
+player removeaction openbuild
+player removeaction closebuild
+openbuild = player addaction [localize "STR_ACTION_BUILDMENU","buildactivate.sqs"]
+
+player removeaction wbf
+player removeaction wbs
+player removeaction buildbar
+player removeaction buildbordell
+player removeaction buildcasino
+
+; HQ 
+; Outpost
+; casino
+; Bar
+; Bordell
+
+
+exit

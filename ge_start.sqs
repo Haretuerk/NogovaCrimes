@@ -1,0 +1,14 @@
+
+_man = _this select 0
+
+removeallweapons _man
+
+_man AddMagazine "strokefist"
+_man AddWeapon "strokefist"
+_man AddMagazine "strokefist"
+
+_man selectWeapon "strokefist"
+
+_man AddEventHandler ["killed",{_This exec "gangsterkilled.sqs"}]
+
+exit

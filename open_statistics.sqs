@@ -1,0 +1,123 @@
+; öffnet das Statistikfenster
+; by Haretuerk
+~0.1
+
+
+gangster_bezeichnungen = [localize "STR_STATS_ROBBERIES", localize "STR_STATS_STOLENCARS", localize "STR_STATS_SOLDCARS", localize "STR_STATS_WEEDFARMS", localize "STR_STATS_SOLDWEED", localize "STR_STATS_ROBBEDMEDICS", localize "STR_STATS_SYNTDRUGS", localize "STR_STATS_KIDNAP", localize "STR_STATS_BLACKMAILEDSHOPS", localize "STR_STATS_BANKROB", localize "STR_STATS_KILLEDCIVS", localize "STR_STATS_KILLEDGUARDS", localize "STR_STATS_KILLEDCOPS", localize "STR_STATS_BUILTSHEDS", localize "STR_STATS_BUILTBARS", localize "STR_STATS_BUILTCASINOS", localize "STR_STATS_BUILTBROTHELS", localize "STR_STATS_CAPTUREDBARS", localize "STR_STATS_CAPTUREDCASINOS", localize "STR_STATS_WITHDRAWNMONEY", localize "STR_STATS_DEPOSITEDMONEY", localize "STR_STATS_GUNRUNS", localize "STR_STATS_SECINJAIL", localize "STR_STATS_BUILDINGDESTROYED"  ]
+
+
+
+
+cops_bezeichnungen = [localize "STR_STATS_ARRESTMENTS", localize "STR_STATS_SEIZEDCARS", localize "STR_STATS_RAZZIAS", localize "STR_STATS_FREEDSHOPS", localize "STR_STATS_FREEDWOMEN", localize "STR_STATS_KILLEDGANGSTERS", localize "STR_STATS_BURNTWEED", localize "STR_STATS_SEIZEDDRUGS", localize "STR_STATS_WEAPONS", localize "STR_STATS_EXGUNRUNS"]
+
+
+
+statistics_bezeichnungen = [cops_bezeichnungen,gangster_bezeichnungen,gangster_bezeichnungen]
+
+stat_exit = false;
+_dlg = createDialog "StatsDialog"
+~0.5
+_arg_player = player;
+
+? (_arg_player == po1): _side = 0; _player = 0;
+? (_arg_player == po2): _side = 0; _player = 1;
+? (_arg_player == po3): _side = 0; _player = 2;
+? (_arg_player == po4): _side = 0; _player = 3;
+? (_arg_player == po5): _side = 0; _player = 4;
+? (_arg_player == po6): _side = 0; _player = 5;
+? (_arg_player == po7): _side = 0; _player = 6;
+? (_arg_player == po8): _side = 0; _player = 7;
+? (_arg_player == po9): _side = 0; _player = 8;
+
+? (_arg_player == ge1): _side = 1; _player = 0;
+? (_arg_player == ge2): _side = 1; _player = 1;
+? (_arg_player == ge3): _side = 1; _player = 2;
+? (_arg_player == ge4): _side = 1; _player = 3;
+? (_arg_player == ge5): _side = 1; _player = 4;
+? (_arg_player == ge6): _side = 1; _player = 5;
+
+? (_arg_player == gg1): _side = 2; _player = 0;
+? (_arg_player == gg2): _side = 2; _player = 1;
+? (_arg_player == gg3): _side = 2; _player = 2;
+? (_arg_player == gg4): _side = 2; _player = 3;
+? (_arg_player == gg5): _side = 2; _player = 4;
+? (_arg_player == gg6): _side = 2; _player = 5;
+
+;player sidechat format ["Side: %1, Player: %2",_side,_player];
+
+
+	; Combobox
+	
+	_idc = 604;
+	lbClear _idc
+	_max = [6,9] select (_side == 0)
+	_i = 0;
+	#nextj
+		? (alive (([cops,mafiosi,bikers] select _side) select _i)): lbAdd [_idc,format["%1 %2 - %3 (%4))",["Cop","Mafioso","Biker"] select _side,_i+1, name (([cops,mafiosi,bikers] select _side) select _i),_i]]
+		? (alive (([cops,mafiosi,bikers] select _side) select _i)): lbSetValue [_idc,_i,_i]
+		_i = _i + 1;	
+	? (_i <= _max): goto "nextj"
+	lbSetCurSel [_idc,0]
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+	? stat_exit: closeDialog 0;
+	
+	? (stat_exit AND finish_this_mission): finish_this_mission2 = true;
+	
+	_idc = 599;
+	ctrlSetText [_idc,(["Cops","Mafia","Bikers"] select _side)];
+	
+	_idc = 605;
+	ctrlSetText [_idc,(name player)];
+
+	_idc = IDC_STAT_PLAYERLISTE
+	_idc = 600;
+	lbClear _idc
+	_index = 0
+	_spacer = " "
+	
+	;player sidechat format ["Array: %1",(statistics_data select _side)select _player];
+	
+	{ _name = (statistics_bezeichnungen select _side) select _index; lbAdd[_idc, format["%1%2%3", _x , _spacer, _name]] ; _index = _index +1 } foreach ((statistics_data select _side) select _player)
+	
+	; ------- Team Liste
+
+
+	
+	team_gesamt = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	? (_side == 0) : team_gesamt = [0,0,0,0,0,0,0,0,0,0];
+	
+	_max = count team_gesamt
+	_i = 0;
+	#nexti
+			{ _item = _x select _i; team_gesamt set[_i,_item+(team_gesamt select _i)] } foreach (statistics_data select _side)			
+			
+			_i = _i + 1;	
+	? (_i < _max): goto "nexti"
+	
+	_idc = 601;
+	lbClear _idc
+	_index = 0
+	_spacer = " "
+	{ _name = (statistics_bezeichnungen select _side) select _index; lbAdd[_idc, format["%1%2%3", _x , _spacer, _name]] ; _index = _index +1 } foreach team_gesamt
+	
+	
+
+	
+
+	
+	; --------- Listbox Others
+	_playerSelected = lbValue [604,lbCurSel 604]  
+	_index = 0
+	_idc = 602;
+	lbClear _idc	
+
+		{ _name = (statistics_bezeichnungen select _side) select _index; lbAdd[_idc, format["%1%2%3", _x , _spacer, _name]] ; _index = _index +1 } foreach ((statistics_data select _side) select _playerSelected)
+	
+	
+
+	~1
+goto "Update"

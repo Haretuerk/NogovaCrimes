@@ -1,0 +1,31 @@
+? !(local player): exit
+
+crimehighscore = 10000;
+
+?((crimehighscore/gcount) < chs_1): hint "Crimehighscore is low.\nMore cops are not neccessary."; exit
+?((crimehighscore/gcount) < chs_2): hint "Crimehighscore is moderate.\nHeavy armed cops are not neccessary."; exit
+
+_listunits = units group player
+_B = count _listunits
+?_B >5: goto "full";
+
+_preis=c_price_coprec2
+? (coprank >= 4): _preis=_preis*0.75
+
+?(accountpolice<_preis): hint format ["you need %1 $",_preis]; exit
+
+hint format ["you paid %1 $",_preis]
+accountpolice = accountpolice - _preis;
+PublicVariable "accountpolice"
+
+
+?_B <6: "pep_dmx_riota" createUnit [getpos player,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},0.8,"CAPTAIN"]; 
+
+
+exit
+
+
+
+#full
+hint "You cannot have more than 5 men"
+exit

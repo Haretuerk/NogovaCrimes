@@ -1,0 +1,94 @@
+; Razzia Marker Receiver
+
+; Cops only
+		? (side player != RESISTANCE): exit;
+
+#loop
+	@(pvSetRazziaMarkerhereType != -1)
+		
+		_type = pvSetRazziaMarkerhereType; 
+		pvSetRazziaMarkerhereType = -1;
+		
+		_posx = pvSetRazziaMarkerhereX
+		_posy = pvSetRazziaMarkerhereY
+		
+	
+		;hint format["X: %1\nY: %2\nType: %3",_posx,_posy,_type];
+		
+		
+		? (_type == 11): goto "BarEast"
+		? (_type == 12): goto "CasinoEast"
+		? (_type == 13): goto "BrothelEast"		
+		? (_type == 21): goto "BarRes"	
+		? (_type == 22): goto "CasinoRes"
+		? (_type == 23): goto "BrothelEast"	
+		
+		; gibt keine Shed-Marker für Cops bisher...		
+		? (_type == 55): goto "SchuppenEast"
+		? (_type == 56): goto "SchuppenRes"
+	
+
+goto "loop"
+
+
+
+#BarEast
+
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0)
+		(format["mbar_marker_%1",(mbarpointer+1)]) setmarkerPos [_posX,_posY];
+		(format["mbar_marker_%1",(mbarpointer+1)]) setmarkertype "weststar1_Marker";
+goto "loop"
+
+
+
+#CasinoEast
+
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0)
+		(format["mcasino_marker_%1",(mcasinopointer+1)]) setmarkerPos [_posX,_posY];
+		(format["mcasino_marker_%1",(mcasinopointer+1)]) setmarkertype "weststar1_Marker";
+goto "loop"
+
+#BrothelEast
+	
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0)
+		(format["mbrothel_marker_%1",(mbrothelpointer+1)]) setmarkerPos [_posX,_posY];
+		(format["mbrothel_marker_%1",(mbrothelpointer+1)]) setmarkertype "weststar1_Marker";
+goto "loop"
+
+#SchuppenEast
+	
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0) jaja
+		(format["mshed_marker_%1",(mshedpointer)]) setmarkerPos [_posX,_posY];
+		(format["mshed_marker_%1",(mshedpointer)]) setmarkertype "weststar1_Marker";
+goto "loop"
+
+
+#BarRes
+	
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0)
+		(format["bbar_marker_%1",(bbarpointer+1)]) setmarkerPos [_posX,_posY];
+		(format["bbar_marker_%1",(bbarpointer+1)]) setmarkertype "weststar1_Marker";
+goto "loop"
+
+
+
+#CasinoRes
+		
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0)
+		(format["bcasino_marker_%1",(bcasinopointer+1)]) setmarkerPos [_posX,_posY];
+		(format["bcasino_marker_%1",(bcasinopointer+1)]) setmarkertype "weststar1_Marker";
+goto "loop"
+
+#BrothelRes
+		
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0)
+		(format["bbrothel_marker_%1",(bbrothelpointer+1)]) setmarkerPos [_posX,_posY];
+		(format["bbrothel_marker_%1",(bbrothelpointer+1)]) setmarkertype "weststar1_Marker";
+goto "loop"
+
+#SchuppenRes
+	
+		; Marker setzen  (achtung: markernamen fangen bei 1 an, nicht bei 0) jaja
+		(format["bshed_marker_%1",(bshedpointer)]) setmarkerPos [_posX,_posY];
+		(format["bshed_marker_%1",(bshedpointer)]) setmarkertype "weststar1_Marker";
+goto "loop"

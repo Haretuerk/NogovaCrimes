@@ -1,0 +1,36 @@
+? !(local player): exit;
+
+~5
+
+@(crimehighscore/gcount >= chs_1)
+TitleText [localize "STR_SELF_CRIMEHS1","plain"]
+{[_x] exec "ammobox.sqs"} foreach polboxes;
+playsound "gloriouseff1";
+
+~20
+
+@(crimehighscore/gcount >= chs_2)
+TitleText [localize "STR_SELF_CRIMEHS2","plain"]
+{[_x] exec "ammobox.sqs"} foreach polboxes;
+playsound "Sireneff";
+
+~20
+
+@(crimehighscore/gcount >= chs_3)
+TitleText [localize "STR_SELF_CRIMEHS3","plain"]
+{[_x] exec "ammobox.sqs"} foreach polboxes;
+playsound "mindfieldsineff";
+
+~20
+
+;@(crimehighscore/gcount >= chs_4)
+;TitleText [localize "STR_SELF_CRIMEHS4","plain"]
+; script, der von cops per actionmenu aktiviert wird... specop-police squad kommt per flugzeug & fallschirm zur spielerposition...
+
+~20
+
+;@(crimehighscore/gcount >= chs_5)
+;TitleText [localize "STR_SELF_CRIMEHS5","plain"]
+; T55 & MI24 für cops... + 1 bmp (AI) jeweils bei den banken
+
+exit

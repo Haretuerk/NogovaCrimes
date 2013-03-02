@@ -1,0 +1,415 @@
+#loop 
+
+~2
+
+;counter für 10 verschiedene Crimemarker !!!
+
+csm=csm+1
+PublicVariable "csm"
+
+?csm==1: _crimesceneM="crimesceneM_1"; goto "setcsm"
+?csm==2: _crimesceneM="crimesceneM_2"; goto "setcsm"
+?csm==3: _crimesceneM="crimesceneM_3"; goto "setcsm"
+?csm==4: _crimesceneM="crimesceneM_4"; goto "setcsm"
+?csm==5: _crimesceneM="crimesceneM_5"; goto "setcsm"
+?csm==6: _crimesceneM="crimesceneM_6"; goto "setcsm"
+?csm==7: _crimesceneM="crimesceneM_7"; goto "setcsm"
+?csm==8: _crimesceneM="crimesceneM_8"; goto "setcsm"
+?csm==9: _crimesceneM="crimesceneM_9"; goto "setcsm"
+?csm==10: _crimesceneM="crimesceneM_10"; csm=0; PublicVariable "csm"; goto "setcsm"
+
+
+
+;überprüfen welcher crimetyp in frage kommt & daraufhin den markertyp wählen...
+
+
+#setcsm
+
+?crimemodra: goto "modra";
+?crimemok: goto "mok";
+?crimedol: goto "dol";
+?crimetros: goto "tros";
+?crimemir: goto "mir";
+?crimeop: goto "op";
+?crimevart: goto "vart";
+?crimelouk: goto "louk";
+?crimebla: goto "bla";
+?crimeair: goto "air";
+?crimepet: goto "Pet";
+?crimemall: goto "mall";
+?crimefry: goto "fry";
+?crimeko: goto "ko";
+?crimeps: goto "ps";
+?crimevel: goto "vel";
+?crimebit: goto "bit";
+?crimelan: goto "lan";
+?crimevid: goto "vid";
+?crimenev: goto "nev";
+?crimedav: goto "dav";
+?crimebor: goto "bor";
+?crimelip: goto "lip";
+?crimeokr: goto "okr";
+?crimest: goto "st";
+?crimepep: goto "pep";
+?crimeland: goto "land";
+
+
+
+goto "loop"
+
+
+exit
+
+
+#modra
+  _crimesceneM setMarkerPos [(getpos GLmodra select 0),(getpos GLmodra select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Modrava (B2) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimemodra=false
+  PublicVariable "crimemodra"
+
+  ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#mok
+  _crimesceneM setMarkerPos [(getpos GLmok select 0),(getpos GLmok select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Mokropsy (E2) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimemok=false
+  PublicVariable "crimemok"
+
+  ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#dol
+  _crimesceneM setMarkerPos [(getpos GLdol select 0),(getpos GLdol select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Dolina (E3) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimedol=false
+  PublicVariable "crimedol"
+
+  ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#tros
+  _crimesceneM setMarkerPos [(getpos GLtros select 0),(getpos GLtros select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Trosky (G2) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimetros=false
+  PublicVariable "crimetros"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#mir
+  _crimesceneM setMarkerPos [(getpos GLmir select 0),(getpos GLmir select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Mirov (D4) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimemir=false
+  PublicVariable "crimemir"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#op
+  _crimesceneM setMarkerPos [(getpos GLop select 0),(getpos GLop select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Opatov (F4) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimeop=false
+  PublicVariable "crimeop"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#vart
+  _crimesceneM setMarkerPos [(getpos GLvart select 0),(getpos GLvart select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Varta (H3) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimevart=false
+  PublicVariable "crimevart"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#louk
+  _crimesceneM setMarkerPos [(getpos GLlouk select 0),(getpos GLlouk select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Loukov (I3-4) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimelouk=false
+  PublicVariable "crimelouk"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#bla
+  _crimesceneM setMarkerPos [(getpos GLbla select 0),(getpos GLbla select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Blata (H4) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimebla=false
+  PublicVariable "crimebla"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#air
+  _crimesceneM setMarkerPos [(getpos GLair select 0),(getpos GLair select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected at the Airport (B5-6) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimeair=false
+  PublicVariable "crimeair"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#pet
+  _crimesceneM setMarkerPos [(getpos GLPet select 0),(getpos GLPet select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Petrovice (D6) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimepet=false
+  PublicVariable "crimepet"
+
+  ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#mall
+  _crimesceneM setMarkerPos [(getpos GLmall select 0),(getpos GLmall select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected near the Mall (D6) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimemall=false
+  PublicVariable "crimemall"
+
+  ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#fry
+  _crimesceneM setMarkerPos [(getpos GLfry select 0),(getpos GLfry select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Frymburk (E5) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimefry=false
+  PublicVariable "crimefry"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#ko
+	
+  _crimesceneM setMarkerPos [(getpos GLko select 0),(getpos GLko select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Kost (E5) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimeko=false
+  PublicVariable "crimeko"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#ps
+   _crimesceneM setMarkerPos [(getpos GLps select 0),(getpos GLps select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected near Paseki & Skalice (F5) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimeps=false
+  PublicVariable "crimeps"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#vel
+  _crimesceneM setMarkerPos [(getpos GLvel select 0),(getpos GLvel select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Velka Ves (H5) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimevel=false
+  PublicVariable "crimevel"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#bit
+  _crimesceneM setMarkerPos [(getpos GLbit select 0),(getpos GLbit select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Bitov (I5) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimebit=false
+  PublicVariable "crimebit"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#lan
+  _crimesceneM setMarkerPos [(getpos GLlan select 0),(getpos GLlan select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Lany (I6) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimelan=false
+  PublicVariable "crimelan"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#vid
+  _crimesceneM setMarkerPos [(getpos GLvid select 0),(getpos GLvid select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Vidlakov (D7) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimevid=false
+  PublicVariable "crimevid"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#nev
+  _crimesceneM setMarkerPos [(getpos GLnev select 0),(getpos GLnev select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Neveklov (F6) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimenev=false
+  PublicVariable "crimenev"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#dav
+  _crimesceneM setMarkerPos [(getpos GLdav select 0),(getpos GLdav select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Davle (G6) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimedav=false
+  PublicVariable "crimedav"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#bor
+    _crimesceneM setMarkerPos [(getpos GLbor select 0),(getpos GLbor select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Bor (H7) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimebor=false
+  PublicVariable "crimebor"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#lip
+  _crimesceneM setMarkerPos [(getpos GLlip select 0),(getpos GLlip select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Lipany (I7) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimelip=false
+  PublicVariable "crimelip"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#okr
+    _crimesceneM setMarkerPos [(getpos GLokr select 0),(getpos GLokr select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Okroullo (I8) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimeokr=false
+  PublicVariable "crimeokr"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#st
+    _crimesceneM setMarkerPos [(getpos GLst select 0),(getpos GLst select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in sta (H3) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimest=false
+  PublicVariable "crimest"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+#pep
+    _crimesceneM setMarkerPos [(getpos GLpep select 0),(getpos GLpep select 1)]
+  _crimesceneM setMarkertype "flag"
+  titletext ["Crime detected in Pepperov (E4) !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimepep=false
+  PublicVariable "crimepep"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+
+
+#land
+
+  titletext ["Crime detected in somewhere on the land !","plain down"]
+  [_crimesceneM] exec "crimetime.sqs"
+  ~5
+  crimeland=false
+  PublicVariable "crimeland"
+ 
+ ; später mit array & counter welcher marker gerade aktiv ist...
+goto "loop"
+
+

@@ -1,0 +1,47 @@
+? !(local player): exit
+
+? !(vehicle player == player): hint "get out of the vehicle first!"; exit
+
+; basiert auf dem Pionier-Script V1.1 von [KIC]Assassinator
+; modifiziert von Haretuerk und Dr.Pepper
+
+
+;noch Barieren vorhanden?
+? (barriers<1): hint "No more barriers available"; exit
+
+
+_posX = GetPos player select 0
+_posY = GetPos player select 1
+_posz = getpos player select 2
+
+_dir = GetDir player
+;hint format ["dir=%1",_dir];
+
+;Positionen der 3 Absperrungen errechnen, abhängig von Blickwinkel
+_sina = sin(_dir)
+_cosa = cos(_dir)
+
+_verschiebx = 2 * _sina
+_verschieby = 2 * _cosa
+
+
+
+#Aufbau
+
+;Absperrungen werden gesetzt
+
+_fence = "wire" createVehicle [0,0,0]
+_fence SetDir _dir
+_fence setpos [(_posX + _verschiebx),(_posY + _verschieby),(_posz)]
+
+"_x reveal _fence" foreach ctdrivers
+"_x reveal _fence" foreach ktwdrivers
+"_x reveal _fence" foreach tdriver 
+drugdealer reveal _fence
+
+;abziehen
+barriers=barriers-1
+publicvariable "barriers"
+
+
+exit

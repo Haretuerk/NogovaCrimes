@@ -1,0 +1,86 @@
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+_zivi = _this select 0
+_count = count women
+_i = 0
+
+? !(alive _zivi): "Wanna carry around a dead body?"; exit
+
+#whoisit
+? (_zivi == women select _i): goto "hostman"
+_i = _i + 1
+
+? (_i > _count): hint "error with array"; exit
+
+goto "whoisit"
+
+#hostman
+
+? ((side player!=RESISTANCE)AND(crimeranking <1)): hint "You do not have a very frightening reputation... Leave me alone!"; exit
+
+? (((womencontrol select _i)==1) AND (side player==east)): hint "no need for this"; exit
+? (((womencontrol select _i)==2) AND (side player==west)): hint "no need for this"; exit
+
+_zivi stop false
+_zivi setbehaviour "aware";
+[_zivi] join player
+
+_zivi setcaptive true
+
+_zivi removeaction takewoman 
+_zivi removeaction freehostess 
+freehostess = _zivi addaction ["Let woman go","womenfree.sqs"]
+_zivi removeaction robwoman
+
+
+?(side player==RESISTANCE):goto "cops"
+
+
+	[getpos _zivi,4] exec "crimescene_send.sqs"
+	[player,7,1] exec "statistics_send.sqs"
+	
+_zivi sidechat "Don't hurt me, please. I will follow."
+; playerscore ändern
+crimerate=crimerate+c_cr_womanhostage
+
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; exit;
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";exit;
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";exit;
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";exit;
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";exit;
+
+exit
+
+
+
+
+
+#cops
+
+_zivi sidechat "Yes, Officer. I will follow."
+
+exit
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;

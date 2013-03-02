@@ -1,0 +1,54 @@
+; Geld  abheben
+; by Haretuerk
+
+_amount = 1000;
+
+;?bankwasrobbed : goto "ausgeraubt"
+
+? side player == east : goto "mafia" 
+? side player == RESISTANCE : goto "cops" 
+? side player == west : goto "biker" 
+
+
+
+cash = cash+_amount;
+
+
+
+
+#mafia
+	? accountmafia < _amount : goto "pleite";
+	accountmafia = accountmafia - _amount;
+	publicVariable "accountmafia";
+	hint format ["You withdraw %1 $ from your team account!",_amount];
+	cash = cash+_amount;
+	goto "end";
+
+#cops
+	;? accountpolice < _amount : goto "pleite";
+	;accountpolice = accountpolice - _amount;
+	;publicVariable "accountpolice";
+	;hint format ["You withdraw %1 $ from your team account!",_amount];
+	;cash = cash+_amount;
+	hint "Cops can always pay with the 'Nogova-Police Credit Card'.\nSo, you do not need cash.\nHave a nice day."
+	goto "end";
+	
+#biker
+	? accountbikers < _amount : goto "pleite";
+	accountbikers = accountbikers - _amount;
+	publicVariable "accountbikers";
+	hint format ["You withdraw %1 $ from your team account!",_amount];
+	cash = cash+_amount;
+	goto "end";
+
+#pleite
+	hint "Where is all our money gone?";
+	exit;
+	
+#ausgeraubt
+	hint "The bank was robbed some minutes ago. The system was shut down. Come back later!"
+	exit
+	
+
+#end
+exit

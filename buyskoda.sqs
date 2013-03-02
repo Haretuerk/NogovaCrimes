@@ -1,0 +1,78 @@
+
+	_pricebike = c_price_bike;
+	_priceskoda = c_price_skoda ;
+	_pricetrabant = c_price_trabant;
+	_pricerapid = c_price_rapid;
+
+? (crimeranking >=4): _priceskoda=250; glpet sidechat "Because of your reputation, you get this car for 250$."
+
+? (side player == east): goto "redskoda"
+? (side player == west): goto "blueskoda"
+
+
+hint "error with side"
+exit
+
+#redskoda
+	?(cash<_priceskoda):goto "pleite"
+
+	cash = cash - _priceskoda;
+
+	#returnM
+
+	_car = "pepskodar" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+		
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#blueskoda
+	?(cash<_priceskoda):goto "pleite"
+
+	cash = cash - _priceskoda;
+
+	#returnB
+	_car = "pepskodab" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	
+	hint "Your new vehicle is waiting outsides";
+
+exit;
+
+
+#pleite
+
+? ((crimeranking >=5) AND (side player==east)): "goto checkaccM"
+? ((crimeranking >=5) AND (side player==west)): "goto checkaccB"
+
+		hint localize "str_money_notenough"
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	
+	player groupchat "I pay from the teamaccount."
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	goto "returnM"
+
+exit
+
+#checkaccB
+	?(accountbikers<_price): goto "wirklichpleite"
+
+	player groupchat "I pay from the teamaccount."
+	accountbikers = accountbikers - _price
+	publicvariable "accountbikers"	
+	goto "returnB"
+
+exit
+
+
+
+
+#wirklichpleite
+
+	hint localize "str_money_notenough"
+
+exit

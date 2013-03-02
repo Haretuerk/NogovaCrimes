@@ -1,0 +1,28 @@
+;  CrimeRate-Sender
+; sendet alle 30 sek. die Crimerates an den Server/crimerate_receiver.sqs
+
+? !(local player): exit; 
+? (side player == RESISTANCE):exit; 
+
+#loop
+
+	~30
+	
+	? (player == ge1): cr_ge1 = crimerate; publicVariable "cr_ge1";
+	? (player == ge2): cr_ge2 = crimerate; publicVariable "cr_ge2";
+	? (player == ge3): cr_ge3 = crimerate; publicVariable "cr_ge3";
+	? (player == ge4): cr_ge4 = crimerate; publicVariable "cr_ge4";
+	? (player == ge5): cr_ge5 = crimerate; publicVariable "cr_ge5";
+	? (player == ge6): cr_ge6 = crimerate; publicVariable "cr_ge6";
+	
+	? (player == gg1): cr_gg1 = crimerate; publicVariable "cr_gg1";
+	? (player == gg2): cr_gg2 = crimerate; publicVariable "cr_gg2";
+	? (player == gg3): cr_gg3 = crimerate; publicVariable "cr_gg3";
+	? (player == gg4): cr_gg4 = crimerate; publicVariable "cr_gg4";
+	? (player == gg5): cr_gg5 = crimerate; publicVariable "cr_gg5";
+	? (player == gg6): cr_gg6 = crimerate; publicVariable "cr_gg6";
+
+
+
+goto "loop"
+

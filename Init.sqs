@@ -1,0 +1,682 @@
+introready=0; 
+publicvariable "introready" 
+
+[] exec "ncintro1.sqs"
+
+? (param2 ==1): winninglimit = 10000; timelimit = false;
+? (param2 ==2): winninglimit = 25000; timelimit = false;
+? (param2 ==3): winninglimit = 50000; timelimit = false;
+? (param2 ==4): winninglimit = 75000; timelimit = false;
+? (param2 ==5): winninglimit = 100000; timelimit = false;
+
+? (param2 ==6): winninglimit = 30 * 60; timelimit = true;
+? (param2 ==7): winninglimit = 45 * 60; timelimit = true;
+? (param2 ==8): winninglimit = 60 * 60; timelimit = true;
+? (param2 ==9): winninglimit = 90 * 60; timelimit = true;
+? (param2 ==10): winninglimit = 100 *60; timelimit = true;
+
+
+[] exec "Server\timeleft.sqs"
+
+
+SetViewDistance 1100
+
+
+;----------- Dr. Peppers random Weather: --------------------------------------------
+
+pcast=0.5
+publicvariable "pcast"
+wchange=false
+publicvariable "wchange"
+
+;viewdistances:
+pepviewfar=1250
+pepviewgood=1100
+pepviewmed=950
+pepviewlow=800
+
+[] exec "Player\pepperweatherc.sqs"
+[] exec "Server\pepperweathers.sqs"
+
+
+~1
+
+
+;------ Playunits & Teamcounts ---------------------------
+
+cops=[po1,po2,po3,po4,po5,po6,po7,po8,po9];
+mafiosi=[ge1,ge2,ge3,ge4,ge5,ge6];
+bikers=[gg1,gg2,gg3,gg4,gg5,gg6];
+
+~1
+
+bikercount=("Alive _x" Count bikers)
+mafiacount=("Alive _x" Count mafiosi)
+
+gcount = (mafiacount + bikercount)
+? (gcount==0): gcount=1;
+
+; und für Gangwars der Copcount
+copcount = ("Alive _x" Count cops)
+
+{[_x] exec "gg_start.sqs"} foreach bikers
+{[_x] exec "ge_start.sqs"} foreach mafiosi
+
+
+? !(alive ge1): ge1 = objNull;
+? !(alive ge2): ge2 = objNull;
+? !(alive ge3): ge3 = objNull;
+? !(alive ge4): ge4 = objNull;
+? !(alive ge5): ge5 = objNull;
+? !(alive ge6): ge6 = objNull;
+? !(alive gg1): gg1 = objNull;
+? !(alive gg2): gg2 = objNull;
+? !(alive gg3): gg3 = objNull;
+? !(alive gg4): gg4 = objNull;
+? !(alive gg5): gg5 = objNull;
+? !(alive gg6): gg6 = objNull;
+
+? !(alive po1): po1 = objNull;
+? !(alive po2): po2 = objNull;
+? !(alive po3): po3 = objNull;
+? !(alive po4): po4 = objNull;
+? !(alive po5): po5 = objNull;
+? !(alive po6): po6 = objNull;
+? !(alive po7): po7 = objNull;
+? !(alive po8): po8 = objNull;
+? !(alive po9): po9 = objNull;
+
+
+playunits=["po1","po2","po3","po4","po5","po6","po7","po8","po9","ge1","ge2","ge3","ge4","ge5","ge6","gg1","gg2","gg3","gg4","gg5","gg6"];
+
+{[_x,0] exec "weapons_respawn.xsqs"} foreach playunits
+
+~2
+
+;----------------- Konstanten setzen (Haretuerk) ----------
+	[] exec "constants.sqs"
+;----------------------------------------------------------
+
+;----------------- weilwirsodoofsind (Haretuerk) ----------
+	nullObj = ObjNull; 
+;----------------------------------------------------------
+
+
+;---------------- nützliche Funktionen --------------------
+  aliveGroup = preprocessFile "aliveGroup.sqf"
+  GetOut = preprocessFile "getout.sqf"
+  CutOutOfArray = preprocessFile "CutOutOfArray.sqf"
+  CutInArray = preprocessFile "CutInArray.sqf"
+  ASLHeight = preprocessFile "aslheight.sqf"
+
+;----------------- Messaging System -------------
+   [] exec "Player\message_provider.sqs"
+
+;---------------------------
+
+lasttalktime=0;
+vradio = 0;
+
+;----------------- CrimeRate & Ranks INIT -------------
+
+	mecopkiller=false
+	mepate=false
+	mafiapaten=0
+	bikerpaten=0
+	
+	;pro Gangster jeweils aktuell:
+	crimerate = 0;
+		
+	;pro Gangster, rang der jeweils durch cr aktiviert wird:
+	crimeranking = 0;
+	ranks =["No one knows your name.", "You're just a little fish.", "You're a mad dog.", "You're one to keep an eye on...","You're Gang Chief.", "You really made a name for yourself!", "Most people like to call you 'DON'... the others are dead."];
+
+	
+	;eine globale var für alle seit spielbeginn begangenen Verbrechen... wohl eher ein Wert für die Statistik...
+	crimeratetotal =0;
+	; evtl auch einen Crimetotal pro Gangsterteam merken... MCrT & BCrT
+	
+	;var, die sich aus den CRs aller Gangster addiert. Von ihr hängt ab, was den Cops freigeschaltet wird
+	;hmm je nach Anzahl der Gangster sollte dies noch variieren!
+	crimehighscore = 0;
+	
+	;der aktuelle Crimescore
+	recentcrimescore = 0;
+
+	checkcrimerate = objNull;
+	checkcrimerate_answer = -1;
+	[] exec "checkcrimerate_answer.sqs";
+	gangsterinjail = objNull;
+	[] exec "gangsterinjail_loop.sqs";
+	
+	;vars für die Übergabe der persönlichen Crimerates der Gangster:
+	cr_ge1=-1; 
+	cr_ge2=-1;
+	cr_ge3=-1;
+	cr_ge4=-1;
+	cr_ge5=-1;
+	cr_ge6=-1;
+	cr_gg1=-1;
+	cr_gg2=-1;
+	cr_gg3=-1;
+	cr_gg4=-1;
+	cr_gg5=-1;
+	cr_gg6=-1;
+	
+	[] exec "Server\crimerate_receiver.sqs"
+	[] exec "Player\crimerate_sender.sqs"
+	[] exec "Player\crimehscheck.sqs"
+		
+;----------------------------------------------------------
+
+{[_x] exec "ammobox.sqs"} foreach polboxes
+
+;----------------- CASH INIT (Haretuerk) ------------------
+
+	;serverkram: 
+	[] exec "cash_init.sqs"
+	
+	;lokaler kram:
+	[] exec "cash_shownewpaycheck.sqs";
+
+;----------------- Anwalt? ----------------------------------------
+
+bikerlawyer=false;
+mafialawyer=false;
+
+;----------------- Bank INIT (Haretuerk) ------------------
+~0.5
+	bankwasrobbed = false;
+	publicVariable "bankwasrobbed"
+	bankpwasrobbed = false;
+	publicVariable "bankpwasrobbed"
+	banklwasrobbed = false;
+	publicVariable "banklwasrobbed"
+	geldistwegP = false;
+	publicVariable "geldistwegP"
+	geldistwegL = false;
+	publicVariable "geldistwegL"
+	[] exec "bank_loop.sqs"
+	[] exec "bank_cloop.sqs"
+	newguard=objnull
+	; Server generiert neuen Türcode und verschickt ihn
+	? (local server): _random = random(9000)+1000;	wantedcode = (_random) - (_random mod 1);	publicVariable "wantedcode";
+~0.5
+
+;----------------------------------------------------------
+
+
+;----------------- Weed INIT (Haretuerk) ------------------
+
+	; create empty weed array
+	weedfields = []
+	newweedx = -1;
+	newweedy = -1;
+	newweedz = -1;
+	[] exec "weed_loop.sqs"
+	weedpackages = 0;
+	ask4drugs = objNull;
+	ask4drugsanswer = -1;
+	ask4drugsanswerA = -1;
+	harvestthisfield = objNull;
+	[] exec "check4drugs_answer.sqs";
+	[] exec "weed_harvest2.sqs"
+
+;------------------ Medis & narcotics -----------------
+
+	[] exec "ktwrequester.sqs"
+	ktwanswer = -1;
+	ktwrequest = objNull;
+	publicVariable "ktwanswer"
+	publicVariable "ktwrequest"
+	medicines = 0;
+	narcotics = 0;
+~0.5
+;----------------- Mission End Kram (HT) ------------------
+
+	[] exec "finisher.sqs";
+	[] exec "gameover.sqs";
+	[] exec "countdown.sqs"
+;----------------------------------------------------------
+
+;----------------- Statistics (HT) ------------------
+
+	pvStatistics = -1;
+	mutexScore = false;
+	statistics_data = [];
+	[] exec "statistics_receive.sqs";
+
+
+;----------------------------------------------------------
+
+;----------------- Forced out of car (HT) ------------------
+
+
+	pv_forcedout = objNull;
+	[] exec "forcedout_loop.sqs";
+	
+
+;----------------------------------------------------------
+
+;----------------- Weaponsremove (HT) ------------------
+
+
+	removethisweapon = objNull;
+	[] exec "removeweapons_clients.sqs";
+	
+~0.5
+;----------------------------------------------------------
+
+;--------- Casino und Barzähler auf null (HT) + Bordellzähler  ------------
+	casinocountmafia = 0;
+	casinocountbiker = 0;
+	barcountmafia = 0;
+	barcountbiker = 0;
+	;die kommen alle weg, da über Arrays gezählt wird. (wie bei den Shops), ausserdem sind die Pointer die Indikatoren
+	
+	
+	; build jetzt auch über Übergabevariable
+	newbuilding = -1;
+	newbuilding_obj; 
+	[] exec "Server\build_manager.sqs";
+	
+	pvSetBuildMarkerhereType = -1
+	pvSetBuildMarkerhereX = -1;
+	pvSetBuildMarkerhereY = -1;
+	[] exec "Player\Build_Marker_Receiver.sqs"
+	
+	; einkommen der bars und casinos (temporäre Variablen)
+	mafia_income_bars = 0;
+	bikers_income_bars = 0;	
+	mafia_income_casinos = 0;
+	bikers_income_casinos = 0;	
+		
+	mcasinopointer = 0;
+	mbarpointer = 0;
+	bcasinopointer = 0;
+	bbarpointer = 0;
+	mbordellpointer = 0;
+	bbordellpointer = 0;
+	mshedpointer = 0;
+	bshedpointer = 0;
+	
+	mbar_status = [0,0,0,0,0];
+	bbar_status = [0,0,0,0,0];
+	mcasino_status = [0,0,0,0,0];
+	bcasino_status = [0,0,0,0,0];
+	
+	mbars = [];
+	bbars = [];
+	mcasinos = [];
+	bcasinos = [];
+	
+	do_the_razzia_here = -1;
+	do_the_razzia_here_obj = ObjNull;
+	[] exec "Server\razzia_requester.sqs";
+	[] exec "Server\razzia_check.sqs";
+
+	pvSetRazziaMarkerhereType = -1
+	pvSetRazziaMarkerhereX = -1;
+	pvSetRazziaMarkerhereY = -1;
+	[] exec "Player\Razzia_Marker_Receiver.sqs"
+	
+	
+	pV_do_the_capture_here = -1;
+	pV_do_the_capture_here_obj = ObjNull;
+	[] exec "Server\capture_manager.sqs";	
+	
+	
+	; Destroykram 
+	destroyedbuilding = objNull;
+	[] exec "Server\destroy_manager.sqs";
+
+;----------------------------------------------------------
+
+;--------- Feign, Handsup etc. Init (Haretuerk)------------
+; copied from CrimeCity 1.1 -> ORGIE!
+
+[] exec "Feign1.sqs"
+[] exec "Feign2.sqs"
+[] exec "Feign3.sqs"
+[] exec "Feign4.sqs"
+[] exec "Feign5.sqs"
+[] exec "Feign6.sqs"
+[] exec "Feign7.sqs"
+[] exec "Feign8.sqs"
+[] exec "Feign9.sqs"
+[] exec "Feign10.sqs"
+[] exec "Feign11.sqs"
+[] exec "Feign12.sqs"
+[] exec "Feign13.sqs"
+[] exec "Feign14.sqs"
+[] exec "Feign15.sqs"
+[] exec "Feign16.sqs"
+[] exec "Feign17.sqs"
+[] exec "Feign18.sqs"
+[] exec "Feign19.sqs"
+[] exec "Feign20.sqs"
+[] exec "Feign21.sqs"
+
+[] exec "HandsUp1.sqs"
+[] exec "HandsUp2.sqs"
+[] exec "HandsUp3.sqs"
+[] exec "HandsUp4.sqs"
+[] exec "HandsUp5.sqs"
+[] exec "HandsUp6.sqs"
+[] exec "HandsUp7.sqs"
+[] exec "HandsUp8.sqs"
+[] exec "HandsUp9.sqs"
+[] exec "HandsUp10.sqs"
+[] exec "HandsUp11.sqs"
+[] exec "HandsUp12.sqs"
+[] exec "HandsUp13.sqs"
+[] exec "HandsUp14.sqs"
+[] exec "HandsUp15.sqs"
+[] exec "HandsUp16.sqs"
+[] exec "HandsUp17.sqs"
+[] exec "HandsUp18.sqs"
+[] exec "HandsUp19.sqs"
+[] exec "HandsUp20.sqs"
+[] exec "HandsUp21.sqs"
+~0.5
+;----------------------------------------------------------
+
+;--------------- Vehicles Init ----------------------------
+
+
+_count = count polveh
+_i = 0
+
+  #initp
+  _v = polveh select _i
+  _v lock true
+  _i = _i + 1
+  ?_i < _count : goto "initp"
+
+
+_count = count gbikes
+_i = 0
+
+  #initb
+  _v = gbikes select _i
+  _v lock true
+  _i = _i + 1
+  ?_i < _count : goto "initb"
+
+
+_count = count gcars
+_i = 0
+
+  #initm
+  _v = gcars select _i
+  _v lock true
+  _i = _i + 1
+  ?_i < _count : goto "initm"
+
+
+_count = count topcars
+_i = 0
+
+  #initt  
+  _v = topcars select _i
+  _v lock true
+  _v setfuel 0.3	
+  _i = _i + 1
+  ?_i < _count : goto "initt"
+  
+  stealthiscar = objNull; 
+  [] exec "stealthiscar.sqs";
+
+  lockthiscar = objNull; 
+  [] exec "lockthiscar.sqs";
+
+  unlockthiscar = objNull; 
+  [] exec "unlockthiscar.sqs";
+
+;----------------------------------------------------------
+
+
+
+; -------- Taxi Stuff --------------------------------------
+
+[] exec "taxiInit.sqs"
+
+taxicaller = objNull
+getoutcar = -1
+carstopping = -1
+
+mtaxi=false
+taxigoal = glpet
+taxinr = 0
+
+[] exec "taxi2player.sqs"
+[] exec "getoutglobal.sqs"
+[] exec "taxistopper.sqs"
+~0.5
+;---------- Items ------------------------------------ 
+
+cellnr=0
+?(local server): cellnr= random 16; cellnr= cellnr - (cellnr) mod 1;
+publicvariable "cellnr"
+
+barriers=75
+publicvariable "barriers"
+
+hascan=false
+haskit=false
+
+gunrun=false
+gunshops=[gunshop1,gunshop2,gunshop3,gunshop4,gunshop5]
+
+;----------------- Hiddenweapon (Haretuerk) -------------
+	hiddenweapon = "no"
+	
+
+;-------------------------- Civkills ------------------------
+
+civkills=0
+civkilled = Objnull
+publicvariable "civkilled"
+civkiller = Objnull
+publicVariable "civkiller"
+[] exec "crimecivkill.sqs"
+
+;------------------------ Copkiller Marker ----------------------
+
+ckg1 = false
+ckg2 = false
+ckg3 = false
+ckg4 = false
+ckg5 = false
+ckg6 = false
+
+cke1 = false
+cke2 = false
+cke3 = false
+cke4 = false
+cke5 = false
+cke6 = false
+
+ckw1 = false
+ckw2 = false
+ckw3 = false
+ckw4 = false
+ckw5 = false
+ckw6 = false
+ckw7 = false
+ckw8 = false
+ckw9 = false
+
+copkiller = ObjNull;
+[] exec "copkiller_loop.sqs"
+
+innocentdead = ObjNull;
+[] exec "Gangsterdeadcheck.sqs"
+
+[] exec "cke1_marked.sqs"
+[] exec "cke2_marked.sqs"
+[] exec "cke3_marked.sqs"
+[] exec "cke4_marked.sqs"
+[] exec "cke5_marked.sqs"
+[] exec "cke6_marked.sqs"
+
+[] exec "ckg1_marked.sqs"
+[] exec "ckg2_marked.sqs"
+[] exec "ckg3_marked.sqs"
+[] exec "ckg4_marked.sqs"
+[] exec "ckg5_marked.sqs"
+[] exec "ckg6_marked.sqs"
+
+~0.5
+;--------------------------------------------------------------
+
+;Sound-Vars
+
+mafia_dead = 1
+biker_dead = 1
+
+
+
+;------------------ Crimescene-Detections ----------------------
+
+;für die marker:
+csm=0
+
+crimemodra=false
+crimemok=false
+crimedol=false
+crimetros=false
+crimemir=false
+crimeop=false
+crimevart=false
+crimelouk=false
+crimebla=false
+crimeair=false
+crimepet=false
+crimefry=false
+crimeko=false
+crimeps=false
+crimevel=false
+crimebit=false
+crimelan=false
+crimevid=false
+crimenev=false
+crimedav=false
+crimebor=false
+crimelip=false
+crimeokr=false
+crimest=false
+crimepep=false
+
+
+crimeland=false
+
+crimecommitted = false;
+[] exec "crimescene_receive.sqs"
+
+
+;---------- NSC-Stuff -----------------
+
+
+[] exec "NSC_Init.sqs"
+
+[] exec "zivirequester.sqs"
+zivianswer = -1;
+zivirequest = objNull;
+publicVariable "zivianswer"
+publicVariable "zivirequest"
+
+[] exec "womenrequester.sqs"
+womenanswer = -1;
+womenrequest = objNull;
+publicVariable "womenanswer"
+publicVariable "womenrequest"
+
+[] exec "Junkierequester.sqs"
+junkieanswer = -1;
+junkierequest = objNull;
+publicVariable "junkieanswer"
+publicVariable "junkierequest"
+
+[] exec "Shoprequester.sqs"
+shoprequest = objNull;
+shopcontroler=0
+publicVariable "shoprequest"
+publicVariable "shopcontroler"
+
+[] exec "shop_receiver.sqs"
+;---------------------------------------
+~0.5
+actionson = player addaction ["[Open Actions]","actionson.sqs"]
+;arrayssss = player addaction ["Show Arrays","Player\showarrays.sqs"];
+
+[] exec "Server\showarrays_server.sqs"
+
+;---------------------------------------
+	[] exec "Player\drugdealer_control_client.sqs"
+	[] exec "Server\drugdealer_control_server.sqs"
+
+;---------------------------------------
+
+showteamsout=false
+
+@(introready==1)
+
+; ---------------- Start Timeline Logger: -----------------------------
+
+[] exec "timeline_logger.sqs"
+~1
+
+; ---------------- Check Starting-Time: -----------------------------
+
+?(param1 == 1): skiptime (4.75 - daytime + 24 ) % 24
+?(param1 == 2): skiptime (8 - daytime + 24 ) % 24
+?(param1 == 3): skiptime (12 - daytime + 24 ) % 24
+?(param1 == 4): skiptime (15 - daytime + 24 ) % 24
+?(param1 == 5): skiptime (18.25 - daytime + 24 ) % 24
+?(param1 == 6): skiptime (0 - daytime + 24 ) % 24
+
+[] exec "checkweapon.sqs"
+
+
+gblrepairable = polveh + gcars + gbikes + topcars + ccars + Scars + ctcars;
+
+~0.5
+;----------- Markers: (this must be the last init-entry ! it has the exit-command) ----------------------
+
+? (side player == EAST) : goto "markers_mafia" 
+? (side player == RESISTANCE) : goto "markers_cops" 
+
+
+; res-markers (Bikergang)
+
+	titlecut ["Welcome to Nogova. What's better than a Ride on a Chopper ?","black in",7]
+	"bikershq" setmarkertype "Flag1"  
+	[player] exec "showteams.sqs"
+	[player] exec "update_bikers.sqs"
+
+exit
+
+
+#markers_mafia
+
+	titlecut ["Welcome to Nogova. All for the Familia !","black in",7]
+	"mafiahq" setmarkertype "Flag1" 
+	[player] exec "showteams.sqs"
+	[player] exec "update_mafia.sqs"
+
+exit
+
+
+#markers_cops
+
+	dutypoints=0
+	coprank=0
+	titlecut ["Welcome to Nogova. Uphold the Law","black in",7]
+	[player] exec "showteams.sqs"
+	[player] exec "update_cops.sqs"
+	player AddEventHandler [ "killed", { _This Exec "copkilled.sqs" } ]
+
+exit
+
+

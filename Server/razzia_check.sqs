@@ -1,0 +1,106 @@
+;razzia_requester.sqs
+; managt den Status der Bars und Casinos
+
+; script läuft nur auf dem Server, weil hier die Daten verwaltet werden
+
+? !(local server): exit
+
+#loop
+
+@!(isNull pV_check4razzia_obj)
+	player globalchat format ["Razzia Check: Anfrage kommt an"]	
+
+
+	_obj = pV_check4razzia_obj; 
+	
+	pV_check4razzia_obj = ObjNull;
+	publicVariable "pV_check4razzia_obj";
+	
+	
+	_count = 5;
+	
+	_temp = 10;
+	
+	; wir begeben uns auf die Suche nach dem richtigen Gebäude in 4 Arrays
+		_i = 0;
+		#nexta
+			? (( _obj) == ( mbars select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nexta"
+		
+		_temp = 20;
+		_i = 0;
+		#nextb
+			? (( _obj) == ( bbars select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextb"
+		
+		_temp = 30;
+		_i = 0;
+		#nextc
+			? (( _obj) == ( mcasinos select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextc"
+		
+		_temp = 40;
+		_i = 0;
+		#nextd
+			? (( _obj) == ( bcasinos select _i)): goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextd"
+			
+		player globalchat format ["Razzia Check: Gebäude nicht im Array auffindbar"]	
+	
+		exit;
+			
+	#gefunden
+	
+	;Nummer wird zusammengestückelt. Tricky Flickwerk hier, weil ich zu faul bin. HT
+	do_the_razzia_here = _temp + _i + 1;
+	
+	?(do_the_razzia_here==11): _status = (mbar_status select 0);
+	?(do_the_razzia_here==12): _status = (mbar_status select 1);
+	?(do_the_razzia_here==13): _status = (mbar_status select 2);
+	?(do_the_razzia_here==14): _status = (mbar_status select 3);
+	?(do_the_razzia_here==15): _status = (mbar_status select 4);
+	
+	?(do_the_razzia_here==21): _status = (bbar_status select 0);
+	?(do_the_razzia_here==22): _status = (bbar_status select 1);
+	?(do_the_razzia_here==23): _status = (bbar_status select 2);
+	?(do_the_razzia_here==24): _status = (bbar_status select 3);
+	?(do_the_razzia_here==25): _status = (bbar_status select 4);		
+	
+	?(do_the_razzia_here==31): _status = (mcasino_status select 0);			
+	?(do_the_razzia_here==32): _status = (mcasino_status select 1);			
+	?(do_the_razzia_here==33): _status = (mcasino_status select 2);		
+	?(do_the_razzia_here==34): _status = (mcasino_status select 3);		
+	?(do_the_razzia_here==35): _status = (mcasino_status select 4);		
+	
+	?(do_the_razzia_here==41): _status = (bcasino_status select 0);			
+	?(do_the_razzia_here==42): _status = (bcasino_status select 1);			
+	?(do_the_razzia_here==43): _status = (bcasino_status select 2);		
+	?(do_the_razzia_here==44): _status = (bcasino_status select 3);		
+	?(do_the_razzia_here==45): _status = (bcasino_status select 4);			
+	
+		
+	; Razzia schon im Gange?
+	?(_status == 2): goto "gibtschonrazzia";
+	
+
+	#keinerazziaimgange
+		; und Antwort senden
+		pV_check4razzia_answer = 81;
+		publicVariable "pV_check4razzia_answer";
+	goto "loop";
+	
+	#gibtschonrazzia
+		pV_check4razzia_answer = 82;
+		publicVariable "pV_check4razzia_answer";
+	goto "loop";	
+	
+
+exit

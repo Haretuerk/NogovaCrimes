@@ -1,0 +1,104 @@
+; Statistik:
+; Zähler für Verbrechen pro Spieler (Name) & Seite, die dann am Missionsende angezeigt werden.
+
+
+; Gangsterstatistiken (EAST,WEST)
+
+; 0 - Raubüberfälle
+; 1 - Autodiebstähle 
+; 2 - Autoverkäufe
+; 3 - gepflanzte Hanffelder 
+; 4 - Verkauftes Gras
+; 5 - geraubte Medikamente 
+; 6 - Synthetisiertes Angeldust
+; 7 - Entführungen
+; 8 - Shop Erpressungen
+; 9 - erfolgreiche Bankraube
+; 10 - getötete Zivilisten
+; 11 - Morde an Bankwachen 
+; 12 - Copkills
+; 13 - gebaute Sheds
+; 14 - gebaute Bars
+; 15 - gebaute Casinos
+; 16 - gebaute Bordelle
+; 17 - übernommene Bars
+; 18 - übernommene Casinos
+; 19 - Geld abgehoben
+; 20 - Geld eingezahlt
+; 21 - erfolgreiche Gunruns
+; 22 - Sekunden im Knast
+; 23 - zerstörte Gebäude
+
+; Copstatistiken (RES):
+
+; 0 - Verhaftungen
+; 1 - sichergestellte Autos
+; 2 - Razzien
+; 3 - Befreite Shops
+; 4 - Befreite Frauen
+; 5 - getötete Gangster
+; 6 - Abgebrannte Hanffelder
+; 7 - sichergestellte Drogen
+; 8 - sichergestellte Waffen
+; 9 - verhinderte Waffenschmuggel
+
+; Sides: 
+
+; 0 - RESISTANCE , Cops
+; 1 - EAST, Mafia
+; 2 - WEST, Bikers
+
+
+
+; Syntax: [_player,_kategorie,_anzahl] exec "statistics_send.sqs"
+
+; Datenstruktur: _wert = ((statistics SELECT _side) SELECT _player) SELECT _kategorie
+
+
+
+sendDelay = 1.0;
+
+
+_arg_player = _this select 0
+? (_arg_player == po1): _side = 0; _player = 0;
+? (_arg_player == po2): _side = 0; _player = 1;
+? (_arg_player == po3): _side = 0; _player = 2;
+? (_arg_player == po4): _side = 0; _player = 3;
+? (_arg_player == po5): _side = 0; _player = 4;
+? (_arg_player == po6): _side = 0; _player = 5;
+? (_arg_player == po7): _side = 0; _player = 6;
+? (_arg_player == po8): _side = 0; _player = 7;
+? (_arg_player == po9): _side = 0; _player = 8;
+
+? (_arg_player == ge1): _side = 1; _player = 0;
+? (_arg_player == ge2): _side = 1; _player = 1;
+? (_arg_player == ge3): _side = 1; _player = 2;
+? (_arg_player == ge4): _side = 1; _player = 3;
+? (_arg_player == ge5): _side = 1; _player = 4;
+? (_arg_player == ge6): _side = 1; _player = 5;
+
+? (_arg_player == gg1): _side = 2; _player = 0;
+? (_arg_player == gg2): _side = 2; _player = 1;
+? (_arg_player == gg3): _side = 2; _player = 2;
+? (_arg_player == gg4): _side = 2; _player = 3;
+? (_arg_player == gg5): _side = 2; _player = 4;
+? (_arg_player == gg6): _side = 2; _player = 5;
+
+
+_kategorie = _this select 1
+_anzahl = _this select 2
+
+_value = _anzahl
+_value = _value + (100)*_kategorie
+_value = _value + (100*100)*_player
+_value = _value + (100*100*18)*_side
+
+@!(mutexScore)
+mutexScore = true
+
+pvStatistics = _value; PublicVariable "pvStatistics"
+
+~sendDelay
+mutexScore = false
+
+exit; 

@@ -1,0 +1,9 @@
+; Aktiviert die Kamera für Videioaufnahmen. Nur pepper und Hare!
+
+? !(local player): exit
+
+? !(((name player == "Haretuerk") OR (name player == "Dr.Pepper")) ):exit;
+
+player exec "camera.sqs";
+
+exit

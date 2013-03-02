@@ -1,0 +1,25 @@
+? !(side player==RESISTANCE): exit
+
+player removeaction talkoff
+player removeaction talkon
+talkoff = player addaction ["Talkmenu off","talkoff.sqs"] 
+
+player removeaction say_halt
+player removeaction say_getout
+player removeaction say_holdyourfire
+player removeaction say_getdown
+player removeaction say_underfire
+player removeaction say_standup
+player removeaction say_atease
+player removeaction say_ivegothim
+
+say_halt = player addaction ["say HALT","talknow.sqs"] 
+say_getout = player addaction ["say GET OUT","talknow.sqs"] 
+say_holdyourfire = player addaction ["say HOLD YOUR FIRE","talknow.sqs"] 
+say_getdown = player addaction ["say GET DOWN","talknow.sqs"]
+say_underfire = player addaction ["say UNDER FIRE","talknow.sqs"] 
+say_standup = player addaction ["say STAND UP","talknow.sqs"] 
+say_atease = player addaction ["say AT EASE","talknow.sqs"]  
+say_ivegothim = player addaction ["say I´VE GOT HIM","talknow.sqs"] 
+
+exit

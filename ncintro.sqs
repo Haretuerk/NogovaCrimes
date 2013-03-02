@@ -1,0 +1,114 @@
+;server spielt intro nicht...
+? !(local player): goto "snointro"
+
+
+1 FadeMusic 0.5
+playmusic "twisted"
+
+TitleText ["Nogova... land of opportunities...","plain"]
+
+_camera = "camera" camcreate [0,0,0]
+_camera cameraeffect ["internal", "back"]
+_camera camSetTarget getpos petcamt 
+_camera camSetPos getpos glpet
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+_camera camSetTarget getpos petcamt 
+_camera camSetPos [(getpos _camera select 0)+30,(getpos _camera select 1)-50,(getpos _camera select 2)+35]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+_camera camSetTarget getpos petcamt 
+_camera camSetPos [(getpos _camera select 0)+50,(getpos _camera select 1)+75,(getpos _camera select 2)+15]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+_camera camSetTarget getpos bank
+_camera camSetPos [(getpos petcampos select 0),(getpos petcampos select 1)-30,(getpos petcampos select 2)+15]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+_camera camSetTarget getpos bank 
+_camera camSetPos [(getpos petcampos select 0),(getpos petcampos select 1),(getpos petcampos select 2)+10]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+
+TitleText ["if you do it right...","plain"]
+
+
+_camera camSetTarget getpos gllip
+_camera camSetPos [(getpos hoslip select 0),(getpos hoslip select 1)-20,(getpos hoslip select 2)+10]
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+_camera camSetTarget getpos gllip
+_camera camSetPos [(getpos _camera select 0)+30,(getpos _camera select 1)+15,(getpos _camera select 2)+35]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+_camera camSetTarget getpos lipcamt
+_camera camSetPos [(getpos gllip select 0),(getpos gllip select 1)+5,(getpos gllip select 2)+35]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+
+_camera camSetTarget getpos bank2
+_camera camSetPos [(getpos lipcamt select 0)+45,(getpos lipcamt select 1)+15,(getpos lipcamt select 2)+30]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+_camera camSetTarget getpos bank2
+_camera camSetPos [(getpos _camera select 0)+5,(getpos _camera select 1)-75,(getpos _camera select 2)-25]
+_camera camSetFOV 0.700
+_camera camCommit 3
+@camCommitted _camera
+
+
+TitleText ["and if not... there´ll be a nice room for you","plain"]
+
+
+_camera camSetTarget getpos cell2 
+_camera camSetPos [(getpos cell2 select 0)+50,(getpos cell2 select 1)-75,(getpos cell2 select 2)+70]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+_camera camSetTarget getpos cell2 
+_camera camSetPos [(getpos _camera select 0)-75,(getpos _camera select 1)+100,(getpos _camera select 2)-25]
+_camera camSetFOV 0.700
+_camera camCommit 5
+@camCommitted _camera
+
+
+titlecut ["","BLACK out",6]
+_camera camSetTarget getpos gguba 
+_camera camSetPos [(getpos gguba select 0)+1.2,(getpos gguba select 1)-5,(getpos gguba select 2)+2.7]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+gguba switchmove "EffectStandSalutestart"
+7 FadeMusic 0
+~7
+
+_camera cameraeffect ["terminate", "back"]
+camdestroy _camera
+
+@ !(alive _camera)
+
+introready=1
+publicvariable "introready"
+
+#snointro
+
+exit
+

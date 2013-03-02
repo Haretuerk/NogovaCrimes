@@ -1,0 +1,82 @@
+? !(local player): exit
+
+_box=_this select 0
+
+ClearWeaponCargo _box
+ClearMagazineCargo _box
+
+_box AddMagazineCargo ["Kozliceball",160]
+_box AddMagazineCargo ["Kozliceshell",60]
+_box AddWeaponCargo ["Kozlice",6]
+
+_box AddWeaponCargo ["nvgoggles",60]
+_box AddWeaponCargo ["binocular",60]
+
+
+? (crimehighscore/gcount < chs_1): exit
+
+_box AddMagazineCargo ["revolvermag",60]
+_box AddWeaponCargo ["revolver",6]
+
+_box AddMagazineCargo ["Berettamag",60]
+_box AddWeaponCargo ["Beretta",6]
+
+_box AddMagazineCargo ["glocksmag",60]
+_box AddWeaponCargo ["glocks",6]
+
+_box AddMagazineCargo ["DRG_SPAS12mag",60]
+_box AddWeaponCargo ["DRG_SPAS12ext",6]
+
+
+? (crimehighscore/gcount < chs_2): exit
+
+_box AddMagazineCargo ["ak47",60]
+_box AddWeaponCargo ["ak47cz",6]
+
+_box AddMagazineCargo ["falmag",60]
+_box AddWeaponCargo ["fal",6]
+
+_box AddMagazineCargo ["Ingrammag",60]
+_box AddWeaponCargo ["Ingram",6]
+
+_box AddMagazineCargo ["Skorpionmag",60]
+_box AddWeaponCargo ["Skorpion",6]
+
+_box AddMagazineCargo ["pep_csshell", 30]
+
+
+? (crimehighscore/gcount < chs_3): exit
+
+
+_box AddMagazineCargo ["ak74",60]
+_box AddWeaponCargo ["ak74",6]
+
+_box AddMagazineCargo ["KEGak107mag",60]
+_box AddWeaponCargo ["KEGak107",6]
+
+_box AddMagazineCargo ["Uzimag",60]
+_box AddWeaponCargo ["Uzi",6]
+
+_box AddMagazineCargo ["m16",60]
+_box AddWeaponCargo ["m16",6]
+
+_box AddMagazineCargo ["steyrmag",60]
+_box AddWeaponCargo ["steyr",6]
+
+_box AddMagazineCargo ["m60",60]
+_box AddWeaponCargo ["m60",6]
+
+_box AddMagazineCargo ["HuntingRiflemag",60]
+_box AddWeaponCargo ["HuntingRifle",6]
+
+_box AddMagazineCargo ["rpglauncher",60]
+_box AddWeaponCargo ["rpglauncher",6]
+
+
+? (crimehighscore/gcount < chs_4): exit
+
+
+;m21, dragunov, satchels, stinger, handgranaten, m60 erst hier ? & andere aus dem 3er ???
+
+
+exit;

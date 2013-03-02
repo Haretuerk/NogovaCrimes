@@ -1,0 +1,22 @@
+Spieler tot?
+
+position des toten merken
+
+copkiller? -> KI soll auf copkiller schieﬂen.... goto "hunt"
+
+kein copkiller... KI domove _pos
+
+
+
+
+@ alive player
+
+type of unit == KIPartner ???
+
+
+
+#hunt
+
+? !(alive copkiller): "_x domove _pos" foreach units group player
+
+exit

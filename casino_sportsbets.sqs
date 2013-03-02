@@ -1,0 +1,169 @@
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;
+;				 S P O R T S   B E T T I N G
+;
+; 	Sports Betting Script 1.0 by Haretuerk  
+
+;
+; 	www: www.kanonenfutter.org
+;	email: haretuerk@kanonenfutter.org
+;	icq: 59850549
+;
+; 	This script was written for the "Nogova Crimes"
+; 	MP-Mission available at www.kanonenfutter.org
+;	Feel free to use it in your mission, but send me
+;	a message please!
+;
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+_teams = ["Torpedo Vidlakov","Partizan Lipany","FC Petrovic","Dynamo Modrava","Nastrovje Mirov","Sparta Neveklov","SK Lany","Lokomotive Velka Ves"]
+
+#neuesspiel											
+
+
+
+	nearestObject [player,"ac_casino"] removeAction playblackjack;
+	nearestObject [player,"ac_casino"] removeAction playsportsbets;
+	nearestObject [player,"ac_casino"] removeAction playcraps;
+
+
+	_header = format ["SPORTS BETTING\nYour cash: %1 $\nBet is always 50$\n1 = Win\nX = Draw\n2 = Loose\n~~~~~~~~~~~~~~~~~~\n",cash];
+	_line 	= "~~~~~~~~~~~~~~~~~~\n";
+
+	
+	_punkteplayer = 0;
+	
+	_nr1 = (random 8)
+	_nr1 = _nr1 - (_nr1 mod 1);
+	
+	#nochmal
+		_nr2 = (random 8)
+		_nr2 = _nr2 - (_nr2 mod 1);
+	? (_nr1==_nr2):goto "nochmal"
+	
+	_team1 = _teams select _nr1;
+	_team2 = _teams select _nr2;
+	
+	_q1 = (random 60)+20;
+	_q1 = _q1 - (_q1 mod 1);
+	
+	#nochmalq
+		_q2 = (random 50) + 20;
+		_q2 = _q2 - (_q2 mod 1);
+	? ((_q1+_q2)>80):goto "nochmalq"
+	
+	_q3 = 120-_q2-_q1;
+	
+	_q1 = 100/_q1;
+	_q1 = (_q1*10000 - (_q1*10000 mod 100))/10000;
+	_q2 = 100/_q2;
+	_q2 = (_q2*10000 - (_q2*10000 mod 100))/10000;
+	_q3 = 100/_q3;
+	_q3 = (_q3*10000 - (_q3*10000 mod 100))/10000;
+
+
+			
+	hint format ["%1Match:\n%2 - %3\nQuote:\n1: %4 X: %5 2: %6\n~~~~~~~~~~~~~~~~~~\nBet, change or quit!",_header,_team1,_team2,_q1,_q2,_q3]
+	
+	
+	
+
+ 	actionsbwin = player addAction ["Bet 1: ","casino_sportsbetswin.sqs"];	
+	actionsbdraw = player addAction ["Bet X: ","casino_sportsbetsdraw.sqs"];	
+	actionsbloose = player addAction ["Bet 2","casino_sportsbetsloose.sqs"];	
+	actionsbchange = player addAction ["Change match","casino_sportsbetschange.sqs"];	
+	actionsbquit = player addAction ["Quit sports betting","casino_sportsbetsquit.sqs"];	
+	
+	sportsbetweiter = 0;
+	
+	; hier warten, bis eine Eingabe getätigt wurde
+	@ (sportsbetweiter>0)
+	
+	player removeAction actionsbwin;
+	player removeAction actionsbdraw;
+	player removeAction actionsbloose;
+	player removeAction actionsbchange;
+	player removeAction actionsbquit;
+
+	? (sportsbetweiter == 5): goto "beenden"
+	? (sportsbetweiter == 4): goto "neuesspiel"
+	? (sportsbetweiter == 3): _bet = 3;
+	? (sportsbetweiter == 2): _bet = 2;
+	? (sportsbetweiter == 1): _bet = 1;
+
+
+
+#abschluss
+	
+	
+	; Geld abkassieren, wenn genug da
+	?(cash < 50): goto "pleite";
+	cash = cash - 50;
+	
+	_goals1 = random 6;
+	_goals1 = _goals1 - (_goals1 mod 1);
+	
+	_goals2 = random 6;
+	_goals2 = _goals2 - (_goals2 mod 1);
+	
+	_gewinntext = "You lost..."
+	_gewinn = 0;
+	? ((_goals1>_goals2) AND (_bet == 1)):goto "gewinn1" 
+		
+	? ((_goals1==_goals2) AND (_bet == 2)) : goto "gewinn2"
+	
+	? ((_goals1<_goals2) AND (_bet == 3)) :goto "gewinn3"
+	
+	goto "endegewinne"
+	#gewinn1
+		_gewinn = 50 * _q1;
+		_gewinntext = format ["You won %1 $",_gewinn];
+		goto "endegewinne"	
+	#gewinn2
+		_gewinn = 50 * _q2;
+		_gewinntext = format ["You won %1 $",_gewinn];
+		goto "endegewinne"	
+	#gewinn3
+		_gewinn = 50 * _q3;	
+		_gewinntext = format ["You won %1 $",_gewinn];
+		goto "endegewinne"		
+		
+	
+		
+	#endegewinne
+	
+	
+	
+	hint "Thanks for playing!\nMatch will be played soon."
+	playsportsbets = casino addAction["Sports betting","casino_sportsbets.sqs"]
+	playblackjack = casino addAction["Play Black Jack","casino_blackjack.sqs"]
+	
+	; hier warten, bis Uhrzeit = 18:00 Uhr, weil die Sportergebnisse abends kommen :)
+	;@(daytime > 18);
+	
+	~30
+	
+	
+	hint format ["Sports News coming up:\n~~~~~~~~~~~~~~~~~~\n%1 - %2\nResult: %3 : %4\n~~~~~~~~~~~~~~~~~~\n%5",_team1,_team2,_goals1,_goals2,_gewinntext];
+	
+	
+	cash = cash + _gewinn;
+	exit
+	
+	
+#pleite  
+	sportsbetweiter = 0;
+	hint "You don't have enough cash! Get out of here!";
+	playsportsbets = casino addAction["Sports betting","casino_sportsbets.sqs"]
+	playblackjack = casino addAction["Play Black Jack","casino_blackjack.sqs"]
+	exit;
+	
+#beenden 
+	sportsbetweiter = 0;
+	hint "Bye! Thanks for playing!"
+	~2
+	playsportsbets = casino addAction["Sports betting","casino_sportsbets.sqs"]
+	playblackjack = casino addAction["Play Black Jack","casino_blackjack.sqs"]
+	exit;

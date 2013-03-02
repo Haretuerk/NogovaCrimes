@@ -1,0 +1,14 @@
+_house = _this select 0
+
+
+#check
+
+
+~10
+
+_dam = getdammage _house
+
+? (_dam > 0.3) : _house setdammage 0;
+
+
+goto "check"

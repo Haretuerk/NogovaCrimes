@@ -1,0 +1,184 @@
+? !(local player): exit
+
+? (po1 == Player): goto "checkwpPo1"
+? (po2 == Player): goto "checkwpPo2"
+? (po3 == Player): goto "checkwpPo3"
+? (po4 == Player): goto "checkwpPo4"
+? (po5 == Player): goto "checkwpPo5"
+? (po6 == Player): goto "checkwpPo6"
+? (po7 == Player): goto "checkwpPo7"
+? (po8 == Player): goto "checkwpPo8"
+? (po9 == Player): goto "checkwpPo9"
+
+? (ge1 == Player): goto "checkwpge1"
+? (ge2 == Player): goto "checkwpge2"
+? (ge3 == Player): goto "checkwpge3"
+? (ge4 == Player): goto "checkwpge4"
+? (ge5 == Player): goto "checkwpge5"
+? (ge6 == Player): goto "checkwpge6"
+
+? (gg1 == Player): goto "checkwpgg1"
+? (gg2 == Player): goto "checkwpgg2"
+? (gg3 == Player): goto "checkwpgg3"
+? (gg4 == Player): goto "checkwpgg4"
+? (gg5 == Player): goto "checkwpgg5"
+? (gg6 == Player): goto "checkwpgg6"
+
+hint "error in checkweapon.sqs"
+exit
+
+
+
+#checkwpPo1
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo1"
+
+#checkwpPo2
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo2"
+
+#checkwpPo3
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo3"
+
+#checkwpPo4
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo4"
+
+#checkwpPo5
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo5"
+
+#checkwpPo6
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo6"
+
+#checkwpPo7
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo7"
+
+#checkwpPo8
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo8"
+
+#checkwpPo9
+@ (count weapons player ==0)
+player setCaptive true
+@ (count weapons player >0)
+player setCaptive false
+goto "checkwpPo9"
+
+
+
+
+#checkwpge1
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpge1"
+
+#checkwpge2
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpge2"
+
+#checkwpge3
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpge3"
+
+#checkwpge4
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpge4"
+
+#checkwpge5
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpge5"
+
+#checkwpge6
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpge6"
+
+
+
+#checkwpgg1
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpgg1"
+
+#checkwpgg2
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+vplayer setCaptive false
+goto "checkwpgg2"
+
+#checkwpgg3
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpgg3"
+
+#checkwpgg4
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpgg4"
+
+#checkwpgg5
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpgg5"
+
+#checkwpgg6
+@ ((count weapons player ==0) AND (crimeranking<6) And !(mecopkiller))
+player setCaptive true
+@ ((count weapons player >0) OR (crimeranking>5) OR (mecopkiller))
+player setCaptive false
+goto "checkwpgg6"
+
+exit

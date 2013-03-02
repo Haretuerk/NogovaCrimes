@@ -1,0 +1,118 @@
+; Copkiller Bestrafung
+; Copkiller bekommt x Punkte CrimeRate, wegen Polizisten-Mord
+; wird durch die Variable in copkilled.sqs aufgerufen
+
+
+; nur auf den Clients, da der Server für Copkills nicht bestraft wird. der is ja ein Lieber
+? !(local player): exit;
+
+; nicht für cops:
+? (side player == RESISTANCE): exit;
+
+~2
+
+#loop 
+
+? (player == gg1): goto "killerg1";
+? (player == gg2): goto "killerg2";
+? (player == gg3): goto "killerg3";
+? (player == gg4): goto "killerg4";
+? (player == gg5): goto "killerg5";
+? (player == gg6): goto "killerg6";
+
+? (player == ge1): goto "killere1";
+? (player == ge2): goto "killere2";
+? (player == ge3): goto "killere3";
+? (player == ge4): goto "killere4";
+? (player == ge5): goto "killere5";
+? (player == ge6): goto "killere6";
+
+#killerg1
+  @ckg1
+  ckg1=false;
+  goto "killerfound"
+
+#killerg2
+  @ckg2
+  ckg2=false;
+  goto "killerfound"
+
+#killerg3
+  @ckg3
+  ckg3=false;
+  goto "killerfound"
+
+#killerg4
+  @ckg4
+  ckg4=false;
+  goto "killerfound"
+
+#killerg5
+  @ckg5
+  ckg5=false;
+  goto "killerfound"
+
+#killerg6
+  @ckg6
+  ckg6=false;
+  goto "killerfound"
+
+#killere1
+  @cke1
+  cke1=false;
+  goto "killerfound"
+
+#killere2
+  @cke2
+  cke2=false;
+  goto "killerfound"
+
+#killere3
+  @cke3
+  cke3=false;
+  goto "killerfound"
+
+#killere4
+  @cke4
+  cke4=false;
+  goto "killerfound"
+
+#killere5
+  @cke5
+  cke5=false;
+  goto "killerfound"
+
+#killere6
+  @cke6
+  cke6=false;
+  goto "killerfound"
+
+
+#killerfound
+
+	mecopkiller=true
+
+	player groupchat "Killing cops is a serious crime! You are marked on the map now!"
+
+	crimerate = crimerate + c_cr_copkill;
+
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; goto "loop"
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";goto "loop"
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";goto "loop"
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";goto "loop"
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";goto "loop"
+
+	
+
+goto "loop"
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; goto "loop"
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; goto "loop"
+goto "loop"
+exit;
+

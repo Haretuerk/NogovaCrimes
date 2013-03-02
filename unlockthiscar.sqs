@@ -1,0 +1,12 @@
+
+#loop
+
+	@!(isnull unlockthiscar)
+		
+	_diesesauto = unlockthiscar;
+	unlockthiscar = ObjNull; 
+	publicVariable "unlockthiscar";
+	
+	_diesesauto lock false;
+	
+goto "loop"

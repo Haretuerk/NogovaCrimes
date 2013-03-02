@@ -1,0 +1,16 @@
+; stealthis car
+; by haretuerk
+
+#loop 
+
+	@!(isnull stealthiscar)
+		
+	_diesesauto = stealthiscar;
+	stealthiscar = ObjNull; 
+	publicVariable "stealthiscar";
+
+	[_diesesauto] exec "crime.sqs"
+	_diesesauto lock false;
+	unlockst = _diesesauto addaction ["unlock","unlockv.sqs"]
+
+goto "loop"

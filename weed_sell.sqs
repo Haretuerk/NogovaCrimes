@@ -1,0 +1,129 @@
+;sell weed
+;by haretuerk
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+;Preis pro Päckchen
+_price = c_earning_weed;
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+
+player switchmove "CommandFormation"
+
+?(side player==RESISTANCE):goto "cops"
+
+
+
+	_junkie = _this select 0
+	? !(alive _junkie): player groupchat "he's dead, Jim."; exit
+
+
+
+; prüfen ob player überhaupt drogen hat
+? (weedpackages < 1 ): goto "suckit"
+
+	; auch hier: Kaputte Variable abfangen 
+	_weedpackagesstring = format ["%1", weedpackages]
+	? (_weedpackagesstring == "scalar bool array string 0xfcffffef"): weedpackages = 0;
+
+
+
+			
+		;crimescene marker aktivieren
+		;[_junkie] exec "crime.sqs"
+		[getpos _junkie,1] exec "crimescene_send.sqs"
+
+			
+		junkierequest = _junkie;
+		publicvariable "junkierequest"
+		
+		
+		;player globalChat "Wanna sell weed!"
+		
+		@ (junkieanswer > -1)
+		
+		_hunger = junkieanswer;
+		junkieanswer = -1;
+		publicvariable "junkieanswer"
+		
+		; Kaputte Variable abfangen
+		_hungerstring = format ["%1", _hunger]
+		? (_hungerstring == "scalar bool array string 0xfcffffef"): _hunger = 0;
+		
+
+		
+		goto "junkiegefunden"
+		
+	
+
+exit
+
+#junkiegefunden
+	
+
+	?(_hunger < 1): goto "dontneed";
+
+	
+	;wenn ja: drogen abziehen & geld erhöhen
+	
+	? (weedpackages >= _hunger) : _soldpackages = _hunger;
+	? (weedpackages < _hunger) : _soldpackages = weedpackages;
+
+	? (crimeranking >=3): _price=_price+10
+	
+	cash = cash + (_soldpackages * _price);
+	weedpackages = weedpackages - _soldpackages;
+	
+	
+	_costs	= _soldpackages * _price;
+	
+	hint format["Thanks man, that's good stuff! I will need more of it little later, so please come back!\n\n (You sold %1 packages and earned %2 $)",_soldpackages,_costs];
+
+		[player,4,_soldpackages] exec "statistics_send.sqs"
+
+	crimerate = crimerate + c_cr_sellweed;
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; exit;
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";exit;
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";exit;
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";exit;
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";exit;
+
+
+exit;
+
+#dontneed
+	hint "I dont need any drugs at this moment!"
+exit
+
+#suckit
+	hint "You suck man! Get me some drugs or leave me alone."
+exit
+
+#cops
+	titlecut ["You are here to protect and to serve.","BLACK IN",5]
+exit
+
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;
+

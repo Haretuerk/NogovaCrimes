@@ -1,0 +1,36 @@
+_p = _this select 0
+
+;// shout or sound the siren
+_inCar = 0
+_pv = Vehicle _p
+? _pv == _p : _p Say "Rus14"; goto "skipCar"
+_inCar = 50
+? typeOf _pv == "pepmi2p" : _inCar = 200; goto "skipCar"
+_pv Say "dmx_siren"
+#skipCar
+
+;// get all the near units and stop them eventually
+#start
+_i = 0
+_units = List units_counter
+#getVehicle
+_v = Vehicle (_units select _i)
+_c = 0; _crew = Crew _v
+#getCrew
+_u = _crew select _c;
+? ((typeOf _u In tCiv) and (Alive _u) and (_u Distance _p < (_inCar + 100))) : eMS = _u; PublicVariable "eMS"; goto "wait"
+goto "skipWait"
+#wait
+~.3
+#skipWait
+_c = _c + 1
+? _c < Count (_crew) : goto "getCrew"
+_i = _i + 1
+? reMap : goto "start"
+? _i < Count _units : goto "getVehicle" 
+
+;// sound the siren
+? _inCar != 50 : exit
+;//~(YELPD select _si)
+;//_si = Random ((Count YELP) - 1); _pv Say (YELP select _si)
+_pv Say "dmx_siren"

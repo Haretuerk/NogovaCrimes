@@ -1,0 +1,31 @@
+? !(local server): exit
+
+~2
+
+~1
+_count = count bankguardsl
+_i = 0
+
+#load
+_man = bankguardsl select _i
+
+removeallweapons _man
+
+_man AddMagazine "ak74"
+_man AddWeapon "ak74"
+_man AddMagazine "ak74"
+_man AddMagazine "ak74"
+_man AddMagazine "ak74"
+_man AddMagazine "ak74"
+
+_man SetCombatMode "yellow"
+
+_man AddEventHandler ["killed",{ _this exec "securitydeadl.sqs" }]
+
+_man AllowFleeing  0
+
+_i = _i + 1
+?_i < _count : goto "load"
+
+
+exit

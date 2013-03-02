@@ -1,0 +1,49 @@
+; burn weed down
+; by Haretuerk
+
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+? !(player hasweapon "pepcanister"):  hint "You need a canister..."; exit
+
+   ;_weed = _this select 0
+   _weed = nearestObject [player, "Pep_hemp_medium"]; 
+   
+   
+   _count = count weedfields
+   
+   ; jetzt Pflanze suchen
+   _j = 0;
+   #loop
+		
+		_feld = weedfields select _j;
+		_arrayweed = _feld select 0;
+		
+		? (_weed == _arrayweed):goto "gefunden"
+				
+   		_j = _j+1;
+   		?(_j>_count):exit;
+   	goto "loop"
+   		
+      
+   #gefunden
+		
+   	  
+   		_x = 0;
+   		#loopx
+   			deletevehicle (_feld select _x)
+			~0.5
+   			_x = _x +1;
+   		?(_x<9):goto "loopx"
+   		
+   	? ( side player == RESISTANCE): goto "cops"
+	   	hint "You burned that weed."
+	   	exit
+	#cops
+		hint format["You burned that weed. Good job, your team earns %1$.",c_pr_burnweed];
+		[player,6,1] exec "statistics_send.sqs"
+		accountpolice = accountpolice + c_pr_burnweed;
+		publicVariable "accountpolice";
+	
+	   	
+exit

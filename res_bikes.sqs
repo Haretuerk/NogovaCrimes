@@ -1,0 +1,39 @@
+
+_count = count gbikes
+
+
+#init
+_i = 0
+~30
+
+
+#alive
+_v = gbikes select _i
+
+?alive _v : goto "continue"
+? !alive _v : goto "notalive"
+
+
+#continue
+_i = _i + 1
+? ( _i < _count) : goto "alive"
+goto "init"
+
+
+#notalive
+_vtype = typeOf _v
+~2
+deleteVehicle _v
+~2
+_v = _vtype createVehicle getpos bikersvhq
+_v setDir 0
+
+_v lock true
+
+publicvariable "_v"
+
+gbikes set [_i, _v]
+publicvariable "gbikes"
+
+
+goto "continue"

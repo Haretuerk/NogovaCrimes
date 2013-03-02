@@ -1,0 +1,29 @@
+? !(local server): exit
+
+_count = count shopowners;
+
+
+#loop
+~30
+
+_i = 0;
+
+
+	#innerloop
+	? !(alive (shopowners select _i)): goto "dead"
+	_i = _i + 1
+					
+	? (_i < _count) : goto "innerloop"
+	
+	goto "loop"
+
+
+	#dead
+	
+	Shopcontroler=3
+	publicvariable "Shopcontroler"
+
+	shoprequest = (shopowners select _i)
+	publicvariable "shoprequest"
+
+goto "innerloop"

@@ -1,0 +1,53 @@
+_count = count taxis
+_t = 0
+
+taxiaktiv = []
+
+
+#dgetin
+
+_taxi = taxis select _t
+_taxidriver = tdriver select _t
+
+_taxidriver AddEventHandler [ "killed", { _this exec "zividead.sqs" } ]
+
+;hint format ["taxi = %1, driver = %2",_taxi,_taxidriver]
+~ 0.1
+
+
+; taxiaktiv-werte: 0= frei, 1=gebucht, 2=bewegt sich (mit spieler)
+
+taxiaktiv = taxiaktiv + [0]
+publicvariable "taxiaktiv"
+
+_taxidriver MoveInDriver _taxi
+
+_taxi addaction ["Stop !!!","taxistop.sqs"];
+
+_taxi addaction ["Choose Destination","open_taximenu.sqs"];
+
+;_taxi addaction ["To Airport, please","taxi2air.sqs"];
+;_taxi addaction ["To Bitov, please","taxi2bit.sqs"];
+;_taxi addaction ["To Davle, please","taxi2dav.sqs"];
+;_taxi addaction ["To Dolina, please","taxi2dol.sqs"];
+;_taxi addaction ["To Joudov, please","taxi2jou.sqs"];
+;_taxi addaction ["To Kost, please","taxi2ko.sqs"];
+;_taxi addaction ["To Lipany, please","taxi2lip.sqs"];
+;_taxi addaction ["To Mirov, please","taxi2mir.sqs"];
+;_taxi addaction ["To Modrava, please","taxi2modra.sqs"];
+;_taxi addaction ["To Okrouhlo, please","taxi2okr.sqs"];
+;_taxi addaction ["To Opatov, please","taxi2op.sqs"];
+;_taxi addaction ["To Pepperov, please","taxi2pep.sqs"];
+;_taxi addaction ["To Petrovice, please","taxi2pet.sqs"];
+;_taxi addaction ["To St.Sedlo, please","taxi2st.sqs"];
+;_taxi addaction ["To Trosky, please","taxi2tros.sqs"];
+;_taxi addaction ["To Varta, please","taxi2vart.sqs"];
+;_taxi addaction ["To Vidlakov, please","taxi2vid.sqs"];
+
+_t = _t + 1
+? (_t < _count) : goto "dgetin"
+
+
+exit
+
+

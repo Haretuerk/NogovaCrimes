@@ -1,0 +1,10 @@
+? !(local player): exit
+
+taxicaller = _this select 0
+
+publicvariable "taxicaller"
+
+;hint format ["taxicaller=%1",taxicaller]
+
+exit
+

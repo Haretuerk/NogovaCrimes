@@ -1,0 +1,39 @@
+; Razzia Annuller
+; setzt einen Razzia-Status wieder auf 1;
+; wird in razzia_requester.sqs aufgerufen
+; läuft nur auf dem Server
+
+; by Haretuerk
+server globalchat "entered annuller script..."
+_gebaeude = _this select 0;
+
+; brav warten, gell?
+~c_razziatime
+
+	?(_gebaeude==11): mbar_status set [0,1]; mbars_razziacounter = mbars_razziacounter - 1; publicVariable "mbars_razziacounter";
+	?(_gebaeude==12): mbar_status set [1,1]; mbars_razziacounter = mbars_razziacounter - 1; publicVariable "mbars_razziacounter";
+	?(_gebaeude==13): mbar_status set [2,1]; mbars_razziacounter = mbars_razziacounter - 1; publicVariable "mbars_razziacounter";
+	?(_gebaeude==14): mbar_status set [3,1]; mbars_razziacounter = mbars_razziacounter - 1; publicVariable "mbars_razziacounter";
+	?(_gebaeude==15): mbar_status set [4,1]; mbars_razziacounter = mbars_razziacounter - 1; publicVariable "mbars_razziacounter";
+	
+	?(_gebaeude==21): bbar_status set [0,1]; bbars_razziacounter = bbars_razziacounter - 1; publicVariable "bbars_razziacounter";
+	?(_gebaeude==22): bbar_status set [1,1]; bbars_razziacounter = bbars_razziacounter - 1; publicVariable "bbars_razziacounter";
+	?(_gebaeude==23): bbar_status set [2,1]; bbars_razziacounter = bbars_razziacounter - 1; publicVariable "bbars_razziacounter";
+	?(_gebaeude==24): bbar_status set [3,1]; bbars_razziacounter = bbars_razziacounter - 1; publicVariable "bbars_razziacounter";
+	?(_gebaeude==25): bbar_status set [4,1]; bbars_razziacounter = bbars_razziacounter - 1; publicVariable "bbars_razziacounter";		
+	
+	?(_gebaeude==31): mcasino_status set [0,1];	mcasinos_razziacounter = mcasinos_razziacounter - 1; publicVariable "mcasinos_razziacounter";		
+	?(_gebaeude==32): mcasino_status set [1,1];	mcasinos_razziacounter = mcasinos_razziacounter - 1; publicVariable "mcasinos_razziacounter";					
+	?(_gebaeude==33): mcasino_status set [2,1];	mcasinos_razziacounter = mcasinos_razziacounter - 1; publicVariable "mcasinos_razziacounter";			
+	?(_gebaeude==34): mcasino_status set [3,1];	mcasinos_razziacounter = mcasinos_razziacounter - 1; publicVariable "mcasinos_razziacounter";				
+	?(_gebaeude==35): mcasino_status set [4,1];	mcasinos_razziacounter = mcasinos_razziacounter - 1; publicVariable "mcasinos_razziacounter";		
+	
+	?(_gebaeude==41): bcasino_status set [0,1];	bcasinos_razziacounter = bcasinos_razziacounter - 1; publicVariable "bcasinos_razziacounter";		
+	?(_gebaeude==42): bcasino_status set [1,1];	bcasinos_razziacounter = bcasinos_razziacounter - 1; publicVariable "bcasinos_razziacounter";				
+	?(_gebaeude==43): bcasino_status set [2,1];	bcasinos_razziacounter = bcasinos_razziacounter - 1; publicVariable "bcasinos_razziacounter";						
+	?(_gebaeude==44): bcasino_status set [3,1];	bcasinos_razziacounter = bcasinos_razziacounter - 1; publicVariable "bcasinos_razziacounter";						
+	?(_gebaeude==45): bcasino_status set [4,1];	bcasinos_razziacounter = bcasinos_razziacounter - 1; publicVariable "bcasinos_razziacounter";						
+	
+; und darf sich auch gerne wieder beenden
+
+exit;

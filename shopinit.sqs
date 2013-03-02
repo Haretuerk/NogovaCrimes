@@ -1,0 +1,34 @@
+; Shops können erpresst werden...
+
+
+Shopcontrol = []
+; Shopcontrol zeigt unter wessen kontrolle ein Shop ist: 0=frei, 1=Mafia, 2=Biker
+
+_count = count Shopowners
+_i = 0
+
+
+#init
+
+_z = Shopowners select _i
+
+;_z AddEventHandler [ "killed", { _this exec "zividead.sqs" } ]
+
+
+_z setbehaviour "careless"
+_z setcaptive true
+_z stop true
+
+Shopcontrol = Shopcontrol + [0]
+
+intimidate = _z addaction [localize "STR_ACTION_PROTECTION","Shoprob.sqs"]
+
+
+_i = _i + 1
+
+? (_i < _count) : goto "init"
+
+
+[] exec "shopcheck.sqs"
+
+exit

@@ -1,0 +1,105 @@
+? !(local player): exit
+
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+
+player switchmove "CommandFormation"
+
+? (side player==RESISTANCE):goto "cops"
+
+_cardealer = _this select 0
+_cardealer removeaction sellcar
+
+_i = 0
+_count = count topcars
+  #whichT
+  _vv = topcars select _i
+  ? (_vv distance player < 5): goto "sellcar"
+  _i = _i + 1
+  ? (_i < _count): goto "whichT"
+  goto "quit"
+
+
+#sellcar
+
+? !(alive _vv): hint "No car to sell."; goto "quit1"
+
+; #checkcardamage... - abzug beim verkaufspreis
+
+
+_crew = crew _vv
+"(_x) call GetOut" foreach _crew
+~2
+
+_vv setpos getpos soldcars
+deletevehicle _vv
+
+hint "Nice one... here's your money."
+
+
+;add playermoney
+; by haretuerk
+_carmoney = random 2000 + 3000
+_carmoney = _carmoney - (_carmoney) mod 1
+
+? (crimeranking >=3): _carmoney=_carmoney*1.15
+
+cash = cash + _carmoney;
+~2
+
+hint format ["You received %1$",_carmoney]
+
+;später: bezahlung abhängig von vehicletype... type of _vv == bla...
+
+
+#quit1
+
+sellcar = _cardealer addaction ["Sell Car","sellcar.sqs"];
+
+	crimerate = crimerate + c_cr_sellcar;
+	[getpos player,11] exec "crimescene_send.sqs"
+	[player,2,1] exec "statistics_send.sqs"
+	? (crimerate >= 360 AND !mepate): goto "pate"
+	? (crimerate >= 300 AND crimeranking<5): crimeranking=5; exit;
+	? (crimerate >= 250 AND crimeranking<4): crimeranking=4; exit;
+	? (crimerate >= 150 AND crimeranking<3): crimeranking=3; exit;
+	? (crimerate >= 90 AND crimeranking<2): crimeranking=2; exit;
+	? (crimerate >= 30 AND crimeranking<1): crimeranking=1; exit;
+
+exit
+
+#quit
+
+hint "Bring me a car, that is worth something..."
+sellcar = _cardealer addaction ["Sell Car","sellcar.sqs"];
+
+exit
+
+#cops
+
+hint "You can not sell a stolen car!\nTake it to a Police Station and get your reward!"
+
+exit
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;

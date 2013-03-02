@@ -1,0 +1,18 @@
+? !(local player): exit
+
+_bank = (nearestbuilding player)
+
+?((_bank == bankP) AND !(alive bankerP)): hint "Sorry. This bank is closed, because the banker is dead..."; exit 
+?((_bank == bankL) AND !(alive bankerL)): hint "Sorry. This bank is closed, because the banker is dead..."; exit  
+
+player removeaction bank_transfers
+bank_transfers = player addaction ["Withdraw/Deposit Money","Player\open_bankdialog.sqs"];
+
+
+
+? (side player==RESISTANCE): exit
+
+player removeaction robbank
+robbank = player addAction["Rob this bank!","bank_robbery.sqs"];
+
+exit

@@ -1,0 +1,46 @@
+? !(local server): exit
+
+_t = _this select 0
+_goal = _this select 1
+
+_taxi = taxis select _t
+_taxidriver = tdriver select _t
+
+
+? !(alive _taxi) OR !(alive _taxidriver): exit
+
+  _taxi stop false
+
+  taxiaktiv set [_t,2]
+  ;publicvariable "taxiaktiv"
+
+  _taxi setdammage 0
+  _taxi setfuel 1  
+  _taxidriver setdammage 0
+
+  _taxidriver MoveInDriver _taxi
+  ~1
+  
+  ? (driver _taxi != _taxidriver): exit
+   
+  _taxi SetBehaviour "safe"
+  _taxi SetSpeedMode "full"
+  _taxi domove getpos _goal
+
+
+@ unitready _taxi
+
+	~0.2
+  	_taxi setvelocity [0,0,0]
+  
+	getoutcar = _t
+	publicvariable "getoutcar"
+
+	~5
+	; paybill
+
+	taxiaktiv set [_t,0]
+
+
+exit
+

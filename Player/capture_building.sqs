@@ -1,0 +1,131 @@
+; Capture enemy building
+
+? !(vehicle player == player): hint localize "str_self_incar!"; exit
+? (side player==RESISTANCE):goto "cops"
+
+
+	player switchmove "CommandFormation"
+	
+	? (side player==EAST): goto "mafia"
+
+
+		#bikers
+	
+			_barmafia = nearestObject [player, "nc_bar_red"];
+			_casinomafia = nearestObject [player, "nc_casino_red"];
+
+			_nearest = _barmafia
+			? ((player distance _casinomafia)<(player distance _nearest)): _nearest = _casinomafia
+			
+			_altesgebaeude = typeOf _nearest;
+			
+			pV_check4razzia_answer = -1;			
+			pV_check4razzia_obj = _nearest
+			publicVariable "pV_check4razzia_obj"
+
+			
+			@(pV_check4razzia_answer > -1);
+				? (pV_check4razzia_answer == 82): hint localize "STR_BUILDING_RAZZIA"; exit;
+			
+			_position = getpos _nearest
+			_direction = getDir _nearest
+	
+		; altes Gebäude löschen
+				deleteVehicle (_nearest)			
+			
+	; alten Servereintrag löschen
+	
+			pV_do_the_capture_here_obj = _nearest
+			;player sidechat format["Capture Bikers: %1",pV_do_the_capture_here_obj];
+			publicVariable "pV_do_the_capture_here_obj"			
+		
+		
+	; neues Gebäude bauen
+			_neuesgeb_name = "nc_bar_blue";
+			_neuesgeb_nr = 21;
+			?(_altesgebaeude == "nc_casino_red" ): _neuesgeb_name = "nc_casino_blue"; _neuesgeb_nr = 22;
+			 _neuesgeb = _neuesgeb_name  createVehicle [0,0,0]
+			 _neuesgeb setdir _direction;
+			 _neuesgeb setpos _position
+	~1		 
+	; neuen Servereintrag setzen
+			newbuilding_obj = _neuesgeb;
+			newbuilding = _neuesgeb_nr;
+			publicVariable "newbuilding_obj"
+			publicVariable "newbuilding"
+			
+	; Neuen Marker setzen
+			[_neuesgeb_nr,_position] exec "Player\set_build_marker.sqs"
+	
+	; Bestätigung
+		player sidechat localize "STR_BUILDING_CAPTURED"
+		
+		
+	; Statistikeintrag
+		_statnummer = [18,17] select ((_neuesgeb_name == "nc_bar_red") OR (_neuesgeb_name == "nc_bar_blue"))
+		[player,_statnummer,1] exec "statistics_send.sqs"
+		
+	exit
+
+	#mafia
+		; erstmal rausfinden, welches Gebäude denn überhaupt am nächsten ist...
+
+		_barbiker = nearestObject [player, "nc_bar_blue"];
+		_casinobiker = nearestObject [player, "nc_casino_blue"];
+		
+			_nearest = _barbiker
+			? ((player distance _casinobiker)<(player distance _nearest)): _nearest = _casinobiker
+			
+			_altesgebaeude = typeOf _nearest;
+			
+			pV_check4razzia_answer = -1;			
+			pV_check4razzia_obj = _nearest
+			publicVariable "pV_check4razzia_obj"
+			
+			@(pV_check4razzia_answer > -1);
+				? (pV_check4razzia_answer == 82): localize "STR_BUILDING_RAZZIA"; exit;
+			
+			_position = getpos _nearest
+			_direction = getDir _nearest
+	
+		; altes Gebäude löschen
+				deleteVehicle (_nearest)
+				
+			
+	; alten Servereintrag löschen
+	
+			pV_do_the_capture_here_obj = _nearest
+			;player sidechat format["Capture Mafia: %1",pV_do_the_capture_here_obj];
+			publicVariable "pV_do_the_capture_here_obj"
+		
+			
+	; neues Gebäude bauen
+			_neuesgeb_name = "nc_bar_red";
+			_neuesgeb_nr = 11;
+			?(_altesgebaeude == "nc_casino_blue" ): _neuesgeb_name = "nc_casino_red"; _neuesgeb_nr = 12;
+			 _neuesgeb = _neuesgeb_name  createVehicle [0,0,0]
+			 _neuesgeb setdir _direction;
+			 _neuesgeb setpos _position
+			 
+	~1		 
+	; neuen Servereintrag setzen
+			newbuilding_obj = _neuesgeb;
+			newbuilding = _neuesgeb_nr;
+			publicVariable "newbuilding_obj"
+			publicVariable "newbuilding"
+			
+	; Neuen Marker setzen
+			[_neuesgeb_nr,_position] exec "Player\set_build_marker.sqs"
+	
+	; Bestätigung
+		player sidechat localize "STR_BUILDING_CAPTURED"
+
+	; Statistikeintrag
+		_statnummer = [18,17] select ((_neuesgeb_name == "nc_bar_red") OR (_neuesgeb_name == "nc_bar_blue"))
+		[player,_statnummer,1] exec "statistics_send.sqs"
+
+	exit;
+
+#cops
+	hint "Whooooooot?"
+exit

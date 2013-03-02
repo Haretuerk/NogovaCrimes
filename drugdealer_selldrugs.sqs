@@ -1,0 +1,115 @@
+;sell weed
+;by haretuerk
+
+
+? !(alive drugdealer): goto "dead"
+? !(vehicle player == player): hint localize "STR_OUTOFCAR"; exit
+
+;Preis pro Päckchen
+_price = c_earning_weed;
+
+? (ge1 == Player) AND (pf6) : hint localize "str_self_feigned"; exit
+? (ge2 == Player) AND (pf7) : hint localize "str_self_feigned"; exit
+? (ge3 == Player) AND (pf8) : hint localize "str_self_feigned"; exit
+? (ge4 == Player) AND (pf9) : hint localize "str_self_feigned"; exit
+? (ge5 == Player) AND (pf10) : hint localize "str_self_feigned"; exit
+? (ge6 == Player) AND (pf11) : hint localize "str_self_feigned"; exit
+
+? (gg1 == Player) AND (pf12) : hint localize "str_self_feigned"; exit
+? (gg2 == Player) AND (pf13) : hint localize "str_self_feigned"; exit
+? (gg3 == Player) AND (pf14) : hint localize "str_self_feigned"; exit
+? (gg4 == Player) AND (pf15) : hint localize "str_self_feigned"; exit
+? (gg5 == Player) AND (pf16) : hint localize "str_self_feigned"; exit
+? (gg6 == Player) AND (pf17) : hint localize "str_self_feigned"; exit
+
+
+player switchmove "CommandFormation"
+
+?(side player==RESISTANCE):goto "cops"
+
+
+
+; prüfen ob player überhaupt drogen hat
+? (weedpackages < 20 ): goto "suckit"
+
+
+drugdealer_ist_bereit= false
+publicvariable "drugdealer_ist_bereit"
+
+	drugdealer setbehaviour "careless"
+
+	; auch hier: Kaputte Variable abfangen 
+	_weedpackagesstring = format ["%1", weedpackages]
+	? (_weedpackagesstring == "scalar bool array string 0xfcffffef"): weedpackages = 0;
+
+		
+	[getpos drugdealer,1] exec "crimescene_send.sqs"
+
+	_hunger = 100
+	
+	? (weedpackages > _hunger) : _soldpackages = _hunger;
+	? (weedpackages < _hunger) : _soldpackages = weedpackages;
+
+	;weil der Druglord gut bezahlt:
+	_price=_price+10
+	
+	? (crimeranking >=3): _price=_price+10
+	
+	cash = cash + (_soldpackages * _price);
+	weedpackages = weedpackages - _soldpackages;
+		
+	_costs	= _soldpackages * _price;
+
+	
+	titletext [localize "str_nsc_druglord_deal","plain down"];
+	hint format [localize "STR_NSC_DRUGLORD_SOLD",_soldpackages,_costs]
+	
+	[player,4,_soldpackages] exec "statistics_send.sqs"
+
+	crimerate = crimerate + (c_cr_sellweed*3);
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; exit;
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";exit;
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";exit;
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";exit;
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";exit;
+
+
+exit;
+
+#dontneed
+	hint "I dont need any drugs at this moment!"
+exit
+
+#suckit
+	drugdealer setcombatmode "green"
+	drugdealer setunitpos "up"
+	drugdealer setbehaviour "aware"
+	drugdealer dotarget player
+	titletext [localize "str_nsc_druglord_nodeal","plain down"]
+exit
+
+#cops
+	titlecut [localize "str_cop_deny","BLACK IN",5]
+exit
+
+
+#pate
+
+	crimeranking=6; 
+	mepate=true;
+	player groupchat localize "STR_SELF_NOWCRIMELORD";
+	?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+	?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;
+
+#dead
+
+	hint localize "str_self_g_deadvictim"; 
+	drugdealer_ist_bereit= false
+	publicvariable "drugdealer_ist_bereit"
+
+exit
+
+

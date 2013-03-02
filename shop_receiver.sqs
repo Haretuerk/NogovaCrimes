@@ -1,0 +1,69 @@
+; shop_receiver.sqs
+; by Haretuerk
+;receives signal from shoprequester.sqs
+
+
+? !(local player): exit
+
+;player globalChat "shop_receiver.sqs erfolgreich gestartet! :)"
+
+oldshoprobbed = -1;
+newshoprobbed = -1;
+newshopcontroler = -1;
+oldshopcontroler = -1;
+
+#loop
+
+	@ (newshoprobbed!=oldshoprobbed) OR (newshopcontroler!=oldshopcontroler)
+	
+	
+	;player globalChat "da tut sich was..."
+
+	
+	markername = format["shopm_%1",newshoprobbed]
+	
+
+	
+	oldshoprobbed = newshoprobbed;
+	oldshopcontroler = newshopcontroler;
+	
+	~1
+	;hint format["New shop robbed! \nName: %1\nColor: %2",markername,Shopcontroler];
+	
+	;Cop-Smilies
+	
+	? (Shopcontroler==0): goto "cops"
+	? (Shopcontroler==1): goto "mafia"
+	? (Shopcontroler==2): goto "bikers"
+	? (Shopcontroler==3): goto "dead"
+	
+
+	goto "loop"
+	
+	#cops
+	
+	
+		markername setmarkertype "smiley1_Marker"; 
+		markername setmarkercolor "ColorGreen"; 
+	goto "loop"
+
+
+	
+	#mafia
+	
+		markername setmarkertype "smiley3_Marker"; 
+		markername setmarkercolor "MAP_rot1"; 
+	goto "loop"
+
+
+	#bikers
+	
+		markername setmarkertype "smiley3_Marker"; 
+		markername setmarkercolor "MAP_blau1"; 
+	goto "loop"
+
+
+	#dead
+		markername setmarkertype "empty"; 
+	goto "loop"
+

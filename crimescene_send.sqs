@@ -1,0 +1,73 @@
+; crimescene sender
+; by Haretuerk 18.4.08
+
+_pos = _this select 0;
+_crimetype = _this select 1;
+
+_h = "HeliHEmpty" createVehicle [0,0,0]
+_h setpos _pos
+	
+	
+		? ((_h distance glmodra) <= 550 ) : _ort = 0; goto "hop";
+		? ((_h distance glmok) <= 450 ) :_ort = 1; goto "hop";
+		? ((_h distance gldol) <= 450 ) : _ort = 2; goto "hop";
+		? ((_h distance gltros) <= 450 ) :_ort = 3; goto "hop";
+		? ((_h distance glmir) <= 450 ) : _ort = 4; goto "hop";
+		? ((_h distance glop) <= 450 ) : _ort = 5; goto "hop";
+		? ((_h distance glvart) <= 450 ) : _ort = 6; goto "hop";
+		? ((_h distance gllouk) <= 450 ) : _ort = 7; goto "hop";
+		? ((_h distance glbla) <= 450 ) : _ort = 8; goto "hop";
+		? ((_h distance glair) <= 450 ) : _ort = 9; goto "hop";
+		? ((_h distance GLPet) <= 450 ) : _ort = 10; goto "hop";
+		? ((_h distance GLmall) <= 450 ) : _ort = 11; goto "hop"; 
+		? ((_h distance glslap) <= 250 ) : _ort = 28; goto "hop";
+		? ((_h distance glfry) <= 250 ) : _ort = 12; goto "hop";
+		? ((_h distance glko) <= 300 ) : _ort = 13; goto "hop";
+		? ((_h distance glps) <= 450 ) : _ort = 14; goto "hop";
+		? ((_h distance glvel) <= 450 ) : _ort = 15; goto "hop";
+		? ((_h distance glbit) <= 450 ) : _ort = 16; goto "hop";
+		? ((_h distance gllan) <= 450 ) : _ort = 17; goto "hop";
+		? ((_h distance glvid) <= 450 ) : _ort = 18; goto "hop";
+		? ((_h distance glnev) <= 450 ) : _ort = 19; goto "hop";
+		? ((_h distance gldav) <= 450 ) : _ort = 20; goto "hop";
+		? ((_h distance glbor) <= 450 ) : _ort = 21; goto "hop";
+		? ((_h distance gllip) <= 450 ) : _ort = 22; goto "hop";
+		? ((_h distance glokr) <= 450 ) : _ort = 23; goto "hop";
+		? ((_h distance glpep) <= 450 ) : _ort = 25; goto "hop";
+		? ((_h distance glst) <= 450 ) : _ort = 24; goto "hop";
+		? ((_h distance gllil) <= 450 ) : _ort = 27; goto "hop";
+		? ((_h distance glhare) <= 450 ) : _ort = 29; goto "hop";
+		_ort = 26;
+		
+		#hop
+		
+		deleteVehicle _h
+		
+
+
+	
+	
+	
+	crimepos_x = _pos select 0;
+	crimepos_y = _pos select 1;
+	
+	crime_ort = _ort;
+	publicVariable "crime_ort"
+	
+	crime_art = _crimetype;
+	publicVariable "crime_art"
+	
+	
+	publicVariable "crimepos_x" 
+	publicVariable "crimepos_y" 
+	
+	csm = csm + 1
+	? (csm==11): csm=1; 
+	PublicVariable "csm"
+
+
+	crimecommitted = true;
+	publicVariable "crimecommitted" 
+	
+
+exit; 

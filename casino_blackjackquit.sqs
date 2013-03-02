@@ -1,0 +1,9 @@
+; Quit. End Black Jack
+; by Haretuerk
+; this script is part of the black jack script casino_blackjack.sqs
+
+blackjackweiter = 3;
+
+
+
+exit;

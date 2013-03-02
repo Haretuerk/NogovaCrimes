@@ -1,0 +1,107 @@
+;Fallschirmabwurf einer Unit
+;
+; (Jo) 06.06.2002
+;
+; Aufrufbeispiel: [Player,getpos Player,150,true,"Absprung im Zielgebiet!",getMarkerPos"XY"] exec "Fallschirm.sqs"
+;
+; 	OUTPUT: AbsprungOK = true zeigt an, daß Absprung erfolgte
+;
+
+;Erforderliche Parameter:
+
+;Name Fallschirmspringer
+_unit   = _this select 0
+;Position des Fallschirms
+_pos    = _this select 1
+;Höhe des Fallschirms
+_hoch   = _this select 2
+;Kameraszene wenn true
+_kamera = _this select 3
+;Text
+_text   = _this select 4
+;Position der Blickrichtung beim Absprung
+_blick   = _this select 5
+
+? not alive _unit : exit
+
+;Himmelsrichtung zur Zielmitte feststellen.
+_grad = ((_pos select 0)-(_blick select 0)) atan2 ((_blick select 1)-(_pos select 1)) 
+? _grad > 0 : _grad = 360 - _grad; goto "Grad1"	
+_grad = abs _grad	
+#Grad1
+_grad = _grad - _grad%1
+
+;Seite abfragen
+? side _unit == WEST       : goto "West"
+? side _unit == EAST       : goto "Ost"
+? side _unit == RESISTANCE : goto "Res"
+goto "Ziv"
+
+;Fallschirm auf Höhe setzen
+#Hoch
+_schirm setPos [_pos select 0, _pos select 1, _hoch]
+
+;Spieler aus Fahrzeug entfernen (mit max. 100 Versuchen)
+_nochmal = 0
+#Nochmal
+_unit action["eject",vehicle _unit]
+~0.1
+? _unit in _unit : goto "Ausgestiegen"
+_nochmal = _nochmal + 1
+? _nochmal > 100 : goto "Ausgestiegen"
+goto "Nochmal"
+#Ausgestiegen
+
+;Fallschirm auf Zielmitte ausrichten
+_schirm setDir _grad
+;Spieler an den Fallschirm hängen
+_unit moveindriver _schirm
+
+;Variable für Rückmeldung daß Absprung erfolgt ist
+AbsprungOK = true
+
+;Textausgabe
+? _text != "" : TitleText [_text,"Plain"]
+
+;kurze Kamerszene ?
+? not _kamera : goto "Warten"
+;Initialisiere Kamera
+_cam = "camera" camcreate getpos _schirm
+_cam cameraeffect ["internal", "back"]
+;auf das Objekt ausrichten
+_cam camsettarget _schirm
+; Kamera positionieren [Seite, Entfernung, Höhe]
+_cam camSetRelPos [0,-150,0]
+;Dauer der Sequenz
+_cam CamCommit _hoch/10
+; Einstellung aktivieren
+@camCommitted _cam
+;Kamera abschalten
+#Ende
+_cam cameraeffect ["terminate", "back"]
+camdestroy _cam
+
+
+;Springer-Dir zum Fallschirm ausrichten
+_schirm setDir _grad
+#Warten
+~0.1
+_unit setdir getdir _schirm
+;Fallschirm zerstört?
+? not alive _schirm : exit
+goto "Warten"
+
+;Fallschirm erstellen
+;!!! nach createVehicle werden weitere Befehle in der Zeile ignoriert !!!
+#West
+_schirm = "ParachuteWest" createVehicle [0,0]
+goto "Hoch"
+#Ost
+_schirm = "ParachuteEast" createVehicle [0,0]
+goto "Hoch"
+#Res
+_schirm = "ParachuteG"    createVehicle [0,0]
+goto "Hoch"
+#Ziv
+_schirm = "ParachuteC"    createVehicle [0,0]
+goto "Hoch"

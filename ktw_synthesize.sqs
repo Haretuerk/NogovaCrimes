@@ -1,0 +1,47 @@
+? !(local player): exit
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+?(side player==RESISTANCE):goto "cops"
+
+player switchmove "CommandFormation"
+
+
+; prüfen ob player überhaupt medis hat
+? (medicines < 1 ): goto "nomedis"
+
+_medis = medicines;
+_randomfactor = 0.75 + random 0.75;
+_newnarcotics = medicines * _randomfactor;
+
+_newnarcotics = _newnarcotics - (_newnarcotics) mod 1;
+
+narcotics = narcotics + _newnarcotics;
+medicines = 0;
+
+player sidechat format ["You were able to synthesize %1 doses of Angel Dust out of the %2 medicines you had stolen",_newnarcotics,_medis];
+
+[player,6,_newnarcotics] exec "statistics_send.sqs"
+
+exit
+
+
+#nomedis
+
+player groupchat "You do not have any medicines to synthesize";
+
+exit

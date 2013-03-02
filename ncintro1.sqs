@@ -1,0 +1,22 @@
+playsound "playdeadin"
+
+titlecut ["","black out",0.000001];
+~0.5
+titleRsc ["kflogo","black faded"]
+~8.5
+titleRsc ["ppic","black faded"]
+~6
+titleRsc ["nclogo","black faded"]
+~6
+titleRsc ["mpblub","black faded"]
+~6
+titleRsc ["pephare","black faded"]
+~1
+;titleCut ["","black in"]
+
+?(side player == RESISTANCE): player addweapon "pep_csshell";
+~1
+introready=1
+publicvariable "introready"
+~1
+exit

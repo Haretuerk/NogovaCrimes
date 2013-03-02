@@ -1,0 +1,329 @@
+? !(local server): exit
+
+_countZ = count zivis
+_countW = count women
+_countJ = count junkies
+_countS = count shops
+_countk = count KTWs
+_countctd = count ctdrivers
+
+_1stlongloopstart=true
+
+
+#mainloop 
+	
+	_timer=0
+	
+
+
+	#shortloop
+
+	;manche sachen sollen einfach öfter & schneller gecheckt werden.
+		_i = 0	
+
+		#ziviloop
+			_zivi = zivis select _i	
+			? !(alive _zivi) : goto "nextz"
+			? ((getdammage _zivi) >= 0.2): _zivi setbehaviour "aware"; _zivi stop false;
+			? ((getdammage _zivi) < 0.2): _zivi setbehaviour "careless"
+			
+			; wenn der geiselnehmer sich zu weit von der geisel entfernt, ist sie keine geisel mehr.
+			;? ((_zivi distance leader group _zivi > 50) AND (side leader group _zivi != Civilian)): [_zivi] join GrpNull
+
+			; falls der spieler der geisel eine waffe in die hand gibt, weil er glaubt dass sie ja in seinem team ist, wird die geisel auf ihn schießen ;)
+			;? (side leader group _zivi ==RESISTANCE ): removeallweapons _zivi
+			;? (side leader group _zivi !=Civilian ): _zivi dofire leader group _zivi
+
+			;falls zivi geisel war und in fahrzeug, soll er aussteigen
+			;? ((side leader group _zivi ==Civilian) AND (vehicle _zivi !=_zivi)): unassignvehicle _zivi; _zivi call GetOut;
+
+			#nextz
+			_i= _i + 1
+		? (_i < _countZ): goto "ziviloop" 
+		
+		~1
+
+
+		_i = 0
+
+		#womenloop
+			_zivi = women select _i
+			;check ob women = prostitute ?... dann die entfernung nicht vom geiselnehmer, sondern von bordell messen...
+			? !(alive _zivi) : womencontrol set [_i,0]; goto "nextw"
+			? (getdammage _zivi >= 0.2): _zivi setbehaviour "aware"; _zivi stop false;
+			? (getdammage _zivi < 0.2) AND (count weapons _zivi <1): _zivi setbehaviour "careless"
+			
+			; wenn der geiselnehmer sich zu weit von der geisel entfernt, ist sie keine geisel mehr.
+			? ((_zivi distance leader group _zivi > 60) AND (side leader group _zivi != Civilian)): [_zivi] join GrpNull; _zivi setbehaviour "safe"
+
+			; falls der spieler der geisel eine waffe in die hand gibt, weil er glaubt dass sie ja in seinem team ist, wird die geisel auf ihn schießen ;)
+			
+			? ((count weapons _zivi > 0) AND (side leader group _zivi ==RESISTANCE )): removeallweapons _zivi
+			? ((count weapons _zivi > 0) AND (side leader group _zivi !=Civilian)): _kidnapper = (leader group _zivi); _zivi setbehaviour "aware"; _zivi dotarget _kidnapper; _zivi dofire _kidnapper; [_zivi] join GrpNull;
+
+			
+			;falls zivi geisel war und in fahrzeug, soll er aussteigen
+			? ((side leader group _zivi ==Civilian) AND (vehicle _zivi !=_zivi)): unassignvehicle _zivi; _zivi call GetOut;
+
+			;check für bordelle:
+			_bordellm = nearestobject [_zivi,"nc_brothel_red"]
+			? ((_zivi distance _bordellm <50) AND (side leader group _zivi ==east) AND (womencontrol select _i !=1)): womencontrol set [_i,1]; [_zivi] join GrpNull; _zivi domove getpos _bordellm; hint "hooker for mafia";
+			_bordellb = nearestobject [_zivi,"nc_brothel_blue"]
+			? ((_zivi distance _bordellb <50) AND (side leader group _zivi ==west) AND (womencontrol select _i !=2)): womencontrol set [_i,2]; [_zivi] join GrpNull; _zivi domove getpos _bordellb; hint "hooker for bikers";   
+			; hooker befreien + belohnung für befreiung...  
+			? (((_zivi distance _bordellm >50) OR (_zivi distance _bordellb >50)) AND (side leader group _zivi ==RESISTANCE) AND (womencontrol select _i !=0)): womencontrol set [_i,0]; accountpolice = accountpolice + c_pr_free_woman; publicVariable "accountpolice"; _zivi groupChat format ["Thank you for saving me, Officer %1",name (leader group _zivi)]; 	[player,4,1] exec "statistics_send.sqs";
+			? ((_zivi distance _bordellm >50) AND (womencontrol select _i ==1)): womencontrol set [_i,0]; hint "women free"
+			? ((_zivi distance _bordellb >50) AND (womencontrol select _i ==2)): womencontrol set [_i,0]; hint "women free"
+
+			#nextw
+			_i= _i + 1
+		? (_i < _countW): goto "womenloop" 
+
+
+		~1
+
+		_i = 0
+
+		#shoploop
+			? !(alive (shopowners select _i)): shopcontrol set [_i,0]; 
+
+			_i = _i + 1
+					
+		? (_i < _count) : goto "shoploop"
+		
+		~1	
+
+		;~3 Pausen jetzt zwischen den kleinen loops, aber immer noch insegsamt 3 sec...
+		_timer=_timer+1
+
+		;glpet globalchat format ["looptime=%1",_timer]
+
+		;ca. alle 5 min... läuft der longloop)
+		?(_1stlongloopstart): goto "longloop"
+		
+		;extra civil-traffic doppelt so oft wie anderes im longloop:
+		?(_timer==50): _i=0; goto "longloopct"
+		?(_timer>=100): goto "longloop"
+		
+
+	goto "shortloop"
+
+
+
+
+	#longloop
+	; was länger dauert... zivis geld geben, junkiehunger, usw...
+
+	_1stlongloopstart=false
+
+	;player sidechat "ncs_check: longloop started..."
+	
+		_i = 0
+
+		#longloopJ
+			_hungerbisher = junkieshunger select _i 
+		
+			_hunger = (random 4)+3
+			_hunger = _hunger - (_hunger) mod 1
+			_hunger = _hungerbisher + _hunger;
+		
+			;Begrenzung einbauen (max 12): 
+			?(_hunger > 12):_hunger = 12;
+					
+			junkieshunger set [_i,_hunger]
+		
+			_i = _i + 1
+		? (_i < _countJ) : goto "longloopJ"
+
+	~1
+		_i = 0
+		
+		#longloopZ
+		;zivi-Gehalt für lebende Nicht-Geiseln ;)
+			_zivi = zivis select _i	
+			? ((side leader group _zivi !=Civilian ) OR !(alive _zivi)): goto "checkzl"
+			_m=((random 110) + 40); 
+			_m = _m - (_m) mod 1;
+			;neues Geld ersetzt altes Geld, nicht kumulativ 
+			zivimoney set [_i,_m]
+
+			#checkzl
+			_i = _i + 1
+		? (_i < _countZ) : goto "longloopZ"
+
+	~1	
+	
+		_i = 0
+	
+		#longloopW
+		;women-Gehalt für lebende Nicht-prostituierte Nicht-Geiseln ;)
+			_zivi = women select _i	
+			? ((side leader group _zivi !=Civilian ) OR !(alive _zivi) OR (womencontrol select _i !=0)): "checkwl"
+			;? abfrage ob prostitute, dann gibt´s kein gehalt, sondern Geld auf´s Gangsterkonto... aber nicht hier sondern im paycheck.sqs
+			_m=((random 110) + 40); 
+			_m = _m - (_m) mod 1;
+			;neues Geld ersetzt altes Geld, nicht kumulativ 
+			womenmoney set [_i,_m]
+
+			#checkwl
+			_i = _i + 1
+		? (_i < _countW) : goto "longloopW"
+
+	~1
+
+		_i = 0
+	
+		#longloopk
+		;ktws fahren von Ort zu Ort, wobei die distanz zwischen start & ziel nicht größer als 3000 m sein soll.
+			_car = (KTWs select _i)	
+			_zivi = driver (KTWs select _i)	
+			;player globalchat format ["ktwdriver = %1, KTW= %2, speedktw =%3",_zivi,_car,speed _car]
+			? !(alive _zivi) OR !(alive _car) OR ((speed _car) >5) : goto "nextk"
+
+			#getrandom
+
+				_kr = random 28;
+	
+				? (_kr<=1): _target = glbit; goto "goalpicked"
+				? (_kr<=2): _target = gldav; goto "goalpicked"
+				? (_kr<=3): _target = gldol; goto "goalpicked"
+				? (_kr<=4): _target = gllan; goto "goalpicked"
+				? (_kr<=5): _target = gljou; goto "goalpicked"
+				? (_kr<=6): _target = glko; goto "goalpicked"
+				? (_kr<=7): _target = glokr; goto "goalpicked"
+				? (_kr<=8): _target = glop; goto "goalpicked"
+				? (_kr<=9): _target = glpep; goto "goalpicked"
+				? (_kr<=10): _target = glskal; goto "goalpicked"
+				? (_kr<=11): _target = glslap; goto "goalpicked"
+				? (_kr<=12): _target = glair; goto "goalpicked"
+				? (_kr<=13): _target = glst; goto "goalpicked"
+				? (_kr<=14): _target = gltros; goto "goalpicked"
+				? (_kr<=15): _target = glvart; goto "goalpicked"
+				? (_kr<=16): _target = glvel; goto "goalpicked"
+				? (_kr<=17): _target = glvid; goto "goalpicked"
+				? (_kr<=18): _target = glmir; goto "goalpicked"
+				? (_kr<=19): _target = glbor; goto "goalpicked"
+				? (_kr<=20): _target = glnev; goto "goalpicked"
+				? (_kr<=21): _target = glmok; goto "goalpicked"
+				? (_kr<=22): _target = gllouk; goto "goalpicked"
+				? (_kr<=23): _target = glbla; goto "goalpicked"
+				? (_kr<=24): _target = glmall; goto "goalpicked"
+				? (_kr<=15): _target = glpet; goto "goalpicked"
+				? (_kr<=26): _target = gllip; goto "goalpicked"
+				? (_kr<=27): _target = gllil; goto "goalpicked"
+				_target = glmodra; goto "goalpicked"
+	
+			#goalpicked
+			? (_car distance _target < 100): goto "getrandom"
+			? (_car distance _target > 3000): goto "getrandom"
+			
+			_wire = nearestobject [_car,"wire"]
+			? (_car distance _wire <=5): [_wire] exec "removeb_nsc.sqs";
+				
+			? !(alive _zivi) OR !(alive _car): goto "nextk"
+			_car setdammage 0
+			_zivi setdammage 0
+
+			_zivi stop false
+			;_zivi assignAsDriver _car
+			;[_zivi] orderGetIn true
+
+			_zivi moveindriver _car			
+			
+			_car stop false
+			_car setfuel 1
+			_h = "HeliHEmpty" createVehicle (getpos _target)
+			_zivi domove (getpos _h)
+			
+			;neu beladen, nur wenn er weiterfährt, darum ist das an dieser stelle:
+			_m =((random 9) + 6); 
+			_m = _m - (_m) mod 1;
+			ktwmedis set [_i,_m]			
+
+			~2
+			;player globalchat format ["ktwdriver = %1, KTW= %2, speedktw =%3",_zivi,_car,speed _car]
+				
+			#nextk
+			_i = _i + 1
+		? (_i < _countk) : goto "longloopk"
+
+	~1
+
+	_i = 0
+	
+		#longloopct
+		;civil traffic wie ktws...
+			_car = (ctcars select _i)	
+			_zivi = driver (ctdrivers select _i)	
+
+			? !(alive _zivi) OR !(alive _car) OR ((speed _car) >5) : goto "nextct"
+			
+			? (_zivi in women): if ((side leader group _zivi !=Civilian ) OR (womencontrol select _i !=0)) then {goto "nextct"};
+
+			#getrandomct
+
+				_ctr = random 28;
+	
+				? (_ctr<=1): _target = glbit; goto "goalpickedct"
+				? (_ctr<=2): _target = gldav; goto "goalpickedct"
+				? (_ctr<=3): _target = gldol; goto "goalpickedct"
+				? (_ctr<=4): _target = gllan; goto "goalpickedct"
+				? (_ctr<=5): _target = gljou; goto "goalpickedct"
+				? (_ctr<=6): _target = glko; goto "goalpickedct"
+				? (_ctr<=7): _target = glokr; goto "goalpickedct"
+				? (_ctr<=8): _target = glop; goto "goalpickedct"
+				? (_ctr<=9): _target = glpep; goto "goalpickedct"
+				? (_ctr<=10): _target = glskal; goto "goalpickedct"
+				? (_ctr<=11): _target = glslap; goto "goalpickedct"
+				? (_ctr<=12): _target = glair; goto "goalpickedct"
+				? (_ctr<=13): _target = glst; goto "goalpickedct"
+				? (_ctr<=14): _target = gltros; goto "goalpickedct"
+				? (_ctr<=15): _target = glvart; goto "goalpickedct"
+				? (_ctr<=16): _target = glvel; goto "goalpickedct"
+				? (_ctr<=17): _target = glvid; goto "goalpickedct"
+				? (_ctr<=18): _target = glmir; goto "goalpickedct"
+				? (_ctr<=19): _target = glbor; goto "goalpickedct"
+				? (_ctr<=20): _target = glnev; goto "goalpickedct"
+				? (_ctr<=21): _target = glmok; goto "goalpickedct"
+				? (_ctr<=22): _target = gllouk; goto "goalpickedct"
+				? (_ctr<=23): _target = glbla; goto "goalpickedct"
+				? (_ctr<=24): _target = glmall; goto "goalpickedct"
+				? (_ctr<=15): _target = glpet; goto "goalpickedct"
+				? (_ctr<=26): _target = gllip; goto "goalpickedct"
+				? (_ctr<=27): _target = gllil; goto "goalpickedct"
+				_target = glmodra; goto "goalpickedct"
+	
+			#goalpickedct
+			? (_car distance _target < 100): goto "getrandomct"
+			? (_car distance _target > 3000): goto "getrandomct"
+			
+			_wire = nearestobject [_car,"wire"]
+			? (_car distance _wire <=5): [_wire] exec "removeb_nsc.sqs";
+				
+			? !(alive _zivi) OR !(alive _car): goto "nextct"
+			_car setdammage 0
+			_zivi setdammage 0
+
+			_zivi stop false
+			;_zivi assignAsDriver _car
+			;[_zivi] orderGetIn true
+
+			_zivi moveindriver _car			
+			
+			_car stop false
+			_car setfuel 1
+			_h = "HeliHEmpty" createVehicle (getpos _target)
+			_zivi domove (getpos _h)
+	
+			~2
+				
+			#nextct
+			_i = _i + 1
+		? (_i < _countctd) : goto "longloopct"
+
+	~1
+;player groupchat "going to shortloops"
+
+goto "mainloop"
+			
+			

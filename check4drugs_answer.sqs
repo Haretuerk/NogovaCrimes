@@ -1,0 +1,35 @@
+; ask4drugsanswer
+; by Haretuerk
+
+; nur auf den Clients, da der Server nie Drogen bei sich hat
+? !(local player): exit;
+
+#loop
+
+	@(!(isNull ask4drugs) AND (ask4drugs==player))
+	
+		
+	ask4drugs = objNull
+	publicVariable "ask4drugs"
+	
+	
+	ask4drugsanswer = weedpackages;
+	publicVariable "ask4drugsanswer"
+
+	ask4drugsanswerA = narcotics;
+	publicVariable "ask4drugsanswerA"
+	
+	
+	? (weedpackages > 1) OR (narcotics > 0) :goto "habick"
+		hint "Get your dirty fingers off me! You wont find any drugs!"
+		goto "loop"
+		
+	#habick
+
+	? ((weedpackages > 1) AND (narcotics < 1)): hint format["Shit, that cop took my %1 packages of weed.", weedpackages]; weedpackages = 0;
+	? ((weedpackages > 1) AND (narcotics > 0)): hint format["Shit, that cop took my %1 packages of weed and my %2 doses of Angel Dust", weedpackages,narcotics]; weedpackages = 0; narcotics =0;
+	? ((weedpackages < 2) AND (narcotics > 0)): hint format["Shit, that cop took my %1 doses of Angel Dust",narcotics]; narcotics =0;
+	
+	
+
+goto "loop"

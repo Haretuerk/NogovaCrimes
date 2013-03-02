@@ -1,0 +1,85 @@
+_victim = _this select 0
+_killer = _this select 1
+
+  [_victim] exec "crime.sqs"
+
+civkilled = _victim
+publicvariable "civkilled"
+
+civkiller = _killer
+publicvariable "civkiller"
+
+  {_x reveal _killer} foreach bankguardsp
+
+  {_x dotarget _killer} foreach bankguardsp
+  {_x stop false} foreach bankguardsp
+  {_x setcombatmode "RED"} foreach bankguardsp
+  {_x Setbehaviour "COMBAT"} foreach bankguardsp
+  {_x dofire _killer} foreach bankguardsp
+
+  removeallweapons _victim
+
+_i=0
+_count= count bankguardsp
+
+
+#searchman
+
+	_man = bankguardsp select _i
+	?(_man == _victim): goto "manfound"
+	"_man reveal _x" foreach bankguardsp
+	_i=_i+1
+	?_i < _count : goto "searchman"	
+
+	hint "error in securtiydead P"
+
+
+#manfound
+
+	~30
+	deletevehicle _victim
+	
+	@(isNull newguard)
+	_newman = "ArtSecurityP" createUnit [getpos spawnpos,dummy_west,"[this] join grpnull; newguard=this;",1.0,"PRIVATE"];
+
+	~120	
+
+	bankguardsp set [_i,newguard]
+	
+	_newguy = bankguardsp select _i
+
+	newguard=objnull
+
+	;newguard = bankguards select _i
+	;newguard setpos getpos (pguardslogics select _i); 
+	;newguard setDir getDir (pguardslogics select _i);
+	
+	~2
+	_newguy setpos (pguardspos select _i);
+
+	removeallweapons _newguy
+
+	_newguy AddMagazine "ak74"
+	_newguy AddWeapon "ak74"
+	_newguy AddMagazine "ak74"
+	_newguy AddMagazine "ak74"
+	_newguy AddMagazine "ak74"
+	_newguy AddMagazine "ak74"
+
+	_newguy SetCombatMode "yellow"
+
+	_newguy AddEventHandler ["killed",{ _this exec "securitydeadp.sqs" }]
+
+	_newguy AllowFleeing  0
+
+	hint format ["newguard created=%1\nguardsp=%2",_newguy,bankguardsp] 
+
+	~10
+	_newzpos = getpos newguy select 2
+	? (_newzpos<3): _newguy setpos (pguardspos select _i); 
+
+exit
+
+	
+
+

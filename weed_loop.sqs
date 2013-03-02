@@ -1,0 +1,63 @@
+; weed loop
+; laesst die Pflanzen wachsen
+; lets the weed grow
+; by Haretuerk
+
+
+; nur aufm Server
+	;? !(local server): exit
+
+; muss auf clients laufen
+
+#loop
+
+~c_weedgrowingrate
+
+  	_count = count weedfields
+   ? (_count<1): goto "loop"
+	_j = 0;
+	#loopb
+		
+		
+		_feld = weedfields select _j;
+		_hoehe = _feld select 9
+		
+		;wenn hoehe erreicht, zumnächsten
+		?(_hoehe == 10) : goto "wachsenueberspringen"
+		
+		
+		_i = 0;
+	    #loopa
+	 		_x = getpos (_feld select _i) select 0;
+	  	 	_y = getpos (_feld select _i) select 1;
+	   		_z = getpos (_feld select _i) select 2;
+			(_feld select _i) setpos [_x,_y,(_z+0.2)]  ;
+	   		_i = _i+1;
+		?(_i<9):goto "loopa"
+		
+		; Hoehe erhöhen
+		
+		_feld set [9,(_hoehe+1)];
+	
+		; und beim 10. Mal addaction zum ernten
+		?((_feld select 9)<10) : goto "skipaddaction"
+					
+					_newhemppos = getpos (_feld select 0) 
+					_newhemp = "Pep_hemp_mediumh" createVehicle [0,0,0]
+					_newhemp setpos _newhemppos
+					deletevehicle (_feld select 0) 
+					_feld set [0,_newhemp]	
+
+					weedfields set [_j,_feld];
+						
+
+		#skipaddaction
+		
+		
+		#wachsenueberspringen
+		_j = _j + 1
+	?(_j<_count):goto "loopb"
+
+		
+
+goto "loop"

@@ -1,0 +1,151 @@
+; Buymenu by Haretuerk
+; Cops können AI kaufen
+
+; nur Cops
+	? !(side player == RESISTANCE): exit; 
+
+
+	?((crimehighscore/gcount) < chs_1): hint "Crimehighscore is low.\nMore cops are not neccessary."; exit
+
+; raus aus dem Auto!
+	? !(vehicle player == player): hint localize "str_self_incar"; exit
+
+
+; Cash- und Weedbug beheben, bevor Geld ausgegeben wird
+[] exec "cashbug.sqs";
+
+
+buy = false;
+_unit = player
+_dlg = createDialog "CopshopDialog"
+~0.5
+
+
+
+
+
+#hopback
+
+
+lbClear IDC_COPSHOP_LIST
+
+_id = lbAdd [752, format["Cop - %1 $",c_price_coprec1]];
+? ((crimehighscore/gcount) >= chs_2) : _id = lbAdd [752, format["Heavy Cop - %1 $",c_price_coprec2]];
+? ((crimehighscore/gcount) >= chs_3) : _id = lbAdd [752, format["Spec Ops - %1 $",c_price_coprec3]];
+? ((crimehighscore/gcount) >= chs_4) : _id = lbAdd [752, format["Sharpshooter - %1 $",c_price_coprec4]];
+
+
+lbSetValue [752, 0, 0];
+lbSetValue [752, 1, 1];
+lbSetValue [752, 2, 2];
+lbSetValue [752, 3, 3];
+
+
+lbSetCurSel [752,0];
+
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+
+	? buy : goto "buy";
+	
+	ctrlSetText [753,(format["Teamaccount: %1$",accountpolice])];
+	
+	_value = lbValue [752,lbCurSel 752]  
+	
+	
+	? (_value == 0) : ctrlSetText [750,"\pics\cop1.paa"]; ctrlSetText[751,"Weapon: Glock17\nSkill: medium"];
+	? (_value == 1) : ctrlSetText [750,"\pics\cop2.paa"];	ctrlSetText[751,"Weapon: FN-FAL\nSkill: experienced"];
+	? (_value == 2) : ctrlSetText [750,"\pics\cop3.paa"];ctrlSetText[751,"Weapon: UZI-S\nSkill: Specialist"];
+	? (_value == 3) : ctrlSetText [750,"\pics\cop4.paa"]; ctrlSetText[751,"Weapon: SVD Dragunov\nSkill: Specialist"];
+
+	
+~0.5
+goto "Update"
+
+	
+	
+
+#buy
+
+	; schon 5 KIs an Bord?
+	_listunits = units group player
+	_B = count _listunits
+	?_B >5: goto "full";
+
+
+	
+	? (_value == 0): _price = c_price_coprec1; 
+	? (_value == 1): _price = c_price_coprec2; 
+	? (_value == 2): _price = c_price_coprec3; 
+	? (_value == 3): _price = c_price_coprec4;
+
+	
+		
+	? (policeaccount<_price): goto "pleite"
+	
+	accountpolice = accountpolice - _price;
+	PublicVariable "accountpolice"
+	
+	
+	; Cop spawnen
+	? (_value == 0): goto "Cop1"
+	? (_value == 0): goto "Cop2"
+	? (_value == 0): goto "Cop3"
+	? (_value == 0): goto "Cop4"
+
+	
+	#Cop1
+		buy = false;
+		_who = random 3.5
+		? _who < 1: "pep_dmx_copw" createUnit [getpos player,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},0.7,"CAPTAIN"]; goto "Update";	
+		? _who < 2: "pep_dmx_cops" createUnit [getpos player,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},0.7,"CAPTAIN"]; goto "Update";	
+		"pep_dmx_cop" createUnit [getpos player,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},0.7,"CAPTAIN"];
+			
+	goto "Update"	
+		
+	#Cop2		
+		?_B <6: "pep_dmx_riota" createUnit [getpos player,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},0.85,"CAPTAIN"]; 
+			buy = false;
+	goto "Update"	
+
+	#Cop3
+		"pep_dmx_specop2a" createUnit [getpos player,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},1,"CAPTAIN"]; 
+			buy = false;
+	goto "Update"	
+	
+	#Cop4
+		"pep_dmx_snipera" createUnit [getpos player,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},1,"CAPTAIN"]; 
+			buy = false;
+	
+	
+	goto "Update"		
+	
+
+
+#pleite
+
+	ctrlSetText [753,"You don't have enough money!"];
+	buy = false;
+	~2
+	goto "Update";
+exit;
+
+#full
+	ctrlSetText [753,"You cannot have more than 5 men"];
+	buy = false;
+	~2
+	goto "Update";
+exit;
+
+
+
+
+
+
+
+
+	
+	

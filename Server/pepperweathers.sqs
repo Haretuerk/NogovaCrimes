@@ -1,0 +1,23 @@
+;// Dr.Pepper´s random weather-changer... ;)
+;// serverside script (required clientside script)
+
+
+? !(local server): exit
+
+~8
+
+
+
+#mainloop
+  
+  ~900
+
+  pcast=(random 1.1) -0.125
+  publicvariable "pcast"
+      
+  wchange=true
+  publicvariable "wchange"
+  ;hint "wchange = true"
+
+
+goto "mainloop"

@@ -1,0 +1,35 @@
+#######################################
+#				      		     #
+# Gun Table Script By Killerbob [GST]                                    #
+#                                                                                         #
+#######################################
+~0.1
+_table = _this select 0
+_gun = _this select 1
+_ammo = _this select 2
+_height = _this select 3
+_vertical = _this select 4
+_type = "weaponholder"
+?_vertical:_type = "secondaryweaponholder"
+
+_kb_testman = "SoldierWB" camcreate [0,0,0]
+removeallweapons _kb_testman
+_kb_testman addweapon _gun
+?(secondaryweapon _kb_testman)==_gun:_type = "secondaryweaponholder"
+?((secondaryweapon _kb_testman)==_gun)&&_vertical:_type = "weaponholder"
+deletevehicle _kb_testman
+
+_weapon = _type createVehicle [0,0,0]
+_weapon addmagazinecargo [_ammo,10 ]
+_weapon addweaponCargo [_gun,1]
+_weapon setpos getpos _table
+_weapon setdir (getdir _table)
+
+_table setdir (getdir _table) + 1
+_weapon setpos [(getPos _table select 0) + 0.2 * sin (getdir _table),(getPos _table select 1) + 0.2 * cos (getdir _table),(_height)]
+_table setdir (getdir _table) - 1 
+
+player reveal _weapon
+
+
+exit

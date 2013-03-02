@@ -1,0 +1,52 @@
+drugdealer_ist_bereit = false;
+
+
+? !(local player): exit;
+
+#loop
+
+
+	; warten bis vom Server das Signal kommt, dass der Dealer bereit ist
+	@ drugdealer_ist_bereit
+
+		? (drugdealer distance glbit <=30): _goal="Bitov";
+		? (drugdealer distance gldav <=30): _goal="Davle";
+		? (drugdealer distance gldol <=30): _goal="Dolina";
+		? (drugdealer distance gllan <=30): _goal="Lany";
+		? (drugdealer distance gljou <=30): _goal="Joudov";
+		? (drugdealer distance glko <=30): _goal="Kost";
+		? (drugdealer distance glokr <=30): _goal="Okrhoulo";
+		? (drugdealer distance glop <=30): _goal="Opatov";
+		? (drugdealer distance glpep <=30): _goal="Pepperov";
+		? (drugdealer distance glskal <=30): _goal="Skalice";
+		? (drugdealer distance glslap <=30): _goal="Slapy";
+		? (drugdealer distance glair <=30): _goal="Airport";
+		? (drugdealer distance glst <=30): _goal="St. Sedlo";
+		? (drugdealer distance gltros <=30): _goal="Trosky";
+		? (drugdealer distance glvart <=30): _goal="Varta";
+		? (drugdealer distance glvel <=30): _goal="Velka Ves";
+		? (drugdealer distance GLVid <=30): _goal="Vidlakov";
+		? (drugdealer distance glmir <=30): _goal="Mirov";
+		? (drugdealer distance glbor <=30): _goal="Bor";
+		? (drugdealer distance glnev <=30): _goal="Nevelkov";
+		? (drugdealer distance glmok <=30): _goal="Mokra Vrata";
+		? (drugdealer distance gllouk <=30): _goal="Loukov";
+		? (drugdealer distance glbla <=30): _goal="Blata";
+		? (drugdealer distance glmall <=30): _goal="the Mall";
+		? (drugdealer distance glpet <=30): _goal="Petrovice";
+		? (drugdealer distance gllip <=30): _goal="Lipany";
+		? (drugdealer distance gllil <=30): _goal="Littleton";
+		? (drugdealer distance glmodra <=30): _goal="Modrava";
+	
+		~2
+
+		player groupchat format [localize "str_nsc_druglord_ready",_goal]
+		drogenankaufen = drugdealer addAction [localize "STR_ACTION_DRUGDEALER","drugdealer_selldrugs.sqs"];
+	
+	? !(alive drugdealer): drugdealer removeaction drogenankaufen; exit
+	
+	@!drugdealer_ist_bereit
+	drugdealer removeaction drogenankaufen
+	
+
+goto "loop"

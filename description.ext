@@ -1,0 +1,2640 @@
+Respawn = 3
+RespawnDelay = 6
+
+disabledAI = true
+
+onLoadMission=$STR_WELCOME;
+
+titleParam1 = $STR_PARAM_TIME;
+valuesParam1[] = {1, 2, 3, 4, 5, 6};
+defValueParam1 = 4;
+textsParam1[] = {$STR_PARAM_TIME1, $STR_PARAM_TIME2, $STR_PARAM_TIME3, $STR_PARAM_TIME4, $STR_PARAM_TIME5,$STR_PARAM_TIME6};
+
+
+
+titleParam2 = $STR_PARAM_WINLIMIT;
+valuesParam2[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+defValueParam2 = 2;
+textsParam2[] = {"10000$","25000$","50000$","75000$","100000$","30 min","45 min","60 min","90 min","120 min"};
+
+
+class CfgIdentities
+{	
+	class secure
+	{
+		name = "secure";		
+		face = "Face32";			
+		glasses = "sunglasses";			
+		speaker = "Adam";			
+		pitch = 1.00;				
+	};
+
+	class secure2
+	{
+		name = "secure2";		
+		face = "Face29";			
+		glasses = "sunglasses";			
+		speaker = "Adam";			
+		pitch = 1.00;				
+	};
+	
+	class dhare
+	{
+		name = "Dirty Hare";
+		face = "dhare";
+		glasses="none";
+		speaker = "Greg";
+		pitch = 0.85;
+	};
+	
+	class donpep
+	{
+		name = "Don Pepper";
+		face = "donpep";
+		glasses="none";
+		speaker = "Greg";
+		pitch = 0.85;
+	};
+
+};
+
+class CfgSounds
+{
+	sounds[]={alarm1,playdeadin};
+
+	class alarm1
+	{
+		name = "alarm1";
+		sound[] = {\Sound\alarm1.ogg, db+10, 1.0};
+		titles[] = {};
+	};
+};
+
+// GUI Stuff by Haretuerk.... Dialog templates and dialogues...
+
+
+// Gui related
+
+// Fonts
+#define FontS "tahomaB24"
+#define FontM "tahomaB36"
+
+#define FontHTML "courierNewB64"
+#define FontHTMLBold "courierNewB64"
+#define FontMAP "courierNewB64"
+#define FontMAIN "SteelfishB64"
+#define FontMAINCZ "SteelfishB64CE"
+#define FontTITLE "SteelfishB128"
+#define FontTITLEHalf "SteelfishB64"
+#define FontBOOK "garamond64"
+#define FontNOTES "AudreysHandI48"
+
+#define DEFAULTFONT						"CourierNewB64"
+#define SMALLFONT						"Garamond64"
+#define VERYSMALLFONT					"SteelfishB64"
+#define BOLDFONT						"TahomaB48"
+
+// Control types
+#define CT_STATIC						0
+#define CT_BUTTON						1
+#define CT_EDIT							2
+#define CT_SLIDER						3
+#define CT_COMBO						4
+#define CT_LISTBOX					5
+#define CT_TOOLBOX					6
+#define CT_CHECKBOXES				7
+#define CT_PROGRESS					8
+#define CT_HTML							9
+#define CT_STATIC_SKEW			10
+#define CT_ACTIVETEXT				11
+#define CT_TREE							12
+#define CT_3DSTATIC					20
+#define CT_3DACTIVETEXT			21
+#define CT_3DLISTBOX				22
+#define CT_3DHTML						23
+#define CT_3DSLIDER					24
+#define CT_3DEDIT						25
+#define CT_OBJECT						80
+#define CT_OBJECT_ZOOM			81
+#define CT_OBJECT_CONTAINER	82
+#define CT_OBJECT_CONT_ANIM	83
+#define CT_USER							99
+
+// Static styles
+#define ST_HPOS						0x0F
+#define ST_LEFT						0
+#define ST_RIGHT					1
+#define ST_CENTER					2
+#define ST_UP							3
+#define ST_DOWN						4
+#define ST_VCENTER				5
+
+#define ST_TYPE						0xF0
+#define ST_SINGLE					0
+#define ST_MULTI					16
+#define ST_TITLE_BAR			32
+#define ST_PICTURE				48
+#define ST_FRAME					64
+#define ST_BACKGROUND			80
+#define ST_GROUP_BOX			96
+#define ST_GROUP_BOX2			112
+#define ST_HUD_BACKGROUND	128
+#define ST_TILE_PICTURE		144
+#define ST_WITH_RECT			160
+#define ST_LINE						176
+
+#define ST_SHADOW					256
+#define ST_NO_RECT				512
+
+#define ST_TITLE					ST_TITLE_BAR + ST_CENTER
+
+// Predefined controls
+#define IDC_OK						1
+#define IDC_CANCEL				2
+
+// Colors
+#define COLOR_MENU_BG {0.5,0.5,0.5,1}
+#define COLOR_BTN_BG {0.8,0.8,0.8,1}
+#define COLOR_BTN_TEXT {0,0,0,1}
+#define COLOR_TITLE_BG {0,0,0,1}
+#define COLOR_TITLE_TEXT {1,1,1,1}
+#define COLOR_LABEL_TEXT {0.2,0.2,0.2,1}
+#define COLOR_DATA_BG {0.7,0.7,0.7,1}
+#define COLOR_DATA_TEXT {0,0,0,1}
+#define COLOR_SELECTED_BG {0.1,0.1,0.1,1}
+#define COLOR_SELECTED_TEXT {1,0,0,1}
+#define COLOR_CLICKABLE_BG {0.9,0.9,0.9,1}
+#define COLOR_LB_TEXT {0,0,0,1}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#define IDC_taxi_title 100
+#define IDC_taxi_ok 101
+#define IDC_taxi_exit 102
+#define IDC_taxi_picture 103
+#define IDC_TAXI_LISTBOX 104
+
+#define IDC_carshop_title 200
+#define IDC_carshop_ok 201
+#define IDC_carshop_exit 202
+#define IDC_carshop_listbox 203
+#define IDC_carshop_CASH 204
+#define IDC_carshop_DESCRIPTION 205
+#define IDC_carshop_bild 206
+
+#define IDC_BUILDMENU_BILD1 444
+#define IDC_BUILDMENU_BILD2 445
+#define IDC_BUILDMENU_BILD3 446
+#define IDC_BUILDMENU_CASH 447
+
+#define IDC_score_title 501
+#define IDC_score_rank 502
+#define IDC_score_money 503
+#define IDC_score_picture 524
+
+#define IDC_STAT_TEAMCAPTION 599
+#define IDC_STAT_PLAYERLISTE 600
+#define IDC_STAT_TEAMLISTE 601
+#define IDC_STAT_OTHERPLAYERLISTE 602
+#define IDC_STAT_OTHERTEAMLISTE 603
+#define IDC_STAT_OTHERPLAYERSCOMBO 604
+#define IDC_STAT_PLAYERNAME 605
+
+#define IDC_buyweapontitle 700
+#define IDC_ok 702
+#define IDC_exit 703
+#define IDC_picture 704
+#define IDC_LB_WEAPONS 705
+#define IDC_CASH 716
+#define IDC_DESCRIPTION 717
+
+#define IDC_COPSHOP_PICTURE 750
+#define IDC_COPSHOP_DESCRIPTION 751
+#define IDC_COPSHOP_LIST 752
+#define IDC_COPSHOP_CASH 753
+
+#define IDC_BANK_CASH 805
+#define IDC_BANK_ACCOUNT 806
+#define IDC_BANK_AMOUNT 807
+
+#define IDC_ATM_CASH 801
+#define IDC_ATM_ACCOUNT 802
+#define IDC_ATM_AMOUNT 803
+
+#define IDC_codebox_title 900
+#define IDC_codebox_ok 901
+#define IDC_codebox_exit 902
+#define IDC_codebox_listbox 903
+#define IDC_codebox_CASH 904
+#define IDC_codebox_DESCRIPTION 905
+#define IDC_codebox_bild 906
+#define IDC_CODEBOX_CODE 907
+
+
+
+#define IDC_timeline_pic00 1000
+#define IDC_timeline_pic10 1010
+#define IDC_timeline_pic20 1020
+#define IDC_timeline_pic01 1001
+#define IDC_timeline_pic11 1011
+#define IDC_timeline_pic21 1021
+#define IDC_timeline_pic02 1002
+#define IDC_timeline_pic12 1012
+#define IDC_timeline_pic22 1022
+#define IDC_timeline_pic03 1003
+#define IDC_timeline_pic13 1013
+#define IDC_timeline_pic23 1023
+#define IDC_timeline_pic04 1004
+#define IDC_timeline_pic14 1014
+#define IDC_timeline_pic24 1024
+#define IDC_timeline_pic05 1005
+#define IDC_timeline_pic15 1015
+#define IDC_timeline_pic25 1025
+#define IDC_timeline_pic06 1006
+#define IDC_timeline_pic16 1016
+#define IDC_timeline_pic26 1026
+#define IDC_timeline_pic07 1007
+#define IDC_timeline_pic17 1017
+#define IDC_timeline_pic27 1027
+#define IDC_timeline_pic08 1008
+#define IDC_timeline_pic18 1018
+#define IDC_timeline_pic28 1028
+#define IDC_timeline_pic09 1009
+#define IDC_timeline_pic19 1019
+#define IDC_timeline_pic29 1029
+#define IDC_timeline_maxy 1030
+#define IDC_timeline_x0 1031
+#define IDC_timeline_x1 1032
+#define IDC_timeline_x2 1033
+#define IDC_timeline_x3 1034
+#define IDC_timeline_x4 1035
+#define IDC_timeline_x5 1036
+#define IDC_timeline_x6 1037
+#define IDC_timeline_x7 1038
+#define IDC_timeline_x8 1039
+#define IDC_timeline_x9 1040
+
+
+
+
+
+
+
+
+
+
+
+
+//=============================================================
+
+
+class Text
+{
+	type = CT_STATIC;
+	idc = IDC_UNDEFINED;
+	style = ST_LEFT;
+	colorText[]={0,0,0,1};
+	colorBackground[]={0,0,0,0};
+	font = DEFAULTFONT;
+	sizeEx = 0.025;
+	text =;
+
+	//Default button dimensions.	
+	w = 0.25;
+	h = 0.04;
+};
+
+class TextField: Text
+{
+	type = CT_STATIC;
+	idc = IDC_UNDEFINED;
+	style = ST_LEFT+ST_MULTI;
+	colorText[]={0,0,0,1};
+	colorBackground[]={0,0,0,0};
+	font = DEFAULTFONT;
+	sizeEx = 0.025;
+	text = "HEJ";
+	lineSpacing = 1;
+
+	//Default button dimensions.	
+	w = 0.25;
+	h = 0.04;
+};
+
+class ComboBoxBG:Text
+{
+	colorText[]=COLOR_DATA_TEXT;
+	colorBackground[]=COLOR_CLICKABLE_BG;
+
+	//Default dimensions.	
+	w = 0.25;
+	h = 0.04;
+};
+
+class ComboBox
+{
+	type = CT_COMBO;
+	wholeHeight = 0.4;
+	style = ST_LEFT;
+	idc = IDC_UNDEFINED;
+	colorSelect[]=COLOR_SELECTED_TEXT;
+	//colorSelectBackground[]={1, 1, 0, 1};
+	colorText[]=COLOR_LB_TEXT;
+	colorBackground[]=COLOR_CLICKABLE_BG;
+	font = DEFAULTFONT;
+	sizeEx = 0.025;
+	rowHeight = 0.03;
+
+	//Default dimensions.	
+	w = 0.25;
+	h = 0.04;
+};
+
+ class Frame : Text
+ {
+  idc = -1;
+	style = ST_FRAME;
+  colorText[]=COLOR_LABEL_TEXT;
+	//colorBackground[] = COLOR_LABEL_TEXT;
+	text =;
+  };
+
+class ListBoxBG : Text
+{
+	colorBackground[]=COLOR_CLICKABLE_BG;
+};
+
+class ListBox
+{
+	type = CT_LISTBOX;
+	style = ST_LEFT;
+	idc = IDC_UNDEFINED;
+  colorText[]=COLOR_LB_TEXT;
+  colorSelect[]=COLOR_SELECTED_TEXT;
+	font = DEFAULTFONT;
+	sizeEx = 0.025;
+	rowHeight = 0.03;
+	colorBackground[]=COLOR_CLICKABLE_BG;
+
+	w=0.1;
+	h=0.06;
+};
+
+class Title:Text
+{
+	font = DEFAULTFONT;
+	colorText[]=COLOR_TITLE_TEXT;
+	w=0.25
+	h=0.03
+};
+
+class Label:Text
+{
+	font = DEFAULTFONT;
+	colorText[]=COLOR_LABEL_TEXT;
+};
+
+class Image:Text
+{
+	style = ST_PICTURE;
+	font = DEFAULTFONT;
+  colorText[] = {1, 1, 1, 1};
+  colorBackground[] = {0.6, 0.6, 0.6, 1};
+  SizeEX = 0.04
+	text = "";
+};
+
+class DataText:Text
+{
+	font = DEFAULTFONT;
+	colorText[]=COLOR_DATA_TEXT;
+	colorBackground[]=COLOR_DATA_BG;
+};
+
+class ButtonBG:Text
+{
+	colorText[]=COLOR_DATA_TEXT;
+	colorBackground[]=COLOR_CLICKABLE_BG;
+
+	//Default dimensions.b	
+	w = 0.25;
+	h = 0.04;
+};
+
+class SelectedBG:Text
+{
+	colorText[]={0,0,0,0};
+	colorBackground[]=COLOR_SELECTED_TEXT;
+
+	//Default dimensions.	
+	w = 0.25;
+	h = 0.04;
+};
+
+class Button
+{
+	type = CT_BUTTON;
+	idc = IDC_UNDEFINED;
+	style = ST_CENTER;
+	colorText[]=COLOR_BTN_TEXT;
+	colorBackground[]=COLOR_CLICKABLE_BG;
+	font = DEFAULTFONT;
+	sizeEx = 0.025;
+	soundClick[]={"ui\ui_ok",0.2,1};
+	soundEscape[]={"ui\ui_cc",0.2,1};
+	soundPush[]={,0.2,1};
+	default = false;
+
+	//Default button dimensions.	
+	w = 0.25;
+	h = 0.04;
+};
+
+class Checkbox
+{
+	type = CT_CHECKBOXES;
+	idc = IDC_UNDEFINED;
+	style = ST_LEFT;
+	colorText[]=COLOR_BTN_TEXT;
+	colorBackground[]=COLOR_BTN_BG;
+	font = DEFAULTFONT;
+	sizeEx = 0.025;
+	soundClick[]={"ui\ui_ok",0.2,1};
+	soundEscape[]={"ui\ui_cc",0.2,1};
+	soundPush[]={,0.2,1};
+	default = false;
+
+	//Default button dimensions.	
+	w = 0.25;
+	h = 0.04;
+};
+
+class SliderVert
+{
+	type = CT_SLIDER;
+	idc = IDC_UNDEFINED;
+	style = 0;
+	color[]={1,1,1,1};
+	sizeEx = 0.025;
+
+	//Default button dimensions.	
+	w = 0.04;
+	h = 0.20;
+};
+
+class SliderHorz
+{
+	type = CT_SLIDER;
+	idc = IDC_UNDEFINED;
+	style = ST_HPOS;
+	color[]={1,1,1,1};
+	sizeEx = 0.025;
+
+	//Default button dimensions.	
+	w = 0.20;
+	h = 0.04;
+};
+
+class Menu
+{
+	idd = IDC_UNDEFINED;
+	movingEnable = true;
+	controlsBackground[]={BackgroundWindow};
+	objects[]={};
+
+	class BackgroundWindow:Text
+	{
+		colorBackground[]=COLOR_MENU_BG;
+
+		text = ;
+		x = 0.2;
+		y = 0.0;
+		w = 0.6;
+		h = 0.7;
+	};
+};
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class StatsDialog: Menu
+{
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={StatsTitle, PlayerLabel ,PlayerLBLabel, Playerliste, Teamlabel, Teamliste, OtherPlayerCombo, OtherPlayerListe,  Exit, Timeline};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+     x = 0.1;
+     y = 0.0;
+     w = 0.8;
+     h = 0.66;
+  };
+
+ class StatsTitle: Title
+ {
+	style = ST_CENTER;
+	x = 0.1;
+  y = 0.0;
+	w = 0.8;
+	text = "Statistics";
+	};
+
+ class PlayerLabel : Label
+ {
+  	idc = IDC_STAT_TEAMCAPTION;
+	style = ST_CENTER;
+  x = 0.11;
+  y = 0.03;
+  w = 0.38;
+  h = 0.03;
+	colorText[] = {0,0,1,1};
+	colorBackground[]={0.6,0.6,0.6,1};
+	text = "";
+  };
+
+
+ class PlayerLBLabel : Label
+ {
+  		idc = IDC_STAT_PLAYERNAME;
+  x = 0.11;
+  y = 0.14;
+  w = 0.38;
+	text = "Player";
+  };
+ class PlayerListe : ListBox
+ {
+  idc = IDC_STAT_PLAYERLISTE;
+  style = LB_MULTI;
+  x = 0.11;
+  y = 0.17;
+  w = 0.19;
+  h = 0.48;
+	colorText[] = {0.2,0.2,0.2,1};
+	font = FontM;
+	sizeEx = 0.02;
+	rowHeight = 0.025;
+	};
+ class TeamLabel : Label
+ {
+  x = 0.30;
+  y = 0.14;
+  w = 0.38;
+	text = "Team";
+  };
+ class TeamListe : ListBox
+ {
+  idc = IDC_STAT_TEAMLISTE;
+  x = 0.30;
+  y = 0.17;
+  w = 0.19;
+  h = 0.48;
+	colorText[] = {0.2,0.2,0.2,1};
+	font = FontM;
+	sizeEx = 0.02;
+	rowHeight = 0.025;
+	};
+	
+ 	class OtherplayerCombo: ComboBox
+  {
+    idc = IDC_STAT_OTHERPLAYERSCOMBO;
+    x = 0.51;
+    y = 0.13;
+    w = 0.17;
+  };
+	
+ class EastLabel : Label
+ {
+	style = ST_CENTER;
+  x = 0.51;
+  y = 0.03;
+  w = 0.38;
+  h = 0.03;
+	colorText[] = {1,0,0,1};
+	colorBackground[]={0.6,0.6,0.6,1};
+	text = "EAST";
+  };
+
+ class MoneyEastLabel : Label
+ {
+  x = 0.51;
+  y = 0.07;
+  w = 0.38;
+  h = 0.03;
+	text = "$ Total/Spent (at last town income)";
+  };
+ class MoneyEast: Text
+ {
+	idc = IDC_TEXT_MONEYEAST;
+	x = 0.51;
+  y = 0.1;
+	w = 0.38;
+	colorBackground[] = COLOR_DATA_BG;
+};
+
+ class StructsEastLabel : Label
+ {
+  x = 0.51;
+  y = 0.14;
+  w = 0.38;
+	text = "Structures Built";
+  };
+ class OtherPlayerListe : ListBox
+ {
+  idc = IDC_STAT_OTHERPLAYERLISTE ;
+  x = 0.51;
+  y = 0.17;
+  w = 0.19;
+  h = 0.48;
+	colorText[] = {0.2,0.2,0.2,1};
+	font = FontM;
+	sizeEx = 0.02;
+	rowHeight = 0.025;
+	};
+ class UnitsEastLabel : Label
+ {
+  x = 0.70;
+  y = 0.14;
+  w = 0.38;
+	text = "Units Built";
+  };
+ class UnitsEast : ListBox
+ {
+  idc = IDC_LB_UNITSEAST;
+  x = 0.70;
+  y = 0.17;
+  w = 0.19;
+  h = 0.48;
+	colorText[] = {0.2,0.2,0.2,1};
+	font = FontM;
+	sizeEx = 0.02;
+	rowHeight = 0.025;
+	};
+	
+
+
+ class Exit: Button
+ {
+  x = 0.79;
+  y = 0.03;
+	w = 0.1;
+	h = 0.03;
+	text = "Exit";
+	action = "stat_exit = true;";
+	};
+	
+		class Timeline: Button
+	{
+		x = 0.79;
+	  	y = 0.07;
+		w = 0.1;
+		h = 0.03;
+		text = "Timeline";
+		action = "closeDialog 0;  [] exec ""open_timeline.sqs"";";
+	};
+};
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+class TimelineDialog: Menu
+{
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={StatsTitle, Maximalwerty,x0,x1,x2,x3,x4,x5,x6,x7,x8,x9,  Exit, Stats, pic00,pic10,pic20, pic01,pic11,pic21, pic02,pic12,pic22, pic03,pic13,pic23, pic04,pic14,pic24, pic05,pic15,pic25, pic06,pic16,pic26, pic07,pic17,pic27, pic08,pic18,pic28, pic09,pic19,pic29};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+     x = 0.1;
+     y = 0.02;
+     w = 0.8;
+     h = 0.66;
+  };
+
+ class StatsTitle: Title
+ {
+	style = ST_CENTER;
+	x = 0.1;
+  	y = 0.03;
+	w = 0.8;
+	text = "Timeline";
+	};
+	
+  class Maximalwerty: Text
+ {
+  	idc = IDC_timeline_maxy;
+	x = 0.82;
+  	y = 0.2;
+	w = 0.1;
+	text = "";
+	};
+  
+  
+  class x0: Text
+ {
+  	idc = IDC_timeline_x0;
+	x = 0.12;
+  	y = 0.5;
+	w = 0.1;
+	text = "0";
+	};  
+class x1: Text
+ {
+  	idc = IDC_timeline_x1;
+	x = 0.19;
+  	y = 0.5;
+	w = 0.1;
+	text = "1";
+	};  
+class x2: Text
+ {
+  	idc = IDC_timeline_x2;
+	x = 0.26;
+  	y = 0.5;
+	w = 0.1;
+	text = "2";
+	};  
+class x3: Text
+ {
+  	idc = IDC_timeline_x3;
+	x = 0.33;
+  	y = 0.5;
+	w = 0.1;
+	text = "3";
+	};  
+class x4: Text
+ {
+  	idc = IDC_timeline_x4;
+	x = 0.40;
+  	y = 0.5;
+	w = 0.1;
+	text = "4";
+	};  
+class x5: Text
+ {
+  	idc = IDC_timeline_x5;
+	x = 0.47;
+  	y = 0.5;
+	w = 0.1;
+	text = "5";
+	};  
+class x6: Text
+ {
+  	idc = IDC_timeline_x6;
+	x = 0.54;
+  	y = 0.5;
+	w = 0.1;
+	text = "6";
+	};  
+class x7: Text
+ {
+  	idc = IDC_timeline_x7;
+	x = 0.61;
+  	y = 0.5;
+	w = 0.1;
+	text = "7";
+	};  
+class x8: Text
+ {
+  	idc = IDC_timeline_x8;
+	x = 0.68;
+  	y = 0.5;
+	w = 0.1;
+	text = "8";
+	};
+class x9: Text
+ {
+  	idc = IDC_timeline_x9;
+	x = 0.75;
+  	y = 0.5;
+	w = 0.1;
+	text = "9";
+	};
+
+
+ class Exit: Button
+ {
+  x = 0.79;
+  y = 0.03;
+	w = 0.1;
+	h = 0.03;
+	text = "Exit";
+	action = "timeline_exit = true;";
+	};
+	
+	class Stats: Button
+	{
+		x = 0.79;
+	  	y = 0.07;
+		w = 0.1;
+		h = 0.03;
+		text = "Statistics";
+		action = "closeDialog 0;  [] exec ""open_statistics.sqs"";";
+	};
+	
+	class pic00: image
+	{
+		idc = IDC_timeline_pic00;
+		x = 0.12;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic10: image
+	{
+		idc = IDC_timeline_pic10;
+		x = 0.14;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic20: image
+	{
+		idc = IDC_timeline_pic20;
+		x = 0.16;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	
+	class pic01: image
+	{
+		idc = IDC_timeline_pic01;
+		x = 0.19;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic11: image
+	{
+		idc = IDC_timeline_pic11;
+		x = 0.21;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic21: image
+	{
+		idc = IDC_timeline_pic21;
+		x = 0.23;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic02: image
+	{
+		idc = IDC_timeline_pic02;
+		x = 0.26;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic12: image
+	{
+		idc = IDC_timeline_pic12;
+		x = 0.28;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic22: image
+	{
+		idc = IDC_timeline_pic22;
+		x = 0.30;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic03: image
+	{
+		idc = IDC_timeline_pic03;
+		x = 0.33;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic13: image
+	{
+		idc = IDC_timeline_pic13;
+		x = 0.35;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic23: image
+	{
+		idc = IDC_timeline_pic23;
+		x = 0.37;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic04: image
+	{
+		idc = IDC_timeline_pic04;
+		x = 0.40;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic14: image
+	{
+		idc = IDC_timeline_pic14;
+		x = 0.42;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic24: image
+	{
+		idc = IDC_timeline_pic24;
+		x = 0.44;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic05: image
+	{
+		idc = IDC_timeline_pic05;
+		x = 0.47;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic15: image
+	{
+		idc = IDC_timeline_pic15;
+		x = 0.49;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic25: image
+	{
+		idc = IDC_timeline_pic25;
+		x = 0.51;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic06: image
+	{
+		idc = IDC_timeline_pic06;
+		x = 0.54;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic16: image
+	{
+		idc = IDC_timeline_pic16;
+		x = 0.56;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic26: image
+	{
+		idc = IDC_timeline_pic26;
+		x = 0.58;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic07: image
+	{
+		idc = IDC_timeline_pic07;
+		x = 0.61;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic17: image
+	{
+		idc = IDC_timeline_pic17;
+		x = 0.63;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic27: image
+	{
+		idc = IDC_timeline_pic27;
+		x = 0.65;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic08: image
+	{
+		idc = IDC_timeline_pic08;
+		x = 0.68;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic18: image
+	{
+		idc = IDC_timeline_pic18;
+		x = 0.70;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic28: image
+	{
+		idc = IDC_timeline_pic28;
+		x = 0.72;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};	
+	class pic09: image
+	{
+		idc = IDC_timeline_pic09;
+		x = 0.75;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic19: image
+	{
+		idc = IDC_timeline_pic19;
+		x = 0.77;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	class pic29: image
+	{
+		idc = IDC_timeline_pic29;
+		x = 0.79;
+     	y = 0.2;
+     	w = 0.02;
+     	h = 0.3;
+   		colorBackground[]={0.6,0,0,1};
+		style = ST_PICTURE;
+		text="pics\null.paa";
+	};
+	
+	
+	
+};
+
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+class codeboxDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={codebox_title,codebox_ok,codebox_1,codebox_2,codebox_3, codebox_4, codebox_5, codebox_6, codebox_7, codebox_8, codebox_9, codebox_0, codebox_c,codebox_exit,codebox_code};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+	
+     x = 0.35;
+     y = 0.2;
+     w = 0.3;
+     h = 0.55;
+  };
+  class codebox_title: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab36";
+	x = 0.1;
+  	y = 0.25;
+	w = 0.8;
+	text = "Enter code:";
+	};
+
+
+
+	
+  	class codebox_ok: Button
+  	{
+	idc=idc_codebox_ok;
+	x = 0.53;
+  	y = 0.59;
+  	w = 0.03;
+    	
+	text = "OK";
+	action = "ok = true";
+	};
+	
+	 class codebox_1: Button
+  	{
+	x = 0.43;
+  	y = 0.52;
+  	w = 0.03;
+  	
+	text = "1";
+	action = "zahl = 1";
+	};
+	
+	class codebox_2: Button
+  	{
+	x = 0.48;
+  	y = 0.52;
+  	w = 0.03;
+	text = "2";
+	action = "zahl = 2";
+	};
+	
+	
+	class codebox_3: Button
+  	{
+	x = 0.53;
+  	y = 0.52;
+  	w = 0.03;
+	text = "3";
+	action = "zahl = 3";
+	};
+	
+	
+	class codebox_4: Button
+  	{
+	x = 0.43;
+  	y = 0.45;
+  	w = 0.03;
+	text = "4";
+	action = "zahl = 4";
+	};
+	
+	
+	
+	class codebox_5: Button
+  	{
+	x = 0.48;
+  	y = 0.45;
+  	w = 0.03;
+	text = "5";
+	action = "zahl = 5";
+	};
+	
+	
+	class codebox_6: Button
+  	{
+	x = 0.53;
+  	y = 0.45;
+  	w = 0.03;
+	text = "6";
+	action = "zahl = 6";
+	};
+	
+		
+	class codebox_7: Button
+  	{
+	x = 0.43;
+  	y = 0.38;
+  	w = 0.03;
+	text = "7";
+	action = "zahl = 7";
+	};
+	
+	
+	
+	class codebox_8: Button
+  	{
+	x = 0.48;
+  	y = 0.38;
+  	w = 0.03;
+	text = "8";
+	action = "zahl = 8";
+	};
+	
+	
+	class codebox_9: Button
+  	{
+	x = 0.53;
+  	y = 0.38;
+  	w = 0.03;
+	text = "9";
+	action = "zahl = 9";
+	};
+	
+	class codebox_0: Button
+  	{
+	x = 0.48;
+  	y = 0.59;
+  	w = 0.03;
+	text = "0";
+	action = "zahl = 0";
+	};
+	
+	class codebox_C: Button
+  	{
+	x = 0.43;
+  	y = 0.59;
+  	w = 0.03;
+	text = "C";
+	action = "correct = true";
+	};
+	
+	
+	
+	class codebox_exit: Button
+  	{
+	idc=-1;
+	x = 0.45;
+  	y = 0.66;
+    	w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+	
+	
+	class codebox_code: Text
+  	{
+	 style = ST_CENTER;
+	idc = IDC_CODEBOX_CODE;
+	x = 0.43;
+  	y = 0.31;
+  	w = 0.13;
+  	
+	text = "0000";
+	colorText[]={0,1,0,1};
+	colorBackground[]=COLOR_BTN_TEXT;
+	};
+		
+}
+
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+class BankDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={bank_title,bank_50,bank_100,bank_500, bank_1000, bank_5000, bank_10000, bank_deposit, bank_withdraw, bank_cash, bank_account, bank_c,bank_exit,bank_amount};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+	 colorBackground[] = {0.3, 0.3, 0.3, 0.75};
+     x = 0.3;
+     y = 0.2;
+     w = 0.4;
+     h = 0.55;
+  };
+  class bank_title: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab36";
+	x = 0.1;
+  	y = 0.22;
+	w = 0.8;
+	text = "Nogova Cash Group";
+	};
+
+	class bank_cash: Text
+  	{
+ 	idc = IDC_BANK_CASH;
+	x = 0.35;
+  	y = 0.26;
+  	w = 0.13;
+	text = "";
+
+	};
+	
+	class bank_account: Text
+  	{
+    idc = IDC_BANK_ACCOUNT;
+	x = 0.50;
+  	y = 0.26;
+  	w = 0.15;
+	text = "";
+	
+	};
+	
+		
+	class bank_amount: Text
+  	{
+	 style = ST_CENTER;
+	idc = IDC_BANK_AMOUNT;
+	x = 0.41;
+  	y = 0.31;
+  	w = 0.18;
+  	
+	text = "";
+	colorText[]={0,1,0,1};
+	colorBackground[]=COLOR_BTN_TEXT;
+	};
+	
+	 class bank_50: Button
+  	{
+	x = 0.35;
+  	y = 0.38;
+  	w = 0.12;
+  	
+	text = "50";
+	action = "zahl = 50";
+	};
+	
+	class bank_100: Button
+  	{
+	x = 0.53;
+  	y = 0.38;
+  	w = 0.12;
+	text = "100";
+	action = "zahl = 100";
+	};
+	
+	
+	class bank_500: Button
+  	{
+	x = 0.35;
+  	y = 0.45;
+  	w = 0.12;
+	text = "500";
+	action = "zahl = 500";
+	};
+	
+	
+	class bank_1000: Button
+  	{
+	x = 0.53;
+  	y = 0.45;
+  	w = 0.12;
+	text = "1000";
+	action = "zahl = 1000";
+	};
+	
+	
+	
+	class bank_5000: Button
+  	{
+	x = 0.35;
+  	y = 0.52;
+  	w = 0.12;
+	text = "5000";
+	action = "zahl = 5000";
+	};
+	
+	
+	class bank_10000: Button
+  	{
+	x = 0.53;
+  	y = 0.52;
+  	w = 0.12;
+	text = "10000";
+	action = "zahl = 10000";
+	};
+	
+		
+	class bank_deposit: Button
+  	{
+	x = 0.35;
+  	y = 0.6;
+  	w = 0.12;
+	text = "Deposit";
+	action = "deposit = true";
+	colorText[]={0,0.6,0,1};
+	colorBackground[]={0,1,0,1};
+	};
+	
+	
+	
+	class bank_withdraw: Button
+  	{
+  	 	colorText[]={0.6,0,0,1};
+	colorBackground[]={1,0,0,1};
+	x = 0.53;
+  	y = 0.6;
+  	w = 0.12;
+	text = "Withdraw";
+	action = "withdraw = true";
+
+	};
+	
+	class bank_C: Button
+  	{
+	x = 0.485;
+  	y = 0.6;
+  	w = 0.03;
+	text = "C";
+	action = "correct = true";
+	};
+	
+	class bank_exit: Button
+  	{
+	idc=-1;
+	x = 0.45;
+  	y = 0.68;
+    w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+}
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+class ATMDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={ATM_title,ATM_50,ATM_100,ATM_500, ATM_1000, ATM_5000, ATM_10000, ATM_withdraw, ATM_cash, ATM_account, ATM_c,ATM_exit,ATM_amount};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+	 colorBackground[] = {0.3, 0.3, 0.3, 0.75};
+     x = 0.3;
+     y = 0.2;
+     w = 0.4;
+     h = 0.55;
+  };
+  class ATM_title: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab36";
+	x = 0.1;
+  	y = 0.22;
+	w = 0.8;
+	text = "Nogova Cash Group";
+	};
+
+	class ATM_cash: Text
+  	{
+ 	idc = IDC_ATM_CASH;
+	x = 0.35;
+  	y = 0.26;
+  	w = 0.13;
+	text = "";
+
+	};
+	
+	class ATM_account: Text
+  	{
+    idc = IDC_ATM_ACCOUNT;
+	x = 0.50;
+  	y = 0.26;
+  	w = 0.15;
+	text = "";
+	
+	};
+	
+		
+	class ATM_amount: Text
+  	{
+	 style = ST_CENTER;
+	idc = IDC_ATM_AMOUNT;
+	x = 0.41;
+  	y = 0.31;
+  	w = 0.18;
+  	
+	text = "";
+	colorText[]={0,1,0,1};
+	colorBackground[]=COLOR_BTN_TEXT;
+	};
+	
+	 class ATM_50: Button
+  	{
+	x = 0.35;
+  	y = 0.38;
+  	w = 0.12;
+  	
+	text = "50";
+	action = "zahl = 50";
+	};
+	
+	class ATM_100: Button
+  	{
+	x = 0.53;
+  	y = 0.38;
+  	w = 0.12;
+	text = "100";
+	action = "zahl = 100";
+	};
+	
+	
+	class ATM_500: Button
+  	{
+	x = 0.35;
+  	y = 0.45;
+  	w = 0.12;
+	text = "500";
+	action = "zahl = 500";
+	};
+	
+	
+	class ATM_1000: Button
+  	{
+	x = 0.53;
+  	y = 0.45;
+  	w = 0.12;
+	text = "1000";
+	action = "zahl = 1000";
+	};
+	
+	
+	
+	class ATM_5000: Button
+  	{
+	x = 0.35;
+  	y = 0.52;
+  	w = 0.12;
+	text = "5000";
+	action = "zahl = 5000";
+	};
+	
+	
+	class ATM_10000: Button
+  	{
+	x = 0.53;
+  	y = 0.52;
+  	w = 0.12;
+	text = "10000";
+	action = "zahl = 10000";
+	};
+	
+		
+	
+	class ATM_withdraw: Button
+  	{
+  	 	colorText[]={0.6,0,0,1};
+	colorBackground[]={1,0,0,1};
+	x = 0.53;
+  	y = 0.6;
+  	w = 0.12;
+	text = "Withdraw";
+	action = "withdraw = true";
+
+	};
+	
+	class ATM_C: Button
+  	{
+	x = 0.485;
+  	y = 0.6;
+  	w = 0.03;
+	text = "C";
+	action = "correct = true";
+	};
+	
+	class ATM_exit: Button
+  	{
+	idc=-1;
+	x = 0.45;
+  	y = 0.68;
+    w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+}
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+class CarshopDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={carshop_title,carshop_bildchen,carshop_buy,carshop_exit,carshop_cash,buyweapon_description,buyweaponlist};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+	 colorBackground[] = {0.3, 0.3, 0.3, 0.75};
+     x = 0.2;
+     y = 0.2;
+     w = 0.6;
+     h = 0.6;
+  };
+  class carshop_title: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab36";
+	x = 0.1;
+  	y = 0.25;
+	w = 0.8;
+	text = "Carshop";
+	};
+
+
+	
+	class carshop_bildchen: image
+	{
+		idc = IDC_carshop_bild;
+		x = 0.55;
+     		y = 0.35;
+     		w = 0.2;
+     		h = 0.18;
+		style = ST_PICTURE;
+	};
+	
+  	class carshop_buy: Button
+  	{
+	idc=idc_carshop_buy;
+	x = 0.65;
+  	y = 0.65;
+  	w = 0.1;
+	text = "Buy";
+	action = "buy = true";
+	};
+	
+	class carshop_exit: Button
+  	{
+	idc=-1;
+	x = 0.65;
+  	y = 0.7;
+    	w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+	class carshop_cash : Text
+	{
+		idc = IDC_carshop_CASH;
+		x = 0.25;
+  		y = 0.25;
+     		w = 0.5;
+     		h = 0.15;
+     		font =  DEFAULTFONT;
+     				
+	}
+	
+	class buyweapon_description : Textfield
+	{
+		idc = IDC_carshop_DESCRIPTION;
+		x = 0.55;
+  		y = 0.55;
+     		w = 0.2;
+     		h = 0.08
+     		font =  DEFAULTFONT;
+     		text ="narf";
+		
+	}
+	
+class buyweaponlist: Listbox
+	{	
+		idc = IDC_carshop_listbox;
+		x = 0.25;
+     		y = 0.35;
+     		w = 0.25;
+     		h = 0.4;
+     		
+	
+	};
+	
+}
+
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+class BuyweaponDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={buyweapontitle,bildchen,buyweaponbuy,buyweaponexit,buyweapon_cash,buyweapon_description,buyweaponlist};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+    colorBackground[] = {0.3, 0.3, 0.3, 0.75};
+     x = 0.2;
+     y = 0.2;
+     w = 0.6;
+     h = 0.6;
+  };
+  class buyweapontitle: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab48";
+	x = 0.1;
+  	y = 0.25;
+	w = 0.8;
+	text = "Buy Weapon";
+	};
+
+
+	
+	class bildchen: image
+	{
+		idc = IDC_picture;
+		x = 0.55;
+     		y = 0.35;
+     		w = 0.2;
+     		h = 0.15;
+		style = ST_PICTURE;
+	};
+	
+  	class buyweaponbuy: Button
+  	{
+	idc=702;
+	x = 0.65;
+  	y = 0.65;
+  	w = 0.1;
+	text = "Buy";
+	action = "buy = true";
+	};
+	
+	class buyweaponexit: Button
+  	{
+	idc=-1;
+	x = 0.65;
+  	y = 0.7;
+    	w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+	class buyweapon_cash : Text
+	{
+		idc = IDC_CASH;
+		x = 0.25;
+  		y = 0.25;
+     		w = 0.5;
+     		h = 0.15;
+     		font =  DEFAULTFONT;
+     				
+	}
+	
+	class buyweapon_description : Textfield
+	{
+		idc = IDC_DESCRIPTION;
+		x = 0.55;
+  		y = 0.5;
+     		w = 0.2;
+     		h = 0.15
+     		font =  DEFAULTFONT;
+     		text ="narf";
+		
+	}
+	
+class buyweaponlist: Listbox
+	{	
+		idc = IDC_LB_WEAPONS;
+		x = 0.25;
+     		y = 0.35;
+     		w = 0.25;
+     		h = 0.4;
+     		
+	
+	};
+	
+}
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+class CopshopDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={copshop_title,copshop_bildchen,copshop_buy,copshop_exit,copshop_cash,copshop_description,copshop_list};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+    colorBackground[] = {0.3, 0.3, 0.3, 0.75};
+     x = 0.2;
+     y = 0.2;
+     w = 0.6;
+     h = 0.6;
+  };
+  class copshop_title: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab48";
+	x = 0.1;
+  	y = 0.25;
+	w = 0.8;
+	text = "Buy AI Cops";
+	};
+
+
+	
+	class copshop_bildchen: image
+	{
+		idc = IDC_COPSHOP_PICTURE;
+		x = 0.65;
+     		y = 0.35;
+     		w = 0.1;
+     		h = 0.2;
+		style = ST_PICTURE;
+	};
+	
+  	class copshop_buy: Button
+  	{
+	idc=702;
+	x = 0.65;
+  	y = 0.65;
+  	w = 0.1;
+	text = "Buy";
+	action = "buy = true";
+	};
+	
+	class copshop_exit: Button
+  	{
+	idc=-1;
+	x = 0.65;
+  	y = 0.7;
+    	w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+	class copshop_cash : Text
+	{
+		idc = IDC_COPSHOP_CASH;
+		x = 0.25;
+  		y = 0.25;
+     		w = 0.5;
+     		h = 0.15;
+     		font =  DEFAULTFONT;
+     				
+	}
+	
+	class copshop_description : Textfield
+	{
+		idc = IDC_COPSHOP_DESCRIPTION;
+		x = 0.55;
+  		y = 0.55;
+     		w = 0.2;
+     		h = 0.05;
+     		font =  DEFAULTFONT;
+     		text ="";
+		
+	}
+	
+	class copshop_list: Listbox
+	{	
+		idc = IDC_COPSHOP_LIST;
+		x = 0.25;
+     		y = 0.35;
+     		w = 0.25;
+     		h = 0.4;
+     		
+	
+	};
+	
+}
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+class buildmenuDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={buildmenu_title,buildmenu_cash,buildmenu_1,buildmenu_2,buildmenu_3, buildmenu_4, buildmenu_pic1, buildmenu_pic2, buildmenu_pic3, buildmenu_pic4, buildmenu_exit,buildmenu_text1,buildmenu_text2,buildmenu_text3,buildmenu_text4};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+ colorBackground[] = {0.3, 0.3, 0.3, 0.75};	
+     x = 0.2;
+     y = 0.1;
+     w = 0.6;
+     h = 0.7;
+  };
+  class buildmenu_title: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab36";
+	x = 0.1;
+  	y = 0.15;
+	w = 0.8;
+	sizeEx = 0.04;
+	text = "Buildmenu";
+	};
+	
+	class buildmenu_exit: Button
+  	{
+	idc=-1;
+	x = 0.65;
+  	y = 0.71;
+    	w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+		
+	class buildmenu_cash : Text
+	{
+		idc = IDC_BUILDMENU_CASH;
+		x = 0.55;
+		y = 0.5;
+		text = "";
+	};	
+		
+	
+	
+	 class buildmenu_1: Button
+  	{
+	x = 0.25;
+  	y = 0.355;
+  		w = 0.15;
+	text = "Bar";
+	action = "zahl = 1";
+	};
+	
+	class buildmenu_2: Button
+  	{
+	x = 0.425;
+  	y = 0.355;
+	w = 0.15;
+	text = "Casino";
+	action = "zahl = 2";
+	};
+	
+	
+	class buildmenu_3: Button
+  	{
+	x = 0.6;
+  	y = 0.355;
+	w = 0.15;
+	text = "Brothel";
+	action = "zahl = 3";
+	};
+	
+	
+	class buildmenu_4: Button
+  	{
+	x = 0.25;
+  	y = 0.655;
+  	w = 0.15;
+	text = "Weed Shed";
+	action = "zahl = 4";
+	};
+	
+	
+	
+	
+	class buildmenu_pic1: image
+	{
+		idc = IDC_BUILDMENU_BILD1;
+		x = 0.25;
+     		y = 0.2;
+     		w = 0.15;
+     		h = 0.15;
+		style = ST_PICTURE;
+		text="pics\bar_biker.paa";
+	};
+	
+	class buildmenu_pic2: image
+	{
+		idc = IDC_BUILDMENU_BILD2;
+		x = 0.425;
+     		y = 0.2;
+     		w = 0.15;
+     		h = 0.15;
+		style = ST_PICTURE;
+		text="pics\casino_biker.paa";
+	};
+	
+	class buildmenu_pic3: image
+	{
+		idc = IDC_BUILDMENU_BILD3;
+		x = 0.6;
+     		y = 0.2;
+     		w = 0.15;
+     		h = 0.15;
+		style = ST_PICTURE;
+		text="pics\brothel_biker.paa";
+	};
+	
+	class buildmenu_pic4: image
+	{
+		x = 0.25;
+     		y = 0.5;
+     		w = 0.15;
+     		h = 0.15;
+		style = ST_PICTURE;
+		text ="pics\shed.paa";
+	};
+	
+
+	
+	class buildmenu_text1 : Text
+	{
+		idc = -1;
+		x = 0.25;
+		y = 0.4;
+		w = 0.15;
+		h = 0.1;
+		style=ST_MULTI;
+		lineSpacing = 1;
+		text = "Price: 3000$\nIncome: 500$";
+	};	
+	class buildmenu_text2 : Text
+	{
+		idc = -1;
+		x = 0.425;
+		y = 0.4;
+		w = 0.15;
+		h = 0.1;
+		style=ST_MULTI;
+		lineSpacing = 1;
+		text = "Price: 8000$\nIncome: 1250$";
+	};
+	class buildmenu_text3:Text
+	{
+		idc = -1;
+		x = 0.6;
+		y = 0.4;
+		w = 0.15;
+		h = 0.1;
+		style=ST_MULTI;
+		lineSpacing = 1;
+		text = "Price: 5500$\nIncome: 300$ per Hooker";
+	};
+	class buildmenu_text4 : Text
+	{
+		idc = -1;
+		x = 0.251;
+		y = 0.7;
+		w = 0.15;
+		h = 0.1;
+		style=ST_MULTI;
+		lineSpacing = 1;
+		text = "Price: 200$\nRequired for growing weed.";
+	};
+
+			
+}
+
+
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+
+class ScoreDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={score_title, score_exit, score_stats, score_cash, score_rank, score_bank, score_crimerate, score_statistics_lb, score_accounts_lb, score_inventory_lb, score_buildings_lb, score_teamscores_txt, score_buildings_txt,score_inventory_txt,score_statistics_txt,score_limit,score_crimeranknr,score_picture    };
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+	 colorBackground[] = {0.3, 0.3, 0.3, 0.75};
+     x = 0.15;
+     y = 0.1;
+     w = 0.7;
+     h = 0.7;
+  };
+  class score_title: Title
+  {
+    idc = IDC_score_title;
+	style = ST_LEFT;
+	font = FontTITLE;
+	x = 0.2;
+  	y = 0.13;
+	w = 0.45;
+	h = 0.1;
+	sizeEx = 0.1;
+	text = "";
+	};
+	
+	class score_exit: Button
+  	{
+	idc=-1;
+	x = 0.65;
+  	y = 0.71;
+    	w = 0.15;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+	class score_stats: Button
+  	{
+	idc=-1;
+	x = 0.65;
+  	y = 0.66;
+    	w = 0.15;
+	text = "Statistics";
+	action = "closeDialog 0; [] exec ""open_statistics.sqs"";";
+	};
+		
+	class score_cash : Text
+	{
+		idc = 511;
+		font = FontTITLEHalf;
+		sizeEx = 0.04;
+		x = 0.65;
+		y = 0.355;
+		text = "";
+	};	
+		
+	class score_bank : Text
+	{
+		idc = 512;
+		font = FontTITLEHalf;
+		sizeEx = 0.04;
+		x = 0.65;
+		y = 0.435;
+		text = "";
+	};	
+	
+	class score_crimerate : Text
+	{
+		idc = 510;
+		font = FontTITLEHalf;
+		sizeEx = 0.04;
+		x = 0.65;
+		y = 0.485;
+		text = "";
+	};
+	class score_crimeranknr : Text
+	{
+		idc = 514;
+		font = FontTITLEHalf;
+		sizeEx = 0.04;
+		x = 0.65;
+		y = 0.535;
+		text = "";
+	};	
+	
+	class score_limit : Text
+	{
+		idc = 513;
+		font = FontTITLEHalf;
+		sizeEx = 0.03;
+		x = 0.65;
+		y = 0.585;
+		text = "";
+	};	
+	
+	 class score_rank: Text
+  	{
+  	 idc = IDC_score_rank;
+  	 font = FontTITLEHalf;
+  	 	sizeEx = 0.03;
+		x = 0.2;
+  		y = 0.23;
+  		w = 0.5;
+	text = "";
+
+	};
+	
+	class score_statistics_lb: listbox
+  	{
+  	 idc = 503;
+  	 style = ST_HUD_BACKGROUND;
+	x = 0.38;
+  	y = 0.655;
+	w = 0.23;
+	h = 0.1;
+	text = "";
+	
+	};
+	
+	
+
+	
+	class score_accounts_lb: listbox
+  	{
+  	 idc = 505;
+  	 style = ST_GROUP_BOX2;
+	x = 0.2;
+  	y = 0.355;
+	w = 0.15;
+	h = 0.1;
+	text = "";
+	
+	};
+	
+	
+	
+	class score_inventory_lb: listbox
+  	{
+  	 idc = 507;
+  	 style = ST_GROUP_BOX2;
+	x = 0.2;
+  	y = 0.5;
+	w = 0.15;
+	h = 0.25;
+	text = "";
+	
+	};
+	
+	class score_buildings_lb: listbox
+  	{
+  	 idc = 508;
+  	 style = ST_GROUP_BOX2;
+	x = 0.38;
+  	y = 0.355;
+	w = 0.23;
+	h = 0.2;
+	text = "";
+	
+	};
+		
+
+	class score_teamscores_txt : Text
+	{
+		font = FontTITLEHalf;
+		colorText[]={0.1,0.1,0.1,1};
+		sizeEx = 0.04;
+		x = 0.2;
+		y = 0.31;
+		text = "Team Scores";
+	};
+	
+	class score_buildings_txt : Text
+	{
+	   	idc = 509;
+		font = FontTITLEHalf;
+		colorText[]={0.1,0.1,0.1,1};
+		sizeEx = 0.04;
+		x = 0.38;
+		y = 0.31;
+		text = "";
+	};
+	
+	class score_inventory_txt : Text
+	{
+		font = FontTITLEHalf;
+		colorText[]={0.1,0.1,0.1,1};
+		sizeEx = 0.04;
+		x = 0.2;
+		y = 0.46;
+		text = "Inventory";
+	};
+
+	
+	class score_statistics_txt : Text
+	{
+		font = FontTITLEHalf;
+		colorText[]={0.1,0.1,0.1,1};
+		sizeEx = 0.04;
+		x = 0.38;
+		y = 0.61;
+		text = "Statistics";
+	};
+	
+	class score_picture: image
+	{
+	  idc = IDC_score_picture;
+		x = 0.65;
+     		y = 0.13;
+     		w = 0.15;
+     		h = 0.20;
+		style = ST_PICTURE;
+		text ="pics\cobra.paa";
+	};
+			
+}
+
+
+
+//ooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+
+class TaxiDialog: Menu
+{
+	
+  idd = -1;
+  movingEnable = true;
+  controlsBackground[]={StatsBackgroundWindow};
+  objects[]={ };
+  controls[]={taxi_title,taxi_bildchen,taxi_go,taxi_exit,taxi_text,taxi_list};
+
+  class StatsBackgroundWindow: BackgroundWindow
+  {
+	   colorBackground[] = {1, 1, 0.4, 0.75};
+     x = 0.2;
+     y = 0.2;
+     w = 0.6;
+     h = 0.6;
+  };
+  class taxi_title: Title
+  {
+	style = ST_CENTER;
+	font = "tahomab48";
+	x = 0.1;
+  	y = 0.25;
+	w = 0.8;
+	text = "NTC - Nogova Taxi Company";
+	};
+
+
+	
+	class taxi_bildchen: image
+	{
+		idc = IDC_picture;
+		x = 0.55;
+     		y = 0.35;
+     		w = 0.2;
+     		h = 0.25;
+		style = ST_PICTURE;
+		text = "pics\taxi.paa";
+	};
+	
+  	class taxi_go: Button
+  	{
+	idc=702;
+	x = 0.65;
+  	y = 0.65;
+  	w = 0.1;
+	text = "Go!";
+	action = "go = true";
+	};
+	
+	class taxi_exit: Button
+  	{
+	idc=-1;
+	x = 0.65;
+  	y = 0.7;
+    	w = 0.1;
+	text = "Exit";
+	action = "closeDialog 0";
+	};
+	
+	class taxi_text : Text
+	{
+		idc = IDC_CASH;
+		x = 0.25;
+  		y = 0.25;
+     		w = 0.5;
+     		h = 0.15;
+     		font =  DEFAULTFONT;
+     		Text = "Choose your destination:";
+     				
+	}
+	
+
+	
+	class taxi_list: Listbox
+	{	
+		idc = IDC_TAXI_LISTBOX;
+		x = 0.25;
+     		y = 0.35;
+     		w = 0.25;
+     		h = 0.4;
+     		
+	
+	};
+	
+}
+
+
+// Intropics from the doctor.... 
+
+class RscStdText
+  {
+	type=0;
+	idc=-1;
+	style=2;
+	colorBackground[]={0,0,0,0};
+	colorText[]={1,1,1,1};
+	font="TahomaB24";
+	size=1;
+  };
+
+
+
+
+
+class RscTitles
+  {
+	titles[]={"kflogo", "pppic", "nclogo", "newsp"};
+	class kflogo
+	{
+	  	idd=-1;
+	  	movingEnable=0;
+	  	duration=10;
+	  	fadein=1;
+		name="kflogo";
+	  	controls[]={"kflogo00"};
+	  	class kflogo00
+	  	  {
+	  	  	type=0;
+			idc=-1;
+			style=48;
+			
+			colorBackground[]={0,0,0,1};
+			colorText[]={1,1,1,0.6};
+			
+			font="AudreysHandI48";
+			size=1;
+	  	  	text="kf1c.jpg";
+	  	  	x=0.0;
+			y=0.0;
+			w=1.0;
+			h=1.0;
+	  	  };
+	};
+	class ppic
+	{
+	  	idd=-1;
+	  	movingEnable=0;
+	  	duration=10;
+	  	fadein=1;
+		name="presents";
+	  	controls[]={"ppic00"};
+	  	class ppic00
+	  	  {
+	  	  	type=0;
+			idc=-1;
+			style=48;
+			
+			colorBackground[]={0,0,0,1};
+			colorText[]={1,1,1,0.6};
+			
+			font="AudreysHandI48";
+			size=1;
+	  	  	text="pp1.jpg";
+	  	  	x=0.0;
+			y=0.0;
+			w=1.0;
+			h=1.0;
+	  	  };
+	};
+	class nclogo
+	{
+	  	idd=-1;
+	  	movingEnable=0;
+	  	duration=10;
+	  	fadein=1;
+		name="nclogo";
+	  	controls[]={"nclogo00"};
+	  	class nclogo00
+	  	  {
+	  	  	type=0;
+			idc=-1;
+			style=48;
+			
+			colorBackground[]={0,0,0,1};
+			colorText[]={1,1,1,0.6};
+			
+			font="AudreysHandI48";
+			size=1;
+	  	  	text="nc.jpg";
+	  	  	x=0.0;
+			y=0.0;
+			w=1.0;
+			h=1.0;
+	  	  };
+	};
+	class mpblub
+	{
+	  	idd=-1;
+	  	movingEnable=0;
+	  	duration=10;
+	  	fadein=1;
+		name="mpblub";
+	  	controls[]={"mpblub00"};
+	  	class mpblub00
+	  	  {
+	  	  	type=0;
+			idc=-1;
+			style=48;
+			
+			colorBackground[]={0,0,0,1};
+			colorText[]={1,1,1,0.6};
+			
+			font="AudreysHandI48";
+			size=1;
+	  	  	text="mpmiss.jpg";
+	  	  	x=0.0;
+			y=0.0;
+			w=1.0;
+			h=1.0;
+	  	  };
+	};
+	class pephare
+	{
+	  	idd=-1;
+	  	movingEnable=0;
+	  	duration=10;
+	  	fadein=1;
+		name="pephare";
+	  	controls[]={"pephare00"};
+	  	class pephare00
+	  	  {
+	  	  	type=0;
+			idc=-1;
+			style=48;
+			
+			colorBackground[]={0,0,0,1};
+			colorText[]={1,1,1,0.6};
+			
+			font="AudreysHandI48";
+			size=1;
+	  	  	text="pephare.jpg";
+	  	  	x=0.0;
+			y=0.0;
+			w=1.0;
+			h=1.0;
+	  	  };
+	};
+
+  };
+

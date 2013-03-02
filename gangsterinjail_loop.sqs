@@ -1,0 +1,77 @@
+; Gangster in Jail 
+; loops at every client
+
+; nur auf den Clients, da der nie Server im Knast landet
+? !(local player): exit;
+
+#loop
+
+	@(!(isNull gangsterinjail) AND (gangsterinjail==player))
+	
+	gangsterinjail = ObjNull; 
+	publicVariable "gangsterinjail"
+	
+	glpet globalChat format [localize "str_self_g_injailnow",name player]
+	
+	; weed komplett weg, Cash bleibt, angel dust weg, medizin auf 10 reduziert, falls mehr vorhanden ist
+	
+	;cash = (cash * 0.5) mod 1;
+	weedpackages = 0;
+	narcotics = 0;
+	?(medicines>10): medicines=10;
+
+	gunrun=false; 
+	"_x removeaction gunruns" foreach gunshops; 
+	"_x removeaction gunrunf" foreach gunshops; 
+	{gunruns = _x addAction ["Get a mission","gunrunstart.sqs"];} foreach gunshops;	
+	"gunrunstartm" setmarkertype "empty";
+	"gunrungoalm" setmarkertype "empty";
+
+	;waffen weg
+	
+	removeAllweapons player
+	hiddenweapon ="no"
+	player setcaptive false
+
+	; Faust darf er behalten
+	player AddMagazine "strokefist"
+	player AddWeapon "strokefist"
+	player AddMagazine "strokefist"
+
+	;copkillerstatus wird gelöscht:
+	mecopkiller=false
+		
+	
+	_i = crimerate; 
+	
+	_wait=1
+	If ((side player == west AND bikerlawyer) OR (side player == east AND mafialawyer)) then {_wait=0.5} else {_wait=1}
+	
+	#fori
+		_text = format[localize "str_self_g_jaildeeds",_i];
+		titleText [_text, "PLAIN"]
+		~_wait
+		_i = _i - 1;
+		
+		;lieber hier
+		crimerate = crimerate - 1;
+	
+	
+	?(_i>0):goto "fori"
+	
+	crimerate = 0;
+	titletext [localize "str_self_g_outofjail","BLACK IN",5]
+	
+	player setdammage 0
+	
+	_flag = nearestObject[player,"FlagCarrier"]
+	~1
+	?(_flag == jailflag1): player setpos (getpos jailbusstop)
+	?(_flag == jailflag2): player setpos (getpos jailRmir)
+	?(_flag == jailflag3): player setpos (getpos bsfishing)
+	
+
+		
+	
+	
+goto "loop"

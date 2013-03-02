@@ -1,0 +1,13 @@
+? !(local server): exit
+
+pv_Showarrays = False;
+#loop
+	@ pv_Showarrays
+			pv_Showarrays = False;
+			player sidechat format["BBars Obj: %1",bbars]
+			player sidechat format["MBars Obj: %1",mbars]
+			player sidechat format["BBars Status: %1",bbar_status]
+			player sidechat format["MBars Status; %1",mbar_status]
+
+	goto "loop"
+exit; 

@@ -1,0 +1,28 @@
+; Sendmessage
+; korrespondiert mit Player/message_provider.sqs
+
+		pV_msg_side = _this select 0;
+		pV_msg_type = _this select 1;
+		pV_msg_var1 = [_this select 2] select 1;   
+		pV_msg_var2 = [_this select 2] select 2;   
+		pV_msg_var3 = [_this select 2] select 3;   
+		pV_msg_nachricht = [_this select 2] select 0;  
+
+
+		
+		; nachricht nur für einen selbst? -> kein Broadcast, aber Inhalt wird trotzdem verwendet
+		? (pV_msg_side == S): exit;
+
+		publicVariable "pV_msg_var1"
+		publicVariable "pV_msg_var2"		
+		publicVariable "pV_msg_var3"	
+		
+		publicVariable "pV_msg_side"
+	 	publicVariable "pV_msg_type"
+		publicVariable "pV_msg_nachricht";
+	
+		
+
+		
+exit;
+

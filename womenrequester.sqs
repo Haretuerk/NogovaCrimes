@@ -1,0 +1,51 @@
+; Loopt und wartet auf requests
+; by Haretuerk editet by Dr.Pepper
+
+
+; nur aufm Server, 
+	? !(local server): exit
+	
+	
+
+
+#loop			
+				
+		@!(isNull womenrequest)
+		
+		_women = womenrequest
+		womenrequest = nullObj;
+		publicvariable "womenrequest"
+		
+		; überprüfen, ob _woman = hooker dann gibt sie kein geld (leider ist ja der removeaction-befehl local)?	
+		
+		
+		_count = count women;
+		_i = 0;
+		
+				#next
+				
+					? (( _women) == ( women select _i)): goto "gefunden"
+					_i = _i + 1
+					
+				? (_i < _count) : goto "next"
+					player globalChat "woman not found"
+				goto "loop"
+
+			
+	#gefunden
+
+	?(womencontrol select _i !=0): hint "You cannot rob a hooker"; exit
+	
+	_money = womenmoney select _i 
+	womenanswer = _money;
+	publicvariable "womenanswer"
+	
+	womenmoney set [_i,0];
+
+	
+goto "loop"
+
+
+
+
+exit

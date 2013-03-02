@@ -1,0 +1,35 @@
+; finisher
+; überwacht das Ende der Mission. 
+
+
+; noch für alle
+
+	finish_this_mission = false;
+	noch5min = false;
+	noch2min = false;
+	noch1min = false;
+
+; win limit wird nur vom Server verwaltet, um Unsynchronitäten zu vermeiden
+;? (local player): exit;
+
+#loop
+	;aus Performance gründen nur alle 10 sek der check
+	~10
+ 	
+ 	;player globalchat format["%1 / %2",time,winninglimit];
+ 	
+ 	
+	?((!timelimit AND ((accountpolice>=winninglimit) OR (accountmafia>=winninglimit) OR (accountbikers>=winninglimit)))): finish_this_mission = true; exit	
+ 	
+     ? (timelimit AND ((winninglimit-300)<time) AND ((winninglimit-120)>time)) : 	noch5min = true; publicVariable "noch5min";
+     ? (timelimit AND ((winninglimit-120)<time) AND ((winninglimit-60)>time)) : 	noch2min = true; publicVariable "noch2min";
+     ? (timelimit AND ((winninglimit-60)<time) AND (winninglimit>time)) : 	noch1min = true; publicVariable "noch1min";
+	 ? (timelimit AND (winninglimit<time)) : 	finish_this_mission = true;
+ 	
+
+	; Signal an alle senden, wird von gameover.sqs empfangen
+ 	;publicVariable "finish_this_mission"
+
+goto "loop"
+
+exit; 

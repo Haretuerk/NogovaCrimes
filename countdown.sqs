@@ -1,0 +1,23 @@
+; Zeigt am Anfang sowie 5min, 2min und 1min vor Schluss, dass Mission bald endet.
+; by Haretuerk
+
+; nur bei Timelimit
+? !timelimit : exit;
+
+~10
+;_text = format [localize "STR_TIMELIMIT_START",((winninglimit/60)-((winninglimit/60) mod 1))]
+
+
+;titleCut [_text,"Plain",2]; 
+  @noch5min
+  	titleCut [localize "STR_TIMELIMIT_5","Plain",2]; 
+  	
+  @noch2min
+       titleCut [localize "STR_TIMELIMIT_2","Plain",2]; 
+       
+  @noch1min
+        titleCut [localize "STR_TIMELIMIT_1","Plain",2];
+        
+exit;
+
+

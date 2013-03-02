@@ -1,0 +1,93 @@
+;Capture manager
+; managt den Status der Bars und Casinos, die übernommen werden
+
+; script läuft nur auf dem Server, weil hier die Daten verwaltet werden
+
+
+
+? !(local server): exit
+
+#loop
+
+@!(isNull pV_do_the_capture_here_obj)
+
+	obj = pV_do_the_capture_here_obj; 
+	
+	pV_do_the_capture_here_obj = ObjNull;
+	publicVariable "pV_do_the_capture_here_obj";
+	
+	player globalchat format ["Capture Manager: Anfrage Obj: %1",obj]
+	_count = 5;
+	
+	_temp = 10;
+	
+	; wir begeben uns auf die Suche nach dem richtigen Gebäude in 4 Arrays
+		_i = 0;
+		#nexta
+			? (( obj) == ( mbars select _i)): startarray = mbars; startarray_status = mbar_status; mbarpointer = mbarpointer -1; publicVariable "mbarpointer"; goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nexta"
+		
+		_temp = 20;
+		_i = 0;
+		#nextb
+			? (( obj) == ( bbars select _i)): startarray = bbars; startarray_status = bbar_status; bbarpointer = bbarpointer -1; publicVariable "bbarpointer";goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextb"
+		
+		_temp = 30;
+		_i = 0;
+		#nextc
+			? (( obj) == ( mcasinos select _i)): startarray = mcasinos; startarray_status = mcasino_status; mcasinopointer = mcasinopointer -1; publicVariable "mcasinopointer";  goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextc"
+		
+		_temp = 40;
+		_i = 0;
+		#nextd
+			? (( obj) == ( bcasinos select _i)): startarray = bcasinos; startarray_status = bcasino_status; bcasinopointer = bcasinopointer -1; publicVariable "bcasinopointer"; goto "gefunden"
+			_i = _i + 1;
+					
+		? (_i < _count) : goto "nextd"
+		
+		; gescheitert	
+		player globalchat format ["Capture Manager: Gebäude nicht im Array auffindbar"]	
+
+		exit;
+			
+	#gefunden
+	
+	player globalchat format ["Gefunden in : %1/%2",_temp,_i]
+	player globalchat format ["Array vorher: %1",startarray]	
+	player globalchat format ["MBarsS: %1",mbar_status]	
+	player globalchat format ["BBarsS: %1",bbar_status]	
+	;[obj,startarray] call CutOutOfArray;
+	;[_i,startarray_status] call CutInArray;
+	_i = 0;
+	zielarray  = []
+	zielarray_status = []
+	
+	#loeschi
+		? !(obj == (startarray select _i)): zielarray = zielarray + [(startarray select _i)]; zielarray_status = zielarray_status + [(startarray_status select _i)];
+			_i = _i + 1;
+	? (_i < (count startarray)) : goto "loeschi"
+	
+	? (_temp == 10): mbars = zielarray; mbar_status = zielarray_status +[0]; 
+	? (_temp == 20): bbars = zielarray; bbar_status = zielarray_status +[0]; 
+	? (_temp == 30): mcasinos = zielarray;	mcasino_status = zielarray_status+[0]; 
+	? (_temp == 40): bcasinos = zielarray;	bcasino_status = zielarray_status+[0]; 
+
+~3	
+			player globalchat format ["StartarrayS: %1",startarray_status]	
+			player globalchat format ["ZielarrayS: %1",zielarray_status]	
+			player globalchat format ["---------Array nachher: %1",zielarray]	
+			player globalchat format ["MBarsS: %1",mbar_status]	
+			player globalchat format ["BBarsS: %1",bbar_status]	
+	
+
+goto "loop"
+		
+	

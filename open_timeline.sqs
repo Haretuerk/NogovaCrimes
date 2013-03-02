@@ -1,0 +1,114 @@
+; öffnet das Timelinefenster
+; by Haretuerk
+~0.1
+
+timeline_exit = false;
+_dlg = createDialog "TimelineDialog"
+~0.5
+_arg_player = player;
+
+? (_arg_player == po1): _side = 0; _player = 0;
+? (_arg_player == po2): _side = 0; _player = 1;
+? (_arg_player == po3): _side = 0; _player = 2;
+? (_arg_player == po4): _side = 0; _player = 3;
+? (_arg_player == po5): _side = 0; _player = 4;
+? (_arg_player == po6): _side = 0; _player = 5;
+? (_arg_player == po7): _side = 0; _player = 6;
+? (_arg_player == po8): _side = 0; _player = 7;
+? (_arg_player == po9): _side = 0; _player = 8;
+
+? (_arg_player == ge1): _side = 1; _player = 0;
+? (_arg_player == ge2): _side = 1; _player = 1;
+? (_arg_player == ge3): _side = 1; _player = 2;
+? (_arg_player == ge4): _side = 1; _player = 3;
+? (_arg_player == ge5): _side = 1; _player = 4;
+? (_arg_player == ge6): _side = 1; _player = 5;
+
+? (_arg_player == gg1): _side = 2; _player = 0;
+? (_arg_player == gg2): _side = 2; _player = 1;
+? (_arg_player == gg3): _side = 2; _player = 2;
+? (_arg_player == gg4): _side = 2; _player = 3;
+? (_arg_player == gg5): _side = 2; _player = 4;
+? (_arg_player == gg6): _side = 2; _player = 5;
+
+goto "skiptesting"
+			;player sidechat format ["Side: %1, Player: %2",_side,_player];
+			timeline_data = [0,0,0]
+			;cops
+			timeline_data set [0,[1000,2000,3030,4000,5600,6000,7000,8200,9800,10003]]
+			;mafia
+			timeline_data set [1,[0,200,550,1200,2400,3500,5400,7100,9000,12080]]
+			;bikers
+			timeline_data set [2,[0,500,600,1800,3500,6000,8000,8200,6500,7600]]
+
+#skiptesting
+
+; Maximalwert X (ist winninglimit)
+ctrlSetText [1031,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*1, ["$","min"] select timelimit]];
+ctrlSetText [1032,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*2, ["$","min"] select timelimit]];
+ctrlSetText [1033,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*3, ["$","min"] select timelimit]];
+ctrlSetText [1034,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*4, ["$","min"] select timelimit]];
+ctrlSetText [1035,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*5, ["$","min"] select timelimit]];
+ctrlSetText [1036,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*6, ["$","min"] select timelimit]];
+ctrlSetText [1037,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*7, ["$","min"] select timelimit]];
+ctrlSetText [1038,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*8, ["$","min"] select timelimit]];
+ctrlSetText [1039,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*9, ["$","min"] select timelimit]];
+ctrlSetText [1040,format ["%1%2",(winninglimit/([1,60] select timelimit))/10*10, ["$","min"] select timelimit]];
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+	? timeline_exit: closeDialog 0;
+	
+	? (timeline_exit AND finish_this_mission): finish_this_mission2 = true;
+	
+	
+	
+;	player sidechat format ["Array: %1",(timeline_data select 0)];
+	
+	; Maximalwert ermitteln
+	_max = 0;
+	{ _max = [_max,_x] select (_x>_max) } foreach (timeline_data select 0)
+	{ _max = [_max,_x] select (_x>_max) } foreach (timeline_data select 1)
+	{ _max = [_max,_x] select (_x>_max) } foreach (timeline_data select 2)
+	? (_max == 0): _max = 50;
+	
+	;player sidechat format ["Maximalwert: %1",_max];
+	
+	; Maximalwert Y
+	ctrlSetText [1030,format ["%1$",_max]];
+
+
+
+	_x = 0;
+	#loopx
+
+		_wert = ((timeline_data select 0) select _x) / (_max)*10;
+		_wert = (_wert - (_wert MOD 1)) * 10;
+		; wert kleiner null? dann null
+		_wert = [_wert,0] select (_wert<0)
+		ctrlSetText [1000+_x,format ["pics\green%1.paa",_wert]];
+
+		_wert = ((timeline_data select 1) select _x) / (_max)*10;
+		_wert = (_wert - (_wert MOD 1)) * 10;
+		; wert kleiner null? dann null
+		_wert = [_wert,0] select (_wert<0)
+		ctrlSetText [1010+_x,format ["pics\red%1.paa",_wert]];
+		
+		_wert = ((timeline_data select 2) select _x) / (_max)*10;
+		_wert = (_wert - (_wert MOD 1)) * 10;
+		; wert kleiner null? dann null
+		_wert = [_wert,0] select (_wert<0)
+		ctrlSetText [1020+_x,format ["pics\blue%1.paa",_wert]];
+		
+		
+		_x = _x+1;
+		~0.1
+	? (_x <10): goto "loopx"
+	
+
+	
+
+	~1
+goto "Update"

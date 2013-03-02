@@ -1,0 +1,13 @@
+? !(local player): exit
+
+? !(side player==resistance): exit
+
+? (coprank < 5): player groupchat "Your rank is not high enough!"; exit
+
+player groupchat "now klick on the map...";
+
+onMapSingleClick {[_pos] exec "copselfparago.sqs"};
+
+
+
+exit

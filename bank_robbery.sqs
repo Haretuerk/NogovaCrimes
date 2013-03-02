@@ -1,0 +1,74 @@
+; Rob the Bank
+; by Haretuerk
+; edited by Dr.Pepper
+
+; nur aufm Client
+	? !(local player): exit
+
+; nur fuer Gangster
+?(side player == RESISTANCE):goto "cops"
+
+?bankwasrobbed: goto "ausgeraubt"
+
+? (count weapons player==0): player groupchat "I need a weapon to do this!"; exit
+
+? (ge1 == Player) AND (pf6) : player groupchat "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : player groupchat "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : player groupchat "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : player groupchat "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : player groupchat "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : player groupchat "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : player groupchat "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : player groupchat "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : player groupchat "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : player groupchat "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : player groupchat "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : player groupchat "Get up first!"; exit
+
+
+	crimerate = crimerate + c_cr_robbank;
+
+	
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; exit;
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";exit;
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";exit;
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";exit;
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";exit;
+
+	#next
+	
+	[getpos player,2] exec "crimescene_send.sqs"
+	
+	hint format["Please don't hurt me! The access code is %1.",wantedcode];
+	~2
+
+	; globale Variable zum Anzeigen, dass Bank ausgeraubt wurde
+
+_bank = nearestObject [player,"nc_bank"];
+
+?(_bank == bankP): bankpwasrobbed = true; publicVariable "bankpwasrobbed"; "_x Reveal player" foreach bankguardsp; "_x dofire player" foreach  bankguardsp;
+?(_bank == bankL): banklwasrobbed = true; publicVariable "banklwasrobbed"; "_x Reveal player" foreach bankguardsl; "_x dofire player" foreach bankguardsl;
+	
+	bankwasrobbed = true;
+	publicVariable "bankwasrobbed"
+
+
+exit
+
+#ausgeraubt
+	Player groupchat "A bank has been robbed some minutes ago. The system was shut down. Come back later!"
+exit
+
+#cops
+	titlecut ["You are here to protect and to serve.","BLACK IN",5]
+exit
+
+#pate
+	crimeranking=6; 
+	mepate=true;
+	?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; goto "next"
+	?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; goto "next"
+	goto "next"
+exit;

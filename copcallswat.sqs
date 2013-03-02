@@ -1,0 +1,47 @@
+? !(local player): exit
+
+_preis=c_price_coprec4
+?(accountpolice<_preis): hint format ["you need %1 $",_preis]; exit
+
+_pos = getpos player
+_cops = units group player
+_copscount = count _cops
+_i=0
+
+? (_copscount >=9): hint "to many units"; exit
+
+#checkswat
+
+_i=_i+1
+? (typeof (_cops select _i)==pep_dmx_swata): player groupchat "Swat member alive"; exit
+
+? (_i<_copcount): goto "checkswat"
+
+hint format ["you paid %1 $",_preis]
+accountpolice = accountpolice - _preis;
+PublicVariable "accountpolice"
+
+swat1 = "pep_dmx_swata" createUnit [spawnpos,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},1,"PRIVATE"]; 
+swat2 = "pep_dmx_swata" createUnit [spawnpos,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},1,"PRIVATE"]; 
+swat3 = "pep_dmx_swata" createUnit [spawnpos,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},1,"PRIVATE"]; 
+swat4 = "pep_dmx_swata" createUnit [spawnpos,player,{this AddEventHandler [ "killed",{_This Exec "copkilled.sqs"}]},1,"PRIVATE"]; 
+
+
+_i=0
+#checkswatjump
+
+_i=_i+1
+? (typeof (_cops select _i)==pep_dmx_swata): [(_cops select _i),getpos Player,110,false,"Absprung!",getMarkerPos "phqsw"] exec "Fallschirm.sqs";
+
+? (_i<_copcount): goto "checkswatjump"
+
+
+exit
+
+
+[swat1,getpos Player,110,false,"Absprung!",getMarkerPos "phqsw"] exec "Fallschirm.sqs"
+[swat2,getpos Player,110,false,"Absprung!",getMarkerPos "phqsw"] exec "Fallschirm.sqs"
+[swat3,getpos Player,110,false,"Absprung!",getMarkerPos "phqsw"] exec "Fallschirm.sqs"
+[swat4,getpos Player,110,false,"Absprung!",getMarkerPos "phqsw"] exec "Fallschirm.sqs"
+
+

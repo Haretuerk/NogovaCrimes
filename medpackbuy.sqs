@@ -1,0 +1,82 @@
+? !(local player): exit
+
+
+? (player hasweapon "pepmedpack"): hint "You already have a medpack..."; exit
+
+_thingscount=0;
+
+? (player hasweapon "Binocular"): _thingscount=_thingscount+1;
+? (_thingscount>=2): hint "you already carry 2 items!"; exit
+
+? (player hasweapon "NVGoggles"): _thingscount=_thingscount+1;
+? (_thingscount>=2): hint "you already carry 2 items!"; exit
+
+? (player hasweapon "pepcanister"): _thingscount=_thingscount+1;
+? (_thingscount>=2): hint "you already carry 2 items!"; exit
+
+? (player hasweapon "peprepkit"): _thingscount=_thingscount+1;
+? (_thingscount>=2): hint "you already carry 2 items!"; exit
+
+
+_price=c_price_canister / 2
+
+; Geld abkassienren, wenn genug da
+
+? (side player == RESISTANCE) : goto "cops"
+	?(cash < _price): goto "pleite";
+	cash = cash - _price;
+	
+	#return5
+	
+	goto "weiter"
+	
+	#cops
+	?(accountpolice < _price): goto "pleite";
+	accountpolice = accountpolice - _price;
+	publicVariable "accountpolice"
+	goto "weiter"
+	
+#weiter
+
+player addweapon "pepmedpack";
+
+exit
+
+
+
+#pleite
+
+? ((crimeranking >=5) AND (side player==east)): "goto checkaccM"
+? ((crimeranking >=5) AND (side player==west)): "goto checkaccB"
+
+	hint "You don't have enough money for that!";
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	
+	player groupchat "I pay from the teamaccount."
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	goto "return5"
+
+exit
+
+#checkaccB
+	?(accountbikers<_price): goto "wirklichpleite"
+
+	player groupchat "I pay from the teamaccount."
+	accountbikers = accountbikers - _price
+	publicvariable "accountbikers"	
+	goto "return5"
+
+exit
+
+
+
+
+#wirklichpleite
+
+hint "you cannot afford a that..."
+
+exit

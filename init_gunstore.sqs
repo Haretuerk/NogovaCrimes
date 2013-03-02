@@ -1,0 +1,20 @@
+; inits the Actions for Gunstore....
+;haretuerk
+
+
+
+_gunstore = _this select 0;
+
+gunstore_open = _gunstore addAction["Buy weapons","open_buyweapon.sqs"];
+gunruns = _gunstore addAction["Get a mission","gunrunstart.sqs"];
+;gunrunf = _gunstore addAction["Deliver package","gunrunfin.sqs"];
+
+
+_gunstore setbehaviour "careless"; 
+_gunstore setcaptive true; 
+removeallweapons _gunstore; 
+_gunstore AddEventHandler ["killed",{_this exec"zividead.sqs"}]; 
+_gunstore stop true
+
+
+exit;

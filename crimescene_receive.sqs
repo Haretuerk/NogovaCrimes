@@ -1,0 +1,75 @@
+; Crimescene Receiver
+; shows positions of commited crime
+; by Haretuerk 18.4.08
+
+; nur auf allen Clients
+? !(local player): exit;
+
+
+;initkram
+
+; 0 "Car stolen"
+; 1 "Drug dealer in action"
+; 2 "Bank robbed"
+; 3 "Violence against civilian"
+; 4 "Civilian kidnapped"
+; 5 "Civilian robbed"
+; 6 "Civilian killed"
+; 7 "Cop killed"
+; 8 "Shop blackmailed" <- wird nicht gemeldet
+; 9 "Banker killed"
+; 10 "Bank guard killed"
+; 11 "Stolen car sold"
+; 12 "Ambulance robbed"
+; 13 "Gun running detected"
+
+; Alle Ereignisse sind übersetzt in der stringtable.csv
+
+crimescene_log = ["","","","","","","","","",""];
+
+crimetype = [localize "STR_CRIME_CARSTOLEN", localize "STR_CRIME_DRUGDEALER", localize "STR_CRIME_BANKROBBED", localize "STR_CRIME_VIOLENCE", localize "STR_CRIME_KIDNAP", localize "STR_CRIME_CIVROB", localize "STR_CRIME_CIVKILL", localize "STR_CRIME_COPKILL", localize "STR_CRIME_SHOP", localize "STR_CRIME_BANKERKILL", localize "STR_CRIME_BANKGUARDKILL", localize "STR_CRIME_CARSOLD",localize "STR_CRIME_AMBUROBBED","Gun running detected"];
+
+crime_location = ["Modrava (B2)","Mokropsy (E2)","Dolina (E3)","Trosky (G2)","Mirov (D4)","Opatov (F4)","Varta (H3)","Loukov (I3-4)","Blata (H4)","Airport (B5-6)","Petrovice (D6)","the Mall (D6)","Frymburk (E5)","Kost (E5)","Paseki & Skalice (F5)","Velka Ves (H5)","Bitov (I5)","Lany (I6)","Vidlakov (D7)","Neveklov (F6)","Davle (G6)","Bor (H7)","Lipany (I7)","Okroullo (I8)","St. Sedlo (H3)","Pepperov (E4)",localize "STR_CRIME_SW","Littleton (C4)","Slapy (E6)","St. Hare (B7)"];
+
+#loop
+
+	@crimecommitted
+	
+	
+
+		_crimesceneM = format["crimesceneM_%1",csm]	
+
+
+		_crimesceneM setMarkerPos [crimepos_x,crimepos_y]
+	  	_crimesceneM setMarkertype "flag"
+  	
+  		_ort = crime_ort;
+  		
+  		_crimetype = crime_art;
+  	
+  		? (_crimetype == 8): goto "skip"
+  		
+	  		_string = format[localize "STR_CRIME_MSG",(crime_location select _ort),(crimetype select _crimetype)];
+			GLpet globalchat _string;
+			
+			
+			; Crime Log Haretuerk hat das verbrochen
+			
+			
+			crimescene_log set [0,crimescene_log select 1];
+			crimescene_log set [1,crimescene_log select 2];
+			crimescene_log set [2,crimescene_log select 3];
+			crimescene_log set [3,crimescene_log select 4];
+			crimescene_log set [4,crimescene_log select 5];
+			crimescene_log set [5,crimescene_log select 6];			
+			crimescene_log set [6,crimescene_log select 7];
+			crimescene_log set [7,crimescene_log select 8];
+			crimescene_log set [8,crimescene_log select 9];			
+
+			;und neuen eintrag rein!
+			crimescene_log set [9,(crime_location select _ort)];
+		#skip
+	
+  	crimecommitted = false;
+
+goto "loop"

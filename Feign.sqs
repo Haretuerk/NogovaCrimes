@@ -1,0 +1,193 @@
+
+
+? (po1 == Player) AND (phu1) : Goto "cant"
+? (po2 == Player) AND (phu2) : Goto "cant"
+? (po3 == Player) AND (phu3) : Goto "cant"
+? (po4 == Player) AND (phu4) : Goto "cant"
+? (po5 == Player) AND (phu5) : Goto "cant"
+? (po6 == Player) AND (phu18) : Goto "cant"
+? (po7 == Player) AND (phu19) : Goto "cant"
+? (po8 == Player) AND (phu20) : Goto "cant"
+? (po9 == Player) AND (phu21) : Goto "cant"
+
+
+? (ge1 == Player) AND (phu6) : Goto "cant"
+? (ge2 == Player) AND (phu7) : Goto "cant"
+? (ge3 == Player) AND (phu8) : Goto "cant"
+? (ge4 == Player) AND (phu9) : Goto "cant"
+? (ge5 == Player) AND (phu10) : Goto "cant"
+? (ge6 == Player) AND (phu11) : Goto "cant"
+
+? (gg1 == Player) AND (phu12) : Goto "cant"
+? (gg2 == Player) AND (phu13) : Goto "cant"
+? (gg3 == Player) AND (phu14) : Goto "cant"
+? (gg4 == Player) AND (phu15) : Goto "cant"
+? (gg5 == Player) AND (phu16) : Goto "cant"
+? (gg6 == Player) AND (phu17) : Goto "cant"
+
+
+? (po1 == Player) : Goto "playa1"
+? (po2 == Player) : Goto "playa2"
+? (po3 == Player) : Goto "playa3"
+? (po4 == Player) : Goto "playa4"
+? (po5 == Player) : Goto "playa5"
+? (po6 == Player) : Goto "playa18"
+? (po7 == Player) : Goto "playa19"
+? (po8 == Player) : Goto "playa20"
+? (po9 == Player) : Goto "playa21"
+
+? (ge1 == Player) : Goto "playa6"
+? (ge2 == Player) : Goto "playa7"
+? (ge3 == Player) : Goto "playa8"
+? (ge4 == Player) : Goto "playa9"
+? (ge5 == Player) : Goto "playa10"
+? (ge6 == Player) : Goto "playa11"
+
+? (gg1 == Player) : Goto "playa12"
+? (gg2 == Player) : Goto "playa13"
+? (gg3 == Player) : Goto "playa14"
+? (gg4 == Player) : Goto "playa15"
+? (gg5 == Player) : Goto "playa16"
+? (gg6 == Player) : Goto "playa17"
+
+Goto "end"
+
+#playa1
+pf1 = TRUE
+0.5
+PublicVariable "pf1"
+Goto "end"
+
+#playa2
+pf2 = TRUE
+0.5
+PublicVariable "pf2"
+Goto "end"
+
+#playa3
+pf3 = TRUE
+0.5
+PublicVariable "pf3"
+Goto "end"
+
+#playa4
+pf4 = TRUE
+0.5
+PublicVariable "pf4"
+Goto "end"
+
+#playa5
+pf5 = TRUE
+0.5
+PublicVariable "pf5"
+Goto "end"
+
+
+#playa6
+pf6 = TRUE
+0.5
+PublicVariable "pf6"
+Goto "end"
+
+#playa7
+pf7 = TRUE
+0.5
+PublicVariable "pf7"
+Goto "end"
+
+#playa8
+pf8 = TRUE
+0.5
+PublicVariable "pf8"
+Goto "end"
+
+#playa9
+pf9 = TRUE
+0.5
+PublicVariable "pf9"
+Goto "end"
+
+#playa10
+pf10 = TRUE
+0.5
+PublicVariable "pf10"
+Goto "end"
+
+#playa11
+pf11 = TRUE
+0.5
+PublicVariable "pf11"
+Goto "end"
+
+#playa12
+pf12 = TRUE
+0.5
+PublicVariable "pf12"
+Goto "end"
+
+#playa13
+pf13 = TRUE
+0.5
+PublicVariable "pf13"
+Goto "end"
+
+#playa14
+pf14 = TRUE
+0.5
+PublicVariable "pf14"
+Goto "end"
+
+#playa15
+pf15 = TRUE
+0.5
+PublicVariable "pf15"
+Goto "end"
+
+#playa16
+pf16 = TRUE
+0.5
+PublicVariable "pf16"
+Goto "end"
+
+#playa17
+pf17 = TRUE
+0.5
+PublicVariable "pf17"
+Goto "end"
+
+#playa18
+pf18 = TRUE
+0.5
+PublicVariable "pf18"
+Goto "end"
+
+#playa19
+pf19 = TRUE
+0.5
+PublicVariable "pf19"
+Goto "end"
+
+#playa20
+pf20 = TRUE
+0.5
+PublicVariable "pf20"
+Goto "end"
+
+#playa21
+pf21 = TRUE
+0.5
+PublicVariable "pf21"
+Goto "end"
+
+
+#end
+
+player removeAction feign;
+player removeAction getup
+Getup = player addaction [localize "STR_ACTION_GETUP","Getup.sqs"];
+Exit
+
+#cant
+_msg=Format[localize "STR_SELF_CANTFEIGN"]
+hint _msg
+goto "end"

@@ -1,0 +1,21 @@
+? !(local player): exit
+
+? (side player==east): goto "mafia"
+
+player removeaction buildweedfarm
+buildweedfarm = player AddAction [format["Build weed farm (%1 $)",c_price_weedfield],"weed_posweed.sqs"]
+
+
+exit
+
+
+#mafia
+
+player removeaction buildweedfarm
+buildweedfarm = player AddAction [format["Build weed farm (%1 $)",c_price_weedfield],"weed_posweed.sqs"]
+
+
+
+
+exit
+

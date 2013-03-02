@@ -1,0 +1,12 @@
+; later with counter for differnt markers...
+
+_crimesceneM = _this select 0
+
+
+~90
+
+_crimesceneM setMarkertype "empty"
+_crimesceneM setMarkerPos [0,0]
+
+
+exit

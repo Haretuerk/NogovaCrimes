@@ -1,0 +1,23 @@
+? !(local player): exit
+
+player removeaction closebuild
+player removeaction openbuild
+closebuild = player addaction ["Close Buildmenu","builddeactivate.sqs"]
+
+player removeaction wbf
+player removeaction wbs
+player removeaction buildbar
+player removeaction buildbordell
+player removeaction buildcasino
+
+wbs = player addaction ["Build Shed (200$)","weed_buildshed.sqs"]
+wbf = player addaction ["Build Weed farm (100$)","weed_buildfarm.sqs"]
+buildbar = player addaction ["Build Bar (3000$)","build_bar.sqs"]
+buildbordell = player addaction ["Build Brothel (5500$)","build_bordell.sqs"]
+buildcasino = player addaction ["Build Casino (8000$)","casino_build.sqs"]
+
+; HQ hier platzieren
+; Outpost
+
+
+exit

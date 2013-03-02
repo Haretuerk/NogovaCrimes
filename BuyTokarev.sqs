@@ -1,0 +1,47 @@
+? !(local player): exit
+? !(side player == east): hint "not for you!"; exit
+
+_price = 50; 
+
+? (crimeranking >=4): _price=0; glpet sidechat localize "STR_SELF_G_REPUTATION"
+
+; Geld vorhanden?
+	? (cash<_price): goto "pleite"
+
+
+? (player hasWeapon "Tokarev") : currentweapon = "Tokarev"; wpmags = "TokarevMag"; goto "removeW"
+? (player hasWeapon "Beretta") : currentweapon = "Beretta"; wpmags = "BerettaMag"; goto "removeW"
+? (player hasWeapon "CZ75") : currentweapon = "CZ75"; wpmags = "CZ75Mag"; goto "removeW"
+? (player hasWeapon "Glock") : currentweapon = "Glock"; wpmags = "GlockMag"; goto "removeW"
+? (player hasWeapon "GlockS") : currentweapon = "GlockS"; wpmags = "GlockSMag"; goto "removeW"
+? (player hasWeapon "Ingram") : currentweapon = "Ingram"; wpmags = "IngramMag"; goto "removeW"
+? (player hasWeapon "Revolver") : currentweapon = "Revolver"; wpmags = "RevolverMag"; goto "removeW"
+? (player hasWeapon "Skorpion") : currentweapon = "Skorpion"; wpmags = "SkorpionMag"; goto "removeW"
+
+goto "addW"
+
+#removeW
+player removeWeapon currentweapon;
+player removeMagazines wpmags;
+
+#addW
+
+cash=cash-_price
+
+player AddMagazine "tokarevmag"
+player AddMagazine "tokarevmag"
+player AddMagazine "tokarevmag"
+player AddMagazine "tokarevmag"
+player AddMagazine "tokarevmag"
+player AddWeapon "tokarev"
+
+player selectWeapon "tokarev"
+
+
+
+exit
+
+#pleite
+		hint localize "str_money_notenough"
+exit
+

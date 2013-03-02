@@ -1,0 +1,52 @@
+;Teargas script, modified from BAS goggles/dust script by TJ and smokeblocking script by Angus, SelectThis, Rom (JAM)
+
+hint "teargas-script läuft"
+
+_off = 0
+_counter = 0
+_man = _this select 0 
+_type = _this select 4 
+_shell = nearestObject [_man,_type] 
+
+;wait for smokeshell to hit the ground 
+#loop 
+_pos = getpos _shell 
+~0.1 
+? ({_x == 0} count velocity _shell) != 3 : goto "loop" 
+
+;wait for enough smoke to appear 
+~3 
+
+;place gas reference object
+_gasobj = "dmx_gasobj" camCreate [0,0,0] 
+_gasobj setPos [_pos select 0, _pos select 1, _pos select 2] 
+
+#loop2
+
+TitleText ["", "plain"]
+
+@ ((player distance _gasobj < 11) AND alive player)
+
+; DUST IN EYES STARTS HERE
+
+TitleText ["", "black faded",random 0.3]
+~random 0.35
+
+_counter = _counter + 1
+
+? ((_counter mod 15) == 0) : _off = 0
+
+? _off == 1:goto "loop2"
+
+_off = 1
+player say "dmx_choke"
+goto "loop2"
+
+
+#quit
+
+exit
+
+
+
+

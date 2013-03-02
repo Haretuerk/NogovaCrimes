@@ -1,0 +1,36 @@
+; positioniere weed
+
+
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+
+? (side player == RESISTANCE): goto "cops"
+
+	_price = c_price_weedfield;
+
+
+	; Checken, ob genug Kohle da ist
+	? (cash<_price): goto "pleite"
+	
+	
+	_type = "Pep_hemp_medium";
+	_unit = player; 
+
+	[_object, _unit, _type, false, 30] exec "Player\PlaceAndBuildStructure.sqs"
+
+
+
+	
+	
+exit;
+
+
+
+
+#pleite
+	hint "You don't have enough cash!";  
+exit
+
+
+#cops
+	hint "You don't need to build anything. Get back to work!"
+exit; 

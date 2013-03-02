@@ -1,0 +1,85 @@
+?(side player==RESISTANCE):goto "cops"
+
+? !(vehicle player == player): hint "get out of the car first!"; exit
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+
+player switchmove "CombatStillV1"
+
+_zivi = _this select 0
+_count = count zivis
+_i = 0
+
+	[getpos _zivi,5] exec "crimescene_send.sqs"
+	[player,0,1] exec "statistics_send.sqs"
+
+womenrequest = _zivi
+publicvariable "womenrequest"
+
+
+
+@(womenanswer >=0)
+
+_money = womenanswer
+womenanswer = -1
+publicvariable "womenanswer"
+
+	? (_money == 0): hint "This Chick has been robbed already."; exit
+
+
+  ;#checkcourage
+	;check health & courage
+	;_c = womencourage select _i
+	;? ((getdammage _zivi < 0.1) AND (_c > 1)): hint "No I won´t give you my money. I´m not afraid of you."; exit 
+	;? ((getdammage _zivi < 0.3) AND (_c > 2)): hint "Police ! Call the Police !"; exit 
+	;? ((getdammage _zivi < 0.5) AND (_c > 3)): hint "Is that all you can do ? Intimidate harmless civilians ?"; exit 
+
+	? (crimeranking >=3): _money=_money+20
+
+	hint format ["OK, don´t hurt me. I give you all I have. You robbed %1 $",_money]
+	crimerate = crimerate + 2
+
+	cash = cash + _money;
+
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; exit;
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached";exit;
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached";exit;
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached";exit;
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached";exit;
+
+exit
+
+
+
+
+
+#cops
+titlecut ["You are here to protect and to serve.","BLACK IN",5]
+; Geldstrafe !!!
+; hint "Dir wurden x $ abgezogen."
+; cash = cash -50;
+exit
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;
+

@@ -1,0 +1,142 @@
+? !(local player): exit
+
+#loop
+
+	@ !(isNull civkiller)
+			
+			_killer = civkiller
+			civkiller = ObjNull
+			publicvariable "civkiller"
+			
+			_victim = civkilled
+			civkilled = ObjNull
+			publicvariable "civkilled"
+	
+	
+		
+ 			
+	?((_victim==bankerp) OR (_victim==bankerl)): [getpos _killer,9] exec "crimescene_send.sqs"; glpet globalChat format ["%1 killed a BANKER!!!",name _killer]; goto "next"
+	?((typeof _victim == "ArtSecurityP") AND (_victim distance GLPet) <= 600 ): [getpos _killer,10] exec "crimescene_send.sqs";; glpet globalChat "A Bankguard in Petrovice was killed!"; goto "next"
+	?((typeof _victim == "ArtSecurityP") AND (_victim distance gllip) <= 600 ): [getpos _killer,10] exec "crimescene_send.sqs";; glpet globalChat "A Bankguard in Lipany was killed!"; goto "next"
+
+	? (_victim in shopowners): Shopcontroler=3; publicvariable "Shopcontroler"; shoprequest = _victim; publicvariable "shoprequest";
+	
+	[getpos _killer,6] exec "crimescene_send.sqs"
+	[_killer,10,1] exec "statistics_send.sqs"
+	glpet globalChat format ["%1 killed a civilian!",name _killer]
+
+	
+	#next
+	
+	? (_killer == po1): goto "copk"
+	? (_killer == po2): goto "copk"
+	? (_killer == po3): goto "copk"
+	? (_killer == po4): goto "copk"
+	? (_killer == po5): goto "copk"
+	? (_killer == po6): goto "copk"
+	? (_killer == po7): goto "copk"
+	? (_killer == po8): goto "copk"
+	? (_killer == po9): goto "copk"
+	
+	? (_killer == ge1): goto "east"
+	? (_killer == ge2): goto "east"
+	? (_killer == ge3): goto "east"
+	? (_killer == ge4): goto "east"
+	? (_killer == ge5): goto "east"
+	? (_killer == ge6): goto "east"
+	
+	? (_killer == gg1): goto "bikersk"
+	? (_killer == gg2): goto "bikersk"
+	? (_killer == gg3): goto "bikersk"
+	? (_killer == gg4): goto "bikersk"
+	? (_killer == gg5): goto "bikersk"
+	? (_killer == gg6): goto "bikersk"
+	
+	? !(_killer == player): goto "loop"
+	hint "error in civkill: killer not recognized"
+	goto "loop"
+	exit
+
+#east
+	? !(_killer == player): goto "loop"
+	
+	? (_victim==DonPepper): player groupchat "killing your Don is stupid"; player setpos [0,0,3333]; crimerate=0; crimeranking=0;
+
+	? ((_victim==bankerp) OR (_victim==bankerl) OR (_victim==cardealer1) OR (_victim==cardealer2) OR (_victim==gunshop1) OR (_victim==gunshop2) OR (_victim==gunshop3) OR (_victim==gunshop4) OR (_victim==gunshop5) OR (_victim==drugdealer)): glpet globalChat "Mafia team just lost 5000$ !"; accountmafia = accountmafia-5000; publicVariable "accountmafia"; 
+
+	? ((_victim in Shopowners) OR (_victim in junkies) OR (_victim in women) OR (_victim in Zivis) OR (_victim in ktwdrivers) OR (_victim in ctdrivers)): glpet globalChat "Mafia team just lost 250$ !"; accountmafia = accountmafia-250; publicVariable "accountmafia"; 
+
+	
+	? !(typeof _victim == "ArtSecurityP"): hint "You just killed one of your means of income... not very clever.";
+
+	crimerate=crimerate+c_cr_civkill
+	? (typeof _victim == "ArtSecurityP"): crimerate=crimerate-10 
+
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; goto "loop"
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached"; goto "loop"
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached"; goto "loop"
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached"; goto "loop"
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached"; goto "loop"
+
+
+goto "loop"
+
+
+#bikersk
+
+	? !(_killer == player): goto "loop"
+
+	? (_victim==DirtyHare): player groupchat "killing your Boss is stupid"; player setpos [0,0,3333]; crimerate=0; crimeranking=0;
+
+	? ((_victim==bankerp) OR (_victim==bankerl) OR (_victim==cardealer1) OR (_victim==cardealer2) OR (_victim==gunshop1) OR (_victim==gunshop2) OR (_victim==gunshop3) OR (_victim==gunshop4) OR (_victim==gunshop5) OR (_victim==drugdealer)): glpet globalChat "Bikers team just lost 5000$ !"; accountbikers = accountbikers-5000; publicVariable "accountbikers";
+
+	? ((_victim in Shopowners) OR (_victim in junkies) OR (_victim in women) OR (_victim in Zivis) OR (_victim in ktwdrivers) OR (_victim in ctdrivers)): glpet globalChat "Bikers team just lost 250$ !"; accountbikers = accountbikers-250; publicVariable "accountbikers"; 
+
+
+	? !(typeof _victim == "ArtSecurityP"): hint "You just killed one of your means of income... not very clever.";
+
+	crimerate=crimerate+c_cr_civkill
+	? (typeof _victim == "ArtSecurityP"): crimerate=crimerate-10 
+	
+	? (crimerate >= c_crank_tiger AND !mepate): goto "pate"
+	? (crimerate >= c_crank_shark AND crimeranking<5): crimeranking=5; player groupchat "Crimerank 5 reached"; goto "loop"
+	? (crimerate >= c_crank_dog AND crimeranking<4): crimeranking=4; player groupchat "Crimerank 4 reached"; goto "loop"
+	? (crimerate >= c_crank_snake AND crimeranking<3): crimeranking=3; player groupchat "Crimerank 3 reached"; goto "loop"
+	? (crimerate >= c_crank_vulture AND crimeranking<2): crimeranking=2; player groupchat "Crimerank 2 reached"; goto "loop"
+	? (crimerate >= c_crank_rat AND crimeranking<1): crimeranking=1; player groupchat "Crimerank 1 reached"; goto "loop"
+
+goto "loop"
+
+
+exit
+
+
+#copk
+
+	? !(_killer == player): goto "loop"
+	? ((_victim==bankerp) OR (_victim==bankerl) OR (_victim==cardealer1) OR (_victim==cardealer2) OR (_victim==gunshop1) OR (_victim==gunshop2) OR (_victim==gunshop3) OR (_victim==gunshop4) OR (_victim==gunshop5) OR (_victim==drugdealer)):  glpet globalChat "Police-Team just lost 5000$ !"; accountpolice = accountpolice-5000; publicVariable "accountpolice";
+
+	? ((_victim in Shopowners) OR (_victim in junkies) OR (_victim in women) OR (_victim in Zivis) OR (_victim in ktwdrivers) OR (_victim in ctdrivers)): glpet globalChat "Police-Team just lost 250$ !"; accountpolice = accountpolice-250; publicVariable "accountpolice"; 
+
+
+	civkills=civkills+1
+
+	? (civkills==1): titlecut [format["You killed a civilian!\nBe Careful!\nYou killed %1 civilians",civkills],"black in",5];
+	? (civkills==2): titlecut [format["You killed a civilian!\nYou are questioned at the PD\nYou killed %1 civilians",civkills],"black in",5]; player setpos getmarkerpos "phqsw"; removeallweapons player;
+	? (civkills==3): titlecut [format["You killed a civilian!\nIs it gettin a habit?\nYou killed %1 civilians",civkills],"black in",6]; player setpos (getpos jailflag1); removeallweapons player;
+	? (civkills==4): titlecut [format["You killed a civilian!\nSo now you´re in jail.\nYou killed %1 civilians",civkills],"black in",6]; player setpos (getpos cellcop); removeallweapons player;
+	? (civkills>=5): titlecut [format["Stupid you...\nWhat do you think a cop should do?\nYou killed %1 civilians",civkills],"black in",7]; player setpos (getpos banished); removeallweapons player;
+
+goto "loop"
+
+exit
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; goto "loop"
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; goto "loop"
+goto "loop"
+exit;

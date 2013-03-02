@@ -1,0 +1,18 @@
+- crimescore erhöht sich für jeden einzelnen spieler, wenn dieser eine straftat begeht...
+
+- crimescore aller spieler (im verhältnis zur anzahl der guer & east-spieler) = crimerate
+
+- crimehighscore = der höchste erreichte wert der crimerate... je nachdem werden den cops mehr sachen zugänglich. es kann sich also für die gangster lohnen, eine weile friedlich zu sein, damit die crimerate wieder "abkühlt" und der crimehighscore einen bestimmten wert gar nicht erreicht...
+
+
+- crimescore verringert sich, wenn ein gangster im knast sitzt... bis crimescore auf null ist, dann hat der gangster seine strafe abgesessen, ist rehabilitiert und wird freigelassen. merken: immer überprüfen, ob der gangster noch im knast ist, denn wenn er ausbricht, sinkt seine crimerate nicht weiter!
+
+
+- crimehighscore & auswirkungen:
+	stufe 0: cops haben ihre pistole & "zivile" fahrzeuge...
+	stufe 1: cops können andere cops rekrutieren & den heli nutzen
+	stufe 2: cops können gewehre nehmen
+	Stufe 3: heavy cops rekrutieren & brdms nutzen
+	stufe 4: cops können blackops rekrutieren 
+	stufe 5: bekommen 3 bmp, je 1 pro station
+	Stufe 6: cops bekommen einen Kampfhubschreuber

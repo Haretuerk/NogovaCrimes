@@ -1,0 +1,197 @@
+? !(local player): exit;
+
+?(side player==RESISTANCE):goto "cops";
+?(side player==east):goto "east";
+
+#bstartover
+
+"gg1m" setmarkertype "start"
+"gg2m" setmarkertype "start"
+"gg3m" setmarkertype "start"
+"gg4m" setmarkertype "start"
+"gg5m" setmarkertype "start"
+"gg6m" setmarkertype "start"
+"dlm" setmarkertype "cannabis"
+
+#bikerstart
+
+?(showteamsout): goto "dontshowb"
+
+"gg1m" setMarkerPos getpos gg1
+"gg2m" setMarkerPos getpos gg2
+"gg3m" setMarkerPos getpos gg3
+"gg4m" setMarkerPos getpos gg4
+"gg5m" setMarkerPos getpos gg5
+"gg6m" setMarkerPos getpos gg6
+"dlm" setMarkerPos getpos drugdealer
+
+
+~5
+goto "bikerstart"
+
+#dontshowb
+
+"gg1m" setmarkertype "empty"
+"gg2m" setmarkertype "empty"
+"gg3m" setmarkertype "empty"
+"gg4m" setmarkertype "empty"
+"gg5m" setmarkertype "empty"
+"gg6m" setmarkertype "empty"
+
+@ !(showteamsout)
+goto "bstartover"
+
+
+#east
+
+"ge1m" setmarkertype "start"
+"ge2m" setmarkertype "start"
+"ge3m" setmarkertype "start"
+"ge4m" setmarkertype "start"
+"ge5m" setmarkertype "start"
+"ge6m" setmarkertype "start"
+"dlm" setmarkertype "cannabis"
+
+#mafiastart
+
+?(showteamsout): goto "dontshowm"
+
+"ge1m" setMarkerPos getpos ge1
+"ge2m" setMarkerPos getpos ge2
+"ge3m" setMarkerPos getpos ge3
+"ge4m" setMarkerPos getpos ge4
+"ge5m" setMarkerPos getpos ge5
+"ge6m" setMarkerPos getpos ge6
+"dlm" setMarkerPos getpos drugdealer
+
+
+~5
+goto "mafiastart"
+
+#dontshowm
+
+"ge1m" setmarkertype "empty"
+"ge2m" setmarkertype "empty"
+"ge3m" setmarkertype "empty"
+"ge4m" setmarkertype "empty"
+"ge5m" setmarkertype "empty"
+"ge6m" setmarkertype "empty"
+
+@ !(showteamsout)
+goto "east"
+
+
+#cops
+
+; show the police-vehicles on the map for the police players
+
+"cop1m" setmarkertype "start"
+"cop2m" setmarkertype "start"
+"cop3m" setmarkertype "start"
+"cop4m" setmarkertype "start"
+"cop5m" setmarkertype "start"
+"cop6m" setmarkertype "start"
+"cop7m" setmarkertype "start"
+"cop8m" setmarkertype "start"
+"cop9m" setmarkertype "start"
+
+"polg1m" setmarkertype "Car_Marker"
+"polr1m" setmarkertype "APC_Marker"
+"polh1m" setmarkertype "Helicopter_Marker"
+"polb1m" setmarkertype "moto_Marker"
+"polj1m" setmarkertype "Car_Marker"
+"polu1m" setmarkertype "Car_Marker"
+
+"polg2m" setmarkertype "Car_Marker"
+"polr2m" setmarkertype "APC_Marker"
+"polh2m" setmarkertype "Helicopter_Marker"
+"polb2m" setmarkertype "moto_Marker"
+"polj2m" setmarkertype "Car_Marker"
+"polu2m" setmarkertype "Car_Marker"
+
+"polg3m" setmarkertype "Car_Marker"
+"polr3m" setmarkertype "APC_Marker"
+"polh3m" setmarkertype "Helicopter_Marker"
+"polb3m" setmarkertype "moto_Marker"
+"polj3m" setmarkertype "Car_Marker"
+"polu3m" setmarkertype "Car_Marker"
+
+"polg4m" setmarkertype "Car_Marker"
+"polr4m" setmarkertype "APC_Marker"
+
+"polg5m" setmarkertype "Car_Marker"
+"polr5m" setmarkertype "APC_Marker"
+
+"polg6m" setmarkertype "Car_Marker"
+"polr6m" setmarkertype "APC_Marker"
+
+"polg7m" setmarkertype "Car_Marker"
+"polg8m" setmarkertype "Car_Marker"
+"polg9m" setmarkertype "Car_Marker"
+
+"polbus1m" setmarkertype "bus_Marker"
+"polbus2m" setmarkertype "bus_Marker"
+"polbus3m" setmarkertype "bus_Marker"
+
+"polsp1m" setmarkertype "Car_Marker"
+"polsp2m" setmarkertype "Car_Marker"
+"polsp3m" setmarkertype "Car_Marker"
+
+
+#copstart
+
+"cop1m" setMarkerPos getpos po1
+"cop2m" setMarkerPos getpos po2
+"cop3m" setMarkerPos getpos po3
+"cop4m" setMarkerPos getpos po4
+"cop5m" setMarkerPos getpos po5
+"cop6m" setMarkerPos getpos po6
+"cop7m" setMarkerPos getpos po7
+"cop8m" setMarkerPos getpos po8
+"cop9m" setMarkerPos getpos po9
+
+"polg1m" setMarkerPos getpos polg1
+"polr1m" setMarkerPos getpos polr1
+"polh1m" setMarkerPos getpos polh1
+"polb1m" setMarkerPos getpos polb1
+"polj1m" setMarkerPos getpos polj1
+"polu1m" setMarkerPos getpos polu1
+
+"polg2m" setMarkerPos getpos polg2
+"polr2m" setMarkerPos getpos polr2
+"polh2m" setMarkerPos getpos polh2
+"polb2m" setMarkerPos getpos polb2
+"polj2m" setMarkerPos getpos polj2
+"polu2m" setMarkerPos getpos polu2
+
+"polg3m" setMarkerPos getpos polg3
+"polr3m" setMarkerPos getpos polr3
+"polh3m" setMarkerPos getpos polh3
+"polb3m" setMarkerPos getpos polb3
+"polj3m" setMarkerPos getpos polj3
+"polu3m" setMarkerPos getpos polu3
+
+"polg4m" setMarkerPos getpos polg4
+"polr4m" setMarkerPos getpos polr4
+
+"polg5m" setMarkerPos getpos polg5
+"polr5m" setMarkerPos getpos polr5
+
+"polg6m" setMarkerPos getpos polg6
+"polr6m" setMarkerPos getpos polr6
+
+"polg7m" setMarkerPos getpos polg7
+"polg8m" setMarkerPos getpos polg8
+"polg9m" setMarkerPos getpos polg9
+
+"polbus1m" setmarkerPos getpos polbus1
+"polbus2m" setmarkerPos getpos polbus2
+"polbus3m" setmarkerPos getpos polbus3
+
+"polsp1m" setmarkerPos getpos polsp1
+"polsp2m" setmarkerPos getpos polsp2
+"polsp3m" setmarkerPos getpos polsp3
+
+
+~5
+goto "copstart"

@@ -1,0 +1,39 @@
+; add to building: this AddEventHandler ["killed",{_this exec "buildingdestroyed.sqs"}]
+
+_building = _this select 0
+_killer = _this select 1
+
+	? (typeof _building == "nc_brothel_red"): GLPet globalchat "A Mafia Brothel was destroyed!";
+	? (typeof _building == "nc_casino_red"): GLPet globalchat "A Mafia Casino was destroyed!";
+	? (typeof _building == "nc_bar_red"): GLPet globalchat "A Mafia Bar was destroyed!";
+	? (typeof _building == "nc_brothel_blue"): GLPet globalchat "A Biker Brothel was destroyed!";
+	? (typeof _building == "nc_casino_blue"): GLPet globalchat "A Biker Casino was destroyed!";
+	? (typeof _building == "nc_bar_blue"): GLPet globalchat "A Biker Bar was destroyed!";
+
+	? (_killer == po1): goto "cops"
+	? (_killer == po2): goto "cops"
+	? (_killer == po3): goto "cops"
+	? (_killer == po4): goto "cops"
+	? (_killer == po5): goto "cops"
+	? (_killer == po6): goto "cops"
+	? (_killer == po7): goto "cops"
+	? (_killer == po8): goto "cops"
+	? (_killer == po9): goto "cops"
+	
+	destroyedbuilding = _building;
+	publicVariable "destroyedbuilding";
+	
+	 
+   	; Statistikeintrag
+		[_killer,23,1] exec "statistics_send.sqs"
+
+exit
+
+#cops
+	commissioner globalChat "Cops are no demolition squad! Do a razzia at suspicious buildings!"; 
+	commissioner globalChat "Police team just lost 2000$ !"; 
+	
+	? !(_killer == player): exit
+
+	accountpolice = accountpolice-2000; publicVariable "accountpolice";
+exit

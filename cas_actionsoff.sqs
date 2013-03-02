@@ -1,0 +1,21 @@
+? !(local player): exit
+
+? (side player==east): goto "mafia"
+
+player removeaction getmoney
+player removeaction buygun
+player removeaction buyhgAmmo
+player removeaction recruit1
+
+exit
+
+
+#mafia
+
+player removeaction getmoney
+player removeaction buygun
+player removeaction buyhgAmmo
+player removeaction recruit1
+
+exit
+

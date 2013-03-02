@@ -1,0 +1,7 @@
+; Take card for Black Jack
+; by Haretuerk
+
+blackjackweiter = 1;
+
+
+exit;

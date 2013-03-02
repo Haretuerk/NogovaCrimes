@@ -1,0 +1,74 @@
+? !(local player): exit
+
+? !(vehicle player == player): hint "Get out of the car first!"; exit
+
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+_price=c_price_gangsterrec1
+
+? (crimeranking >=4): _price=c_price_gangsterrec1*0.8; glpet sidechat format ["Because of your reputation, you get this recruit for %1",_price]
+
+
+;Geld vorhanden?
+	? (cash<_price): goto "pleite"
+
+	cash = cash - _price;
+	
+	
+#return5
+	hint format ["You paid %1 $",_price]
+
+
+_listunits = units group player
+_B = count _listunits
+
+?_B >5: goto "full";
+
+
+_who = random 2
+? _who < 1: "mobster2" createUnit [getpos player,player,"",0.7,"CAPTAIN"]; exit;
+"mobster1" createUnit [getpos player,player,"",0.7,"CAPTAIN"]; 
+
+exit
+
+
+
+#full
+hint "You cannot have more than 5 men"
+exit
+
+
+#pleite
+
+? (crimeranking >=5): "goto checkaccM"
+
+	hint "You don't have enough money for that!";
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	
+	player groupchat "I pay from the teamaccount."
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	goto "return5"
+
+exit
+
+
+#wirklichpleite
+
+hint "You don't have enough money for that!"
+exit

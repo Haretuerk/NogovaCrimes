@@ -1,0 +1,44 @@
+; weed harvest
+; by Haretuerk
+
+; läuft auf allen!
+   
+   
+#gesamtloop
+
+	@!(isnull harvestthisfield)
+	
+	_weed = harvestthisfield
+	harvestthisfield = ObjNull
+	publicVariable "harvestthisfield"
+   
+   _count = count weedfields
+   
+   ; jetzt Pflanze suchen
+   _j = 0;
+   #loop
+		
+		_feld = weedfields select _j;
+		_arrayweed = _feld select 0;
+		
+		? (_weed == _arrayweed):goto "gefunden"
+				
+   		_j = _j+1;
+   		?(_j>_count):exit;
+   	goto "loop"
+   		
+      
+   #gefunden
+		
+   	  
+   		_x = 0;
+   		#loopx
+   			(_feld select _x) setdamage 1;
+   			~0.5
+   			
+			deletevehicle (_feld select _x)
+   			_x = _x +1;
+   		?(_x<9):goto "loopx"
+   		
+   		
+goto "gesamtloop"

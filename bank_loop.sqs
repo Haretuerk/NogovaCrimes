@@ -1,0 +1,49 @@
+; loop Bank
+; by Haretuerk
+; wartet, bis die Bank ausgeraubt wurde. Wenn ja, wartet das Script 5min und schaltet die Bank wieder frei 
+
+; nur aufm Server
+	? !(local server): exit
+ 
+#loop
+	    
+   
+    @bankwasrobbed
+    
+    
+	
+		;5 min warten
+		~c_bankclosed
+		; und bank wieder freigeben
+		bankwasrobbed = false
+		publicVariable "bankwasrobbed"
+		geldistwegP = false
+		publicVariable "geldistwegP"
+		geldistwegL = false
+		publicVariable "geldistwegL"
+
+		
+		; und neuen Code für Tür erzeugen
+		_random = random(9000)+1000;
+
+		wantedcode = (_random) - (_random mod 1);
+		publicVariable "wantedcode";
+		
+		; Türen fallen zu 
+		bankp animate ["d_door", 0]
+		bankp animate ["met_door", 0]
+		bankp animate ["safedoor", 0]
+		bankp animate ["d_door1", 0]
+		
+		bankl animate ["d_door", 0]
+		bankl animate ["met_door", 0]
+		bankl animate ["safedoor", 0]
+		bankl animate ["d_door1", 0]
+		
+		; Tür verriegeln
+		bankdoorunlocked = false; 
+		publicVariable "bankdoorunlocked";
+		
+	goto "loop"
+
+exit

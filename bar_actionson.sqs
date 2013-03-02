@@ -1,0 +1,53 @@
+? !(local player): exit
+
+? (side player==east): goto "mafia"
+
+player removeaction getmoney
+getmoney = player AddAction ["[withdraw - 100$]","cash_withdraw.sqs"]
+
+player removeaction buygun
+buygun = player AddAction ["[Buy Cz75 - 50$]","BuyCz75.sqs"]
+
+player removeaction buyhgAmmo
+buyhgAmmo = player AddAction ["[Buy Handgun Ammo - 40$]","BuyHGAmmo.sqs"]
+
+player removeaction buyskoda
+buyskoda = player AddAction ["[Buy Skoda - 300$]","buyskoda.sqs"]
+
+player removeaction recruit1
+recruit1 = player AddAction ["[recruit Gang Member - 250$","GGrec1.sqs"]
+
+player removeaction recruit2
+recruit2 = player AddAction ["[recruit Gang Chief - 500$]","GGrec2.sqs"]
+
+player removeaction synthesize
+synthesize = player Addaction ["[synthesize drugs]","ktw_synthesize.sqs"]
+
+exit
+
+
+#mafia
+
+player removeaction getmoney
+getmoney = player AddAction ["[withdraw - 100$]","cash_withdraw.sqs"]
+
+player removeaction buygun
+buygun = player AddAction ["[Buy Tokarev - 50$]","Buytokarev.sqs"]
+
+player removeaction buyhgAmmo
+buyhgAmmo = player AddAction ["[Buy Handgun Ammo - 40$]","BuyHGAmmo.sqs"]
+
+player removeaction buyskoda
+buyskoda = player AddAction ["[Buy Skoda - 300$]","buyskoda.sqs"]
+
+player removeaction recruit1
+recruit1 = player AddAction ["[recruit Thug - 250$]","GErec1.sqs"]
+
+player removeaction recruit2
+recruit2 = player AddAction ["[recruit Chinese - 500$]","GErec2.sqs"]
+
+player removeaction synthesize
+synthesize = player Addaction ["[synthesize drugs]","ktw_synthesize.sqs"]
+
+exit
+

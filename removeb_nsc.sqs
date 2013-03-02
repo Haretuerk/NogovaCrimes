@@ -1,0 +1,11 @@
+
+_wire = _this select 0
+
+_wire setpos [0,0,0]
+deletevehicle _wire
+
+;Anzahl Barrieren wieder erhöhen
+barriers=barriers+1
+publicvariable "barriers"
+
+exit

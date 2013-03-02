@@ -1,0 +1,72 @@
+? !(local player): exit
+
+? (side player == resistance): exit
+
+_r = random 26;
+
+? (_r<=1): _startpos = glbit; goto "whoisit"
+? (_r<=2): _startpos = gldav; goto "whoisit"
+? (_r<=3): _startpos = gldol; goto "whoisit"
+? (_r<=4): _startpos = gllan; goto "whoisit"
+? (_r<=5): _startpos = gljou; goto "whoisit"
+? (_r<=6): _startpos = glko; goto "whoisit"
+? (_r<=7): _startpos = glokr; goto "whoisit"
+? (_r<=8): _startpos = glop; goto "whoisit"
+? (_r<=9): _startpos = glpep; goto "whoisit"
+? (_r<=10): _startpos = glskal; goto "whoisit"
+? (_r<=11): _startpos = glslap; goto "whoisit"
+? (_r<=12): _startpos = glair; goto "whoisit"
+? (_r<=13): _startpos = glst; goto "whoisit"
+? (_r<=14): _startpos = gltros; goto "whoisit"
+? (_r<=15): _startpos = glvart; goto "whoisit"
+? (_r<=16): _startpos = glvel; goto "whoisit"
+? (_r<=17): _startpos = glvid; goto "whoisit"
+? (_r<=18): _startpos = glmir; goto "whoisit"
+? (_r<=19): _startpos = glbor; goto "whoisit"
+? (_r<=20): _startpos = glnev; goto "whoisit"
+? (_r<=21): _startpos = glmok; goto "whoisit"
+? (_r<=22): _startpos = gllouk; goto "whoisit"
+? (_r<=23): _startpos = glbla; goto "whoisit"
+? (_r<=24): _startpos = glmall; goto "whoisit"
+? (_r<=25): _startpos = glhare; goto "whoisit"
+_startpos = glmodra; goto "whoisit"
+
+
+#whoisit
+
+? (player == gg1): _man = gg1; _v=gbike1; goto "setstart"
+? (player == gg2): _man = gg2; _v=gbike2; goto "setstart"
+? (player == gg3): _man = gg3; _v=gbike3; goto "setstart"
+? (player == gg4): _man = gg4; _v=gbike4; goto "setstart"
+? (player == gg5): _man = gg5; _v=gbike5; goto "setstart"
+? (player == gg6): _man = gg6; _v=gbike6; goto "setstart"
+
+? (player == ge1): _man = ge1; _v=gcar1; goto "setstart"
+? (player == ge2): _man = ge2; _v=gcar2; goto "setstart"
+? (player == ge3): _man = ge3; _v=gcar3; goto "setstart"
+? (player == ge4): _man = ge4; _v=gcar4; goto "setstart"
+? (player == ge5): _man = ge5; _v=gcar5; goto "setstart"
+? (player == ge6): _man = ge6; _v=gcar6; goto "setstart"
+
+hint "error in 'whoisit'...";
+exit
+
+
+#setstart
+
+_h = "HeliHEmpty" createVehicle (getpos _startpos)
+_v setpos getpos _h
+deletevehicle _h
+~0.5
+hint "there you go..."
+_man setpos getpos _startpos
+
+? (side player==west): "player reveal _x" foreach gbikes;
+? (side player==east): "player reveal _x" foreach gcars;
+
+
+exit
+
+
+
+

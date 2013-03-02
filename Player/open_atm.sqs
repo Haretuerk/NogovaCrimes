@@ -1,0 +1,61 @@
+; Bank Dialogue by Haretuerk
+
+;?bankwasrobbed : goto "ausgeraubt"
+
+deposit = false;
+withdraw = false;
+correct = false;
+
+_dlg = createDialog "ATMDialog"
+~0.5
+_amount = 0;
+
+zahl = -1;
+
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+
+
+	? withdraw : goto "withdraw";
+	? correct : _amount = 0 ; correct = false;
+	
+	ctrlSetText [803,format["%1$",_amount]];
+	ctrlSetText [801,format["Cash: %1$",cash]];
+	
+	? ((side player) == RESISTANCE): _account = accountpolice;
+	? ((side player) == WEST): _account = accountbikers;
+	? ((side player) == EAST): _account = accountmafia;
+
+	ctrlSetText [802,format["Account: %1$",_account]];
+	
+	? (zahl > -1): _amount = _amount + zahl; zahl = -1;
+	? (_amount > 99999): _amount = _amount MOD 100000;
+	
+
+	
+~0.2
+goto "Update"
+
+	
+	
+
+#withdraw
+
+
+	withdraw = false;
+	? (_amount > _account): goto "Update";
+	
+	cash = cash + _amount;
+ 	? ((side player) == RESISTANCE): accountpolice = accountpolice - _amount; publicVariable "accountpolice"; 
+	? ((side player) == WEST): accountbikers = accountbikers - _amount; publicVariable "accountbikers"; 
+	? ((side player) == EAST): accountmafia = accountmafia - _amount; publicVariable "accountmafia"; 
+	
+goto "Update";
+
+#ausgeraubt
+	hint localize "str_self_bankclosed"
+exit
+	

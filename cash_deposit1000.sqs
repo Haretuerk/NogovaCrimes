@@ -1,0 +1,49 @@
+; Geld  einzahlen
+
+
+_amount = 1000;
+
+?bankwasrobbed : goto "ausgeraubt"
+
+? cash < _amount : goto "pleite";
+
+; aus der Tasche
+
+cash = cash-_amount;
+
+
+; draufbuchen
+
+? side player == east : goto "mafia" 
+? side player == RESISTANCE : goto "cops" 
+? side player == west : goto "biker" 
+
+
+#mafia
+	accountmafia = accountmafia + _amount;
+	publicVariable "accountmafia";
+	goto "end";
+
+#cops
+	accountpolice = accountpolice + _amount;
+	publicVariable "accountpolice";
+	goto "end";
+
+#biker
+	accountbikers = accountbikers + _amount;
+	publicVariable "accountbikers";
+	goto "end";
+	
+
+#pleite
+	hint "There is not enough money in your pockets...";
+	exit; 
+	
+#ausgeraubt
+	hint "Bank closed\n\nThe bank was robbed some minutes ago. The system was shut down. Come back later!"
+	exit
+
+#end
+
+	hint format ["You deposited %1 $ to your team account",_amount];
+exit

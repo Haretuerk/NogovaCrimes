@@ -1,0 +1,22 @@
+? !(local player): exit;
+
+player removeaction vradioon; 
+
+player removeaction playAD;
+player removeaction playBW;
+player removeaction playdis;
+player removeaction playget;
+player removeaction playglor;
+player removeaction playhigh;
+player removeaction playkill;
+player removeaction playpaint;
+player removeaction playpara;
+player removeaction playprot;
+player removeaction playsweet;
+player removeaction playword;
+
+vradio = 0;
+
+10 fadeMusic 0;
+
+exit

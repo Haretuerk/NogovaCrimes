@@ -1,0 +1,253 @@
+; Buymenu by Haretuerk
+~0.1
+
+; raus aus dem Auto!
+	? !(vehicle player == player): hint localize "str_self_incar"; exit
+	
+? (ge1 == Player) AND (pf6) : hint localize "str_self_feigned"; exit
+? (ge2 == Player) AND (pf7) : hint localize "str_self_feigned"; exit
+? (ge3 == Player) AND (pf8) : hint localize "str_self_feigned"; exit
+? (ge4 == Player) AND (pf9) : hint localize "str_self_feigned"; exit
+? (ge5 == Player) AND (pf10) : hint localize "str_self_feigned"; exit
+? (ge6 == Player) AND (pf11) : hint localize "str_self_feigned"; exit
+
+? (gg1 == Player) AND (pf12) : hint localize "str_self_feigned"; exit
+? (gg2 == Player) AND (pf13) : hint localize "str_self_feigned"; exit
+? (gg3 == Player) AND (pf14) : hint localize "str_self_feigned"; exit
+? (gg4 == Player) AND (pf15) : hint localize "str_self_feigned"; exit
+? (gg5 == Player) AND (pf16) : hint localize "str_self_feigned"; exit
+? (gg6 == Player) AND (pf17) : hint localize "str_self_feigned"; exit
+
+; Cash- und Weedbug beheben, bevor Geld ausgegeben wird
+[] exec "cashbug.sqs";
+
+
+buy = false;
+_unit = player
+_dlg = createDialog "BuyWeaponDialog"
+~0.5
+
+; PRICES ~~~~~~~~~~~~~~~~
+
+_price_revolver = 100;
+_price_beretta = 150;
+_price_glocks = 150;
+_price_ingram = 250;
+_price_skorpion = 300;
+_price_kozlice = 300;
+_price_mossberg590 = 600;
+_price_tommygun = 750;
+_price_uzi = 1000;
+_price_bizon = 1000;
+_price_AK47CZ = 1000;
+_price_FAL = 1500;
+_price_AK74 = 1500;
+_price_AK103 = 1750;
+_price_HuntingRifle = 1750;
+_price_Dragunov = 2000;
+_price_m21 = 2500;
+_price_satchel = 500;
+
+? (crimeranking >=4): goto "cheaperguns"
+
+#hopback
+
+
+lbClear 705
+
+_id = lbAdd [705, format["Revolver %1 $",_price_revolver]];
+_id = lbAdd [705, format["Beretta %1 $",_price_beretta]];
+_id = lbAdd [705, format["Glock 17S %1 $",_price_glocks]];
+_id = lbAdd [705, format["Ingram %1 $",_price_ingram]];
+_id = lbAdd [705, format["Skorpion Sa61 %1 $",_price_skorpion]];
+_id = lbAdd [705, format["Kozlice %1 $",_price_kozlice]];
+_id = lbAdd [705, format["Mossberg %1 $",_price_mossberg590]];
+_id = lbAdd [705, format["Tommy Gun %1 $",_price_tommygun]];
+_id = lbAdd [705, format["UZI %1 $",_price_uzi]];
+_id = lbAdd [705, format["Bizon %1 $",_price_bizon]];
+_id = lbAdd [705, format["AK47CZ %1 $",_price_AK47CZ]];
+_id = lbAdd [705, format["FN FAL  %1 $",_price_FAL]];
+_id = lbAdd [705, format["AK74 %1 $",_price_AK74]];
+_id = lbAdd [705, format["AK103 %1 $",_price_AK103]];
+_id = lbAdd [705, format["Hunting Rifle %1 $",_price_HuntingRifle]];
+_id = lbAdd [705, format["SVD Dragunov %1 $",_price_Dragunov]];
+_id = lbAdd [705, format["M21 %1 $",_price_m21]];
+_id = lbAdd [705, format["1 Satchel %1 $",_price_satchel]];
+
+lbSetValue [705, 0, 0];
+lbSetValue [705, 1, 1];
+lbSetValue [705, 2, 2];
+lbSetValue [705, 3, 3];
+lbSetValue [705, 4, 4];
+lbSetValue [705, 5, 5];
+lbSetValue [705, 6, 6];
+lbSetValue [705, 7, 7];
+lbSetValue [705, 8, 8];
+lbSetValue [705, 9, 9];
+lbSetValue [705, 10, 10];
+lbSetValue [705, 11, 11];
+lbSetValue [705, 12, 12];
+lbSetValue [705, 13, 13];
+lbSetValue [705, 14, 14];
+lbSetValue [705, 15, 15];
+lbSetValue [705, 16, 16];
+lbSetValue [705, 17, 17];
+
+lbSetCurSel [705,0];
+
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+
+	? buy : goto "buy";
+	
+	ctrlSetText [716,(format["Your cash: %1$",cash])];
+	
+	_value = lbValue [705,lbCurSel 705]  
+	
+	
+	? (_value == 0) : ctrlSetText [704,"\o_wp\w_sam.paa"]; ctrlSetText[717,"Cal.: .44 Magnum\nRounds: 6\nRange: 50m"];
+	? (_value == 1) : ctrlSetText [704,"\o\Guns\bereta.paa"];	ctrlSetText[717,"Cal.: 9mm\nRounds: 10\nRange: 50m"];
+	? (_value == 2) : ctrlSetText [704,"\o_wp\w_glocksilent.paa"];ctrlSetText[717,"Cal.: 9mm\nRounds: 14\nRange: 50m"];
+	? (_value == 3) : ctrlSetText [704,"\o_wp\w_ingram.paa"]; ctrlSetText[717,"Cal.: 9mm\nRounds: 30\nRange: 50m"];
+	? (_value == 4) : ctrlSetText [704,"\o\Guns\skorpion.paa"];	ctrlSetText[717,"Cal.: 7.65mm\nRounds: 20\nRange: 75m"];
+	? (_value == 5) : ctrlSetText [704,"\kozl\w_kozlice.paa"]; ctrlSetText[717,"Cal.: 12mm balls or shells\nRounds: 6\nRange: 50m"];
+	? (_value == 6) : ctrlSetText [704,"\drg_shotgun\w_590s.paa"];ctrlSetText[717,"Cal.: 12mm\nRounds: 6\nRange: 50m"];
+	? (_value == 7) : ctrlSetText [704,"\wbt_tommy\pics\w_tommy.paa"];ctrlSetText[717,"Cal.: .45 ACP\nRounds: 50\nRange: 50m"];
+	? (_value == 8) : ctrlSetText [704,"\o\Guns\w_uzi.paa"];ctrlSetText[717,"Cal.: 9mm\nRounds: 10\nRange: 50m"];
+	? (_value == 9) : ctrlSetText [704,"\Bizon\w_bizon.paa"];ctrlSetText[717,"Cal.: 9mm\nRounds: 64\nRange: 150m\nincl. 3 cartridges"];	
+	? (_value == 10) : ctrlSetText [704,"\dtaext\equip\w\w_ak47cz.paa"];ctrlSetText[717,"Cal.: 7.62mm\nRounds: 30\nRange: 300m"];
+	? (_value == 11) : ctrlSetText [704,"\o\Guns\w_fal.paa"];	ctrlSetText[717,"Cal.: 7.62mm\nRounds: 20\nRange: 900"];
+	? (_value == 12) : ctrlSetText [704,"\dtaext\equip\w\w_ak74.paa"]; ctrlSetText[717,"Cal.: 5.45mm\nRounds: 30\nRange: 400m"];
+	? (_value == 13) : ctrlSetText [704,"\KEGak103\gear1.paa"];ctrlSetText[717,"Cal.: 7.62mm\nRounds: 30\nRange: 500m"];
+	? (_value == 14) : ctrlSetText [704,"\o_wp\w_remigton.paa"];ctrlSetText[717,"Cal.: 7mm\nRounds: 6\nRange: 800m"];	
+	? (_value == 15) : ctrlSetText [704,"\dtaext\equip\w\w_svddragunov.paa"]; ctrlSetText[717,"Cal.: 7.62mm\nRounds: 10\nRange: 1000m"];
+	? (_value == 16) : ctrlSetText [704,"\dtaext\equip\w\w_m21.paa"];ctrlSetText[717,"Cal.: 7.62mm\nRounds: 20\nRange: 700m"];
+	? (_value == 17) : ctrlSetText [704,"\dtaext\equip\m\m_pipebomb.paa"];ctrlSetText[717,"High explosive!\nIncl. 30 sec timer"];
+	
+~0.5
+goto "Update"
+
+	
+	
+
+#buy
+
+	
+	? (_value == 0): _price = _price_revolver; _gun = "Revolver";_ammo = "RevolverMag"; _ammocount = 4;
+	? (_value == 1): _price = _price_beretta; _gun = "Beretta";_ammo = "BerettaMag"; _ammocount = 4;
+	? (_value == 2): _price = _price_glocks; _gun = "GlockS";_ammo = "GlockSMag"; _ammocount = 4;	
+	? (_value == 3): _price = _price_ingram; _gun = "Ingram";_ammo = "IngramMag"; _ammocount = 4;	
+	? (_value == 4): _price = _price_skorpion; _gun = "Skorpion";_ammo = "SkorpionMag"; _ammocount = 4;			
+	? (_value == 5): _price = _price_kozlice; _gun = "Kozlice";_ammo = "KozliceBall"; _ammocount = 4;
+	? (_value == 6): _price = _price_mossberg590; _gun = "Drg_590s";_ammo = "Drg_590Mag"; _ammocount = 4;
+	? (_value == 7): _price = _price_tommygun; _gun = "wbt_tommy";_ammo = "wbt_TommyDrumMag"; _ammocount = 2;	
+	? (_value == 8): _price = _price_uzi; _gun = "Uzi";_ammo = "UziMag"; _ammocount = 4;	
+	? (_value == 9): _price = _price_bizon; _gun = "Bizon";_ammo = "BizonMag"; _ammocount = 4;			
+	? (_value == 10): _price = _price_ak47cz; _gun = "AK47CZ";_ammo = "AK47"; _ammocount = 4;
+	? (_value == 11): _price = _price_fal; _gun = "FAL";_ammo = "FALMag"; _ammocount = 4;
+	? (_value == 12): _price = _price_ak74; _gun = "AK74";_ammo = "AK74"; _ammocount = 4;	
+	? (_value == 13): _price = _price_ak103; _gun = "KEGak103";_ammo = "KEGak103Mag"; _ammocount = 4;	
+	? (_value == 14): _price = _price_huntingrifle; _gun = "HuntingRifle";_ammo = "HuntingRifleMag"; _ammocount = 4;				
+	? (_value == 15): _price = _price_dragunov; _gun = "SVDDragunov";_ammo = "SVDDragunov"; _ammocount = 4;
+	? (_value == 16): _price = _price_m21; _gun = "M21";_ammo = "M21"; _ammocount = 4;
+	? (_value == 17): _price = _price_satchel; _gun = "Pipebomb";_ammo = "Pipebomb"; _ammocount = 1;	
+	
+		
+	? (cash<_price): goto "pleite"
+	
+	cash = cash - _price;
+
+	#return5
+	
+	;herausfinden, wo die nächste Waffenkiste steht
+	;script bleibt damit flexibel
+	
+	_nextcrate = nearestObject [player,"TableX"]
+	;_nextcrate addMagazineCargo [_ammo,_ammocount]; 
+	;_nextcrate addWeaponCargo [_gun,1]
+	
+	; an das Table-Script von Killerbob [GST] übergeben
+	[_nextcrate,_gun,_ammo,0.955,false] exec "table.sqs"
+
+	
+	; Fenster schließen	
+	;closeDialog 0
+	buy = false;
+	
+goto "Update";
+	
+
+#pleite
+
+? ((crimeranking >=5) AND (side player==east)): "goto checkaccM"
+? ((crimeranking >=5) AND (side player==west)): "goto checkaccB"
+
+	ctrlSetText [716,"You don't have enough cash!"];
+	buy = false;
+	~2
+	goto "Update";
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	
+	player groupchat "I pay from the teamaccount."
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	goto "return5"
+
+exit
+
+#checkaccB
+	?(accountbikers<_price): goto "wirklichpleite"
+
+	player groupchat "I pay from the teamaccount."
+	accountbikers = accountbikers - _price
+	publicvariable "accountbikers"	
+	goto "return5"
+
+exit
+
+
+
+
+#wirklichpleite
+
+	ctrlSetText [716,"You don't have enough cash!"];
+	buy = false;
+	~2
+	goto "Update";
+exit
+
+
+
+
+
+#cheaperguns
+
+	_price_revolver = _price_revolver*0.75;
+	_price_beretta = _price_beretta*0.75;
+	_price_glocks = _price_glocks*0.75;
+	_price_ingram = _price_ingram*0.75;
+	_price_skorpion = _price_skorpion*0.75;
+	_price_kozlice = _price_kozlice*0.75;
+	_price_mossberg590 = _price_mossberg590*0.75;
+	_price_tommygun = _price_tommygun*0.75;
+	_price_uzi = _price_uzi*0.75;
+	_price_bizon = _price_bizon*0.75;
+	_price_AK47CZ = _price_AK47CZ*0.75;
+	_price_FAL = _price_FAL*0.75;
+	_price_AK74 = _price_AK74*0.75;
+	_price_AK103 = _price_AK103*0.75;
+	_price_HuntingRifle = _price_HuntingRifle*0.75;
+	_price_Dragunov = _price_Dragunov*0.75;
+	_price_m21 = _price_m21*0.75;
+	_price_satchel = _price_satchel*0.75;
+
+
+goto "hopback"
+	
+	

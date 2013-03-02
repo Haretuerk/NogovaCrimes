@@ -1,0 +1,23 @@
+; forcedout remote
+
+; alle Clients
+? !(local player): exit
+; nur Gangster können aus dem Auto gekegelt werden
+? (side player == RESISTANCE): exit; 
+
+#loop 
+	@!(isnull pv_forcedout) 
+		pv_forcedout = Objnull; 
+		player action ["GETOUT",vehicle player]
+		
+		~0.5
+		; und gleich mal die Hände hoch!
+		[] exec "Hands.sqs"
+		
+		~3
+		[] exec "HandsD.sqs"
+
+		
+	
+goto "loop"
+

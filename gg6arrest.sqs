@@ -1,0 +1,45 @@
+_gangster = gg6;
+
+? ((vehicle _gangster) !=_gangster): hint "Suspect must not be in a vehicle."; exit
+
+
+	; Prämie für Cop über CrimeRate festlegen
+	checkcrimerate = _gangster
+	publicVariable "checkcrimerate"
+	
+	@ (checkcrimerate_answer > -1)
+	
+	_crcrimerate = checkcrimerate_answer
+	checkcrimerate_answer = -1;
+	publicVariable "checkcrimerate_answer"
+	
+	? (_crcrimerate>c_arrestlimit):goto "big"
+		hint "Hm, that is not a big fish... he wont be sent to jail! "
+		exit
+		
+	#big
+		_money = _crcrimerate * c_pr_arrestgangster_faktor;
+				
+				dutypoints=dutypoints+c_dp_arrest + ((_crcrimerate/10) - ((_crcrimerate/10) MOD 1));
+		
+			? (dutypoints >= c_coprank_chief AND coprank<6): coprank=6;
+			? (dutypoints >= c_coprank_commander AND coprank<5): coprank=5;
+			? (dutypoints >= c_coprank_captian AND coprank<4): coprank=4;
+			? (dutypoints >= c_coprank_inspector AND coprank<3): coprank=3;
+			? (dutypoints >= c_coprank_sergeant AND coprank<2): coprank=2;
+			? (dutypoints >= c_coprank_detective AND coprank<1): coprank=1;
+			
+			? (coprank >=3): _money=_money*1.2
+			
+		accountpolice = accountpolice + _money;
+		publicVariable "accountpolice"
+		hint format["That was a good catch! Your team earns %1 $.",_money];
+
+	#end
+		_gangster setpos getpos (cells select cellnr)
+		cellnr = cellnr+1
+		?(cellnr > 18): cellnr=0
+		publicvariable "cellnr"
+		gangsterinjail = _gangster;
+		publicVariable "gangsterinjail"
+exit

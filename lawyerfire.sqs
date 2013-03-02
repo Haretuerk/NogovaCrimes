@@ -1,0 +1,30 @@
+? !(local player): exit
+
+? (side player==resistance): hint "not for you..."; exit 
+
+? (side player==east): goto "mafialawyer" 
+
+#bikerlawyer
+
+hint format ["You`ve ended the contract with your team's lawyer.\nThis costs your team a final payment of %1 $",c_price_lawyercommission];
+
+	accountbikers = accountbikers - c_price_lawyercommission
+	publicvariable "accountbikers"
+
+bikerlawyer=false; 
+publicvariable "bikerlawyer"; 
+
+exit
+
+
+#mafialawyer
+
+hint format ["You`ve ended the contract with your team's lawyer.\nThis costs your team a final payment of %1 $",c_price_lawyercommission];
+
+	accountmafia = accountmafia - c_price_lawyercommission
+	publicvariable "accountmafia"
+
+mafialawyer=false; 
+publicvariable "mafialawyer"; 
+
+exit

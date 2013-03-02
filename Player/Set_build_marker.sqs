@@ -1,0 +1,19 @@
+; Setzt eine Gebäude-Markierung bei allen Clients dieser Seite
+; by Haretuerk
+
+;args
+_type = _this select 0
+_pos = _this select 1
+
+	pvSetBuildMarkerhereType = _type
+	pvSetBuildMarkerhereX = (_pos select 0)
+	pvSetBuildMarkerhereY = (_pos select 1) 	
+	
+	publicVariable "pvSetBuildMarkerhereX";
+
+	publicVariable "pvSetBuildMarkerhereY";
+
+	publicVariable "pvSetBuildMarkerhereType";
+
+exit;
+

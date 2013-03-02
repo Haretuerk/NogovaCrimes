@@ -1,0 +1,306 @@
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;
+;				  B L A C K   J A C K
+;
+; 	Black Jack Script 1.0 by Haretuerk  
+
+;
+; 	www: www.kanonenfutter.org
+;	email: haretuerk@kanonenfutter.org
+;	icq: 59850549
+;
+; 	This script was written for the "Nogova Crimes"
+; 	MP-Mission available at www.kanonenfutter.org
+;	Feel free to use it in your mission, but send me
+;	a message please!
+;
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+						
+_kartenneu = ["2","2","2","2","3","3","3","3","4","4","4","4","5","5","5","5","6","6","6","6","7","7","7","7","8","8","8","8","9","9","9","9","10","10","10","10","Jack","Jack","Jack","Jack","Queen","Queen","Queen","Queen","King","King","King","King","As","As","As","As"]
+_wertneu = [2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11]
+
+#neuesspiel
+
+	; Geld abkassieren, wenn genug da
+
+	?(cash < 50): goto "pleite";
+	cash = cash - 50;
+	
+
+	nearestObject [player,"ac_casino"] removeAction playblackjack;
+	nearestObject [player,"ac_casino"] removeAction playsportsbets;
+	nearestObject [player,"ac_casino"] removeAction playcraps;
+
+	_header = format ["BLACK JACK\nYour cash: %1 $\n~~~~~~~~~~~~~~~~~~\nBank draws to 16 \nand must stand on 17\n",cash];
+	_line 	= "~~~~~~~~~~~~~~~~~~\n";
+
+	
+	_punkteplayer = 0;
+	_kartenplayer = "";
+	_punktebank = 0;
+	_kartenbank = "";
+	_kartenpointer = 0;
+	_player_as = 0;
+	_bank_as = 0;
+
+
+
+	_karten = _kartenneu;
+	_werte = _wertneu;
+	
+	
+	; Karten mischen
+	_i = 0;
+	#loopi
+		_a = random 52;
+		_a = _a - (_a mod 1);
+		_b = random 52;
+		_b = _b - (_b mod 1);
+		
+		_tauscha = _karten select _a;
+		_tauschb = _karten select _b;
+		_wa = _werte select _a;
+		_wb = _werte select _b;
+		
+		_karten set [_a,_tauschb];
+		_karten set [_b,_tauscha];
+		_werte set [_a,_wb];
+		_werte set [_b,_wa];
+		
+		_i = _i + 1;
+	
+	?(_i<50):goto "loopi";
+	
+
+
+	_playertext = format ["You have:\nCards: %1\nPoints: %2",_kartenplayer,_punkteplayer];	
+	_banktext = format ["\n\nBank has:\nCards: %1\nPoints: %2\n",_kartenbank,_punktebank];
+	_gesamttext = format ["%1%2%3%4%5",_header,_line,_playertext,_banktext,_line]
+	hint _gesamttext;
+	
+	~2
+
+
+
+	; Erste Karte für Player	
+		
+	_pc = _karten select _kartenpointer;
+
+	_kartenplayer = format ["%1 %2",_kartenplayer,_pc];
+	_punkteplayer = _punkteplayer + (_werte select _kartenpointer);
+	? ((_werte select _kartenpointer)==11):_player_as = _player_as + 1;
+	_kartenpointer = _kartenpointer + 1;
+		_playertext = format ["You have:\nCards: %1\nPoints: %2",_kartenplayer,_punkteplayer];	
+	_banktext = format ["\n\nBank has:\nCards: %1\nPoints: %2\n",_kartenbank,_punktebank];
+	_gesamttext = format ["%1%2%3%4%5",_header,_line,_playertext,_banktext,_line]
+	hint _gesamttext;
+	
+	~2
+	
+	
+		
+	; eine karte für Bank
+
+	_bc = _karten select _kartenpointer;
+
+	_kartenbank = format ["%1 %2",_kartenbank,_bc];
+	_punktebank = _punktebank + (_werte select _kartenpointer);	
+	? ((_werte select _kartenpointer)==11):_bank_as = _bank_as + 1;
+	_kartenpointer = _kartenpointer + 1;	
+
+	
+	_playertext = format ["You have:\nCards: %1\nPoints: %2",_kartenplayer,_punkteplayer];	
+	_banktext = format ["\n\nBank has:\nCards: %1\nPoints: %2\n",_kartenbank,_punktebank];
+	_gesamttext = format ["%1%2%3%4%5",_header,_line,_playertext,_banktext,_line]
+	hint _gesamttext;
+	~2
+	
+	
+	
+	; Zweite Karte für Player
+	_pc = _karten select _kartenpointer;
+
+	_kartenplayer = format ["%1 %2",_kartenplayer,_pc];
+	_punkteplayer = _punkteplayer + (_werte select _kartenpointer);
+	? ((_werte select _kartenpointer)==11):_player_as = _player_as + 1;
+	_kartenpointer = _kartenpointer + 1;	
+	
+
+	
+	_playertext = format ["You have:\nCards: %1\nPoints: %2",_kartenplayer,_punkteplayer];	
+	_banktext = format ["\n\nBank has:\nCards: %1\nPoints: %2\n",_kartenbank,_punktebank];
+	_gesamttext = format ["%1%2%3%4%5",_header,_line,_playertext,_banktext,_line]
+	hint _gesamttext;
+	
+	? (_punkteplayer==21):goto "blackjack"
+	
+	~1
+	hint format ["%1\n Hit or Stand?",_gesamttext]
+	
+
+	actionkarte = player addAction ["Hit: Take another card","casino_blackjackcard.sqs"];	
+	actionstand = player addAction ["Stand: No more cards","casino_blackjackstand.sqs"];	
+	actionquit = player addAction ["Stop playing Black Jack","casino_blackjackquit.sqs"];	
+	
+	blackjackweiter = 0;
+	
+	; hier warten, bis eine Eingabe getätigt wurde
+	@ (blackjackweiter>0)
+	
+	player removeAction actionkarte;
+	player removeAction actionstand;
+	player removeAction actionquit;
+	
+	? (blackjackweiter == 3): goto "beenden"
+	? (blackjackweiter == 2): goto "stand"
+	? (blackjackweiter == 1): goto "card"
+
+	
+exit	
+
+
+
+#card
+	blackjackweiter = 0;
+	hint format ["%1\nTaking card...",_gesamttext]
+
+	~1
+	
+	_pc = _karten select _kartenpointer;
+
+	_kartenplayer = format ["%1 %2",_kartenplayer,_pc];
+	_punkteplayer = _punkteplayer + (_werte select _kartenpointer);
+	? ((_werte select _kartenpointer)==11):_player_as = _player_as + 1;
+	_kartenpointer = _kartenpointer + 1;		
+	
+	
+	_playertext = format ["You have:\nCards: %1\nPoints: %2",_kartenplayer,_punkteplayer];	
+	_banktext = format ["\n\nBank has:\nCards: %1\nPoints: %2\n",_kartenbank,_punktebank];
+	_gesamttext = format ["%1%2%3%4%5",_header,_line,_playertext,_banktext,_line]
+	hint _gesamttext;
+	
+	? (_punkteplayer==21):goto "stand" 
+	? (_punkteplayer>21):goto "drueber"
+	
+	#asrausgenommen
+	~1
+	hint format ["%1\n Hit or Stand?",_gesamttext]
+	
+
+	actionkarte = player addAction ["Hit: Take another card","casino_blackjackcard.sqs"];	
+	actionstand = player addAction ["Stand: No more cards","casino_blackjackstand.sqs"];	
+	actionquit = player addAction ["Stop playing Black Jack","casino_blackjackquit.sqs"];	
+	
+	blackjackweiter = 0;
+	; hier warten, bis eine Eingabe getätigt wurde
+	@ (blackjackweiter>0)
+	
+	player removeAction actionkarte;
+	player removeAction actionstand;
+	player removeAction actionquit;
+	
+	? (blackjackweiter == 3): goto "beenden"
+	? (blackjackweiter == 2): goto "stand"
+	? (blackjackweiter == 1): goto "card"
+
+exit
+
+#stand
+	blackjackweiter = 0;
+	hint format ["%1\nNo more cards...",_gesamttext]
+	
+	~1
+	#weiterekarten
+			; weitere karten für Bank
+		
+			_bc = _karten select _kartenpointer;
+		
+			_kartenbank = format ["%1 %2",_kartenbank,_bc];
+			_punktebank = _punktebank + (_werte select _kartenpointer);	
+			? ((_werte select _kartenpointer)==11):_bank_as = _bank_as + 1;
+			_kartenpointer = _kartenpointer + 1;	
+		
+			
+			_playertext = format ["You have:\nCards: %1\nPoints: %2",_kartenplayer,_punkteplayer];	
+			_banktext = format ["\n\nBank has:\nCards: %1\nPoints: %2\n",_kartenbank,_punktebank];
+			_gesamttext = format ["%1%2%3%4%5",_header,_line,_playertext,_banktext,_line]
+			hint _gesamttext;
+			~2
+			
+	?(_punktebank<17):goto "weiterekarten"
+	?(_punktebank>21):goto "bankdrueber"
+	
+
+
+	?(_punktebank!=_punkteplayer):goto "unterschiedlich"
+		hint format ["%1\nPush. Nobody wins",_gesamttext]
+	
+		cash = cash + 50;
+		~1
+		goto "neuesspiel"
+	#unterschiedlich
+	
+	?(_punktebank>_punkteplayer):goto "bankgewinnt"
+	 	hint format ["%1\nYou win!",_gesamttext]
+	
+		cash = cash + 100;
+		~1
+		goto "neuesspiel"
+	
+	#bankgewinnt
+	    hint format ["%1\nBank wins!",_gesamttext]
+			~1
+		goto "neuesspiel"
+
+exit;
+	
+#blackjack
+	~3
+	hint format ["%1\nBlack Jack! You win!",_gesamttext]
+
+	cash = cash + 100;
+	
+	~3
+	goto "neuesspiel"
+	
+#drueber
+
+	? (_player_as > 0): goto "asdrin"
+	~2
+	hint format ["%1\nBust! You loose.",_gesamttext]
+
+	~3
+	goto "neuesspiel"
+	
+#bankdrueber
+	hint format ["%1\nBank looses. You win.",_gesamttext]
+	
+	cash = cash + 100;
+	~3
+	goto "neuesspiel"
+	
+	
+#asdrin
+	_punkteplayer = _punkteplayer - 10;
+	_player_as = _player_as-1;
+		_playertext = format ["You have:\nCards: %1\nPoints: %2",_kartenplayer,_punkteplayer];	
+	_banktext = format ["\n\nBank has:\nCards: %1\nPoints: %2\n",_kartenbank,_punktebank];
+	_gesamttext = format ["%1%2%3%4%5",_header,_line,_playertext,_banktext,_line]
+	hint _gesamttext;
+	goto "asrausgenommen"
+
+	
+	
+#pleite  
+	blackjackweiter = 0;
+	hint "You don't have enough cash! Get out of here!";
+	exit;
+	
+#beenden 
+	blackjackweiter = 0;
+	hint "Bye! Thanks for playing!"
+	~2
+	playblackjack = casino addAction["Play Black Jack","casino_blackjack.sqs"]
+	playsportsbets = casino addAction["Sports betting","casino_sportsbets.sqs"]
+	exit;

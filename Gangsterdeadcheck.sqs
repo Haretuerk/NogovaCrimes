@@ -1,0 +1,20 @@
+#loop			
+				
+		@!(isNull innocentdead)
+		
+		_poorguy = innocentdead
+		innocentdead = Objnull;
+		publicvariable "innocentdead"
+		
+		GLPet globalChat format ["%1 was killed by a cop, without being armed and a low Crimerate...",name _poorguy]
+		GLPet globalChat format ["%1$ Penalty for the Cops!",c_pen_killingunarmedgangster];
+		? (local server): goto "account"
+		
+		goto "loop"
+		
+		
+		#account
+		accountpolice = accountpolice - c_pen_killingunarmedgangster
+		publicVariable "accountpolice";
+		
+goto "loop"

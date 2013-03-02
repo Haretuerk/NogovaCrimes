@@ -1,0 +1,46 @@
+; Rob the Bank
+; by Haretuerk
+; edited by Dr.Pepper
+
+; nur aufm Client
+	? !(local player): exit
+
+; nur fuer Gangster
+?(side player == resistance): goto "cops"
+
+_haufen = (nearestObject [player,"nc_moneystack"]); 
+
+? (_haufen distance player >=5): player groupchat "Money lies in the bank... gotta go there!"; player removeAction bankraub; exit 
+
+; Sicherung, dass der Bankraub auch wirklich am Schalter angefangen wurde
+? (bankpwasrobbed AND (_haufen == geldhaufenP)): player groupchat "There is no money here..."; player removeAction bankraub; exit;
+? (banklwasrobbed AND (_haufen == geldhaufenL)): player groupchat "There is no money here..."; player removeAction bankraub; exit;
+
+;hint format ["Haufen: %1",_haufen];
+~1
+? (geldistwegP AND (_haufen == geldhaufenP)): goto "geldisweg"
+? (geldistwegL AND (_haufen == geldhaufenL)): goto "geldisweg"
+
+
+	_robbedmoney = c_income_bankrob_min + random c_income_bankrob_varianz;
+	_robbedmoney = _robbedmoney - (_robbedmoney) mod 1
+	cash = cash + _robbedmoney;
+	;crimerate = crimerate + c_cr_robbank;
+	hint format ["You robbed %1 $.\nCongratulations! ",_robbedmoney]
+	? (_haufen == geldhaufenP): geldistwegP = true; publicVariable "geldistwegP"
+	? (_haufen == geldhaufenL): geldistwegL = true; publicVariable "geldistwegL"
+
+	[player,9,1] exec "statistics_send.sqs"
+
+exit
+
+
+
+#cops
+	titlecut ["You are here to protect and to serve.","BLACK IN",5]
+	
+exit
+
+#geldisweg
+	hint "Sorry, there is no money anymore..."
+exit;

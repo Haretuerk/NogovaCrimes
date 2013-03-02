@@ -1,0 +1,42 @@
+_victim = _this select 1
+
+; besser so? Tatort ist immer Standort des Täters. HT
+_victim = player
+
+? ((_victim distance glmodra) <= 500 ) : crimemodra=true; PublicVariable "crimemodra"; exit 
+? ((_victim distance glmok) <= 500 ) : crimemok=true; PublicVariable "crimemok"; exit 
+? ((_victim distance gldol) <= 500 ) : crimedol=true; PublicVariable "crimedol"; exit 
+? ((_victim distance gltros) <= 500 ) : crimetros=true; PublicVariable "crimetros"; exit 
+? ((_victim distance glmir) <= 500 ) : crimemir=true; PublicVariable "crimemir"; exit 
+? ((_victim distance glop) <= 500 ) : crimeop=true; PublicVariable "crimeop"; exit 
+? ((_victim distance glvart) <= 500 ) : crimevart=true; PublicVariable "crimevart"; exit 
+? ((_victim distance gllouk) <= 400 ) : crimelouk=true; PublicVariable "crimelouk"; exit
+? ((_victim distance glbla) <= 500 ) : crimebla=true; PublicVariable "crimebla"; exit 
+? ((_victim distance glair) <= 500 ) : crimeair=true; PublicVariable "crimeair"; exit 
+? ((_victim distance GLmall) <= 400 ) : crimemall=true; PublicVariable "crimemall"; exit 
+? ((_victim distance GLPet) <= 600 ) : crimepet=true; PublicVariable "crimepet"; exit 
+? ((_victim distance glfry) <= 500 ) : crimefry=true; PublicVariable "crimefry"; exit
+? ((_victim distance glko) <= 500 ) : crimeko=true; PublicVariable "crimeko"; exit 
+? ((_victim distance glps) <= 500 ) : crimeps=true; PublicVariable "crimeps"; exit 
+? ((_victim distance glvel) <= 500 ) : crimevel=true; PublicVariable "crimevel"; exit 
+? ((_victim distance glbit) <= 500 ) : crimebit=true; PublicVariable "crimebit"; exit 
+? ((_victim distance gllan) <= 500 ) : crimelan=true; PublicVariable "crimelan"; exit 
+? ((_victim distance glvid) <= 500 ) : crimevid=true; PublicVariable "crimevid"; exit 
+? ((_victim distance glnev) <= 500 ) : crimenev=true; PublicVariable "crimenev"; exit
+? ((_victim distance gldav) <= 500 ) : crimedav=true; PublicVariable "crimedav"; exit 
+? ((_victim distance glbor) <= 500 ) : crimebor=true; PublicVariable "crimebor"; exit
+? ((_victim distance gllip) <= 500 ) : crimelip=true; PublicVariable "crimelip"; exit
+? ((_victim distance glokr) <= 400 ) : crimeokr=true; PublicVariable "crimeokr"; exit 
+? ((_victim distance glpep) <= 500 ) : crimepep=true; PublicVariable "crimepep"; exit 
+? ((_victim distance glst) <= 400 ) : crimest=true; PublicVariable "crimest"; exit 
+
+
+
+crimeland=true
+PublicVariable "crimeland"
+
+exit
+
+
+
+

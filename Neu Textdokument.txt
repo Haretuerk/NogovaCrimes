@@ -1,0 +1,2 @@
+{_x animate [""Component03"",1]} foreach polgaras
+{_x animate [""Component04"",1]} foreach polgaras

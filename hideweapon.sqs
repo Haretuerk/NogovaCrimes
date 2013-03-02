@@ -1,0 +1,44 @@
+; hideweapon
+; hides a handgun. Big, large and huge guns cant be hidden
+; by haretuerk
+
+
+? (hiddenweapon == "no"): goto "hideweapon"
+
+#showweapon
+
+	player addWeapon hiddenweapon
+	player selectWeapon hiddenweapon
+	player setCaptive false
+	hiddenweapon = "no"
+	
+
+exit
+
+
+#hideweapon
+		? (player hasWeapon "Tokarev") : hiddenweapon = "Tokarev"
+		? (player hasWeapon "Beretta") : hiddenweapon = "Beretta"
+		? (player hasWeapon "CZ75") : hiddenweapon = "CZ75"
+		? (player hasWeapon "Glock") : hiddenweapon = "Glock"
+		? (player hasWeapon "GlockS") : hiddenweapon = "GlockS"
+		? (player hasWeapon "Ingram") : hiddenweapon = "Ingram"
+		? (player hasWeapon "Revolver") : hiddenweapon = "Revolver"
+		? (player hasWeapon "Skorpion") : hiddenweapon = "Skorpion"
+		
+		? (hiddenweapon == "no"): goto "canthide"
+			player removeWeapon hiddenweapon;
+			player setCaptive true
+			hint format [localize "STR_SELF_G_HIDE",hiddenweapon]
+
+		exit
+		
+		
+		#canthide
+		? (count weapons player==0): hint localize "STR_SELF_G_NOWEAPON"; exit;
+		
+		;else
+			hint localize "STR_SELF_G_CANTHIDE";
+		exit
+
+

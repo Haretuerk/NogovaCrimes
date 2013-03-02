@@ -1,0 +1,166 @@
+; Score Dialog
+
+
+
+
+_dlg = createDialog "ScoreDialog"
+~0.5
+
+? timelimit: timeleft = ((winninglimit - time)/60) - (((winninglimit - time)/60) mod 1)+1; winninglimittext = format [localize "STR_SCORE_TIMELEFT",timeleft];
+? !timelimit: winninglimittext = format [localize "STR_SCORE_WINLIMIT",winninglimit];
+
+	ranks =[localize "STR_SCORE_RANK1",localize "STR_SCORE_RANK2",localize "STR_SCORE_RANK3",localize "STR_SCORE_RANK4",localize "STR_SCORE_RANK5",localize "STR_SCORE_RANK6",localize "STR_SCORE_RANK7"];
+	
+	rankboni =[localize "STR_SCORE_BONUS1", localize "STR_SCORE_BONUS2", localize "STR_SCORE_BONUS3", localize "STR_SCORE_BONUS4", localize "STR_SCORE_BONUS5", localize "STR_SCORE_BONUS6", localize "STR_SCORE_BONUS7"]
+	
+	rankmali =[localize "STR_SCORE_MALUS1", localize "STR_SCORE_MALUS2", localize "STR_SCORE_MALUS3", localize "STR_SCORE_MALUS4", localize "STR_SCORE_MALUS5", localize "STR_SCORE_MALUS6", localize "STR_SCORE_MALUS7"] 
+
+
+ctrlSetText [501,format[localize "STR_SCORE_SCORE",name player]];  
+? (side player !=RESISTANCE): ctrlSetText [502,format["%1",ranks select crimeranking]];  
+
+
+
+
+#Update
+
+
+	lbClear 503
+	lbClear 504
+	lbClear 505
+
+	lbClear 507
+	lbClear 508
+	
+	
+
+
+	ctrlSetText [511,format[localize "STR_SCORE_CASH",cash]];  
+	
+	_bank = accountpolice;
+	? (side player == WEST): _bank = accountbikers;
+	? (side player == EAST): _bank = accountmafia;
+	ctrlSetText [512,format[localize "STR_SCORE_ACCOUNT",_bank]];  
+	
+	? (side player !=RESISTANCE):ctrlSetText [510,format[localize "STR_SCORE_CRIMERATE",crimerate]];  
+	? (side player ==RESISTANCE):ctrlSetText [510,format[localize "STR_SCORE_DUTYPOINTS",dutypoints]];  
+	
+	? (side player !=RESISTANCE):ctrlSetText [514,format[localize "STR_SCORE_CRIMERANK",crimeranking]];
+	? (side player ==RESISTANCE):ctrlSetText [514,format[localize "STR_SCORE_COPRANK",coprank]];   
+	
+	ctrlSetText [513,format["%1",winninglimittext]]; 
+
+
+	? ((side player == RESISTANCE) AND (coprank == 0) ) : ctrlSetText[524,"pics\officer.paa"];
+	? ((side player == RESISTANCE) AND (coprank == 1) ) : ctrlSetText[524,"pics\detective.paa"];
+	? ((side player == RESISTANCE) AND (coprank == 2) ) : ctrlSetText[524,"pics\sergeant.paa"];
+	? ((side player == RESISTANCE) AND (coprank == 3) ) : ctrlSetText[524,"pics\inspector.paa"];
+	? ((side player == RESISTANCE) AND (coprank == 4) ) : ctrlSetText[524,"pics\captain.paa"];
+	? ((side player == RESISTANCE) AND (coprank == 5) ) : ctrlSetText[524,"pics\commander.paa"];	
+	? ((side player == RESISTANCE) AND (coprank == 6) ) : ctrlSetText[524,"pics\deputychief.paa"];	
+	
+	? ((side player != RESISTANCE) AND (crimeranking == 0) ) : ctrlSetText[524,"pics\goldfish.paa"];
+	? ((side player != RESISTANCE) AND (crimeranking == 1) ) : ctrlSetText[524,"pics\rat.paa"];
+	? ((side player != RESISTANCE) AND (crimeranking == 2) ) : ctrlSetText[524,"pics\geier.paa"];
+	? ((side player != RESISTANCE) AND (crimeranking == 3) ) : ctrlSetText[524,"pics\cobra.paa"];
+	? ((side player != RESISTANCE) AND (crimeranking == 4) ) : ctrlSetText[524,"pics\dog.paa"];
+	? ((side player != RESISTANCE) AND (crimeranking == 5) ) : ctrlSetText[524,"pics\shark.paa"];	
+	? ((side player != RESISTANCE) AND (crimeranking == 6) ) : ctrlSetText[524,"pics\tiger.paa"];	
+
+	
+	
+	_id = lbAdd [503, format[localize "STR_SCORE_TOTALCRIMERATE",crimeratetotal]];
+	_id = lbAdd [503, format[localize "STR_SCORE_CRIMEHIGHSCORE",crimehighscore]];
+	_id = lbAdd [503, format[localize "STR_SCORE_RECENTCRIMESCORE",recentcrimescore]];
+	
+		
+	_id = lbAdd [505, format[localize "STR_SCORE_POLICE",accountpolice]];
+	_id = lbAdd [505, format[localize "STR_SCORE_MAFIA",accountmafia]];
+	_id = lbAdd [505, format[localize "STR_SCORE_BIKERS",accountbikers]];
+
+
+	_id = lbAdd [507, format[localize "STR_SCORE_REPKIT",[localize "STR_SCORE_NO",localize "STR_SCORE_YES"] select haskit]];
+	_id = lbAdd [507, format[localize "STR_SCORE_CANISTER",[localize "STR_SCORE_NO",localize "STR_SCORE_YES"] select hascan]];
+	? (side player !=RESISTANCE):_id = lbAdd [507, format[localize "STR_SCORE_WEED",weedpackages]];
+	? (side player !=RESISTANCE):_id = lbAdd [507, format[localize "STR_SCORE_MED",medicines]];
+	? (side player !=RESISTANCE):_id = lbAdd [507, format[localize "STR_SCORE_ANGELDUST",narcotics]];
+	? (side player !=RESISTANCE):_id = lbAdd [507, format[localize "STR_SCORE_GUNRUN",[localize "STR_SCORE_NO",localize "STR_SCORE_YES"] select gunrun]];
+	? (side player !=RESISTANCE):_id = lbAdd [507, format[localize "STR_SCORE_LAWYER",[localize "STR_SCORE_NO",localize "STR_SCORE_YES"] select ([bikerlawyer,mafialawyer] select (side player == EAST))           ]];
+	? (side player ==RESISTANCE):_id = lbAdd [507, format[localize "STR_SCORE_BARRIERS",barriers]];
+	
+	
+	? (side player ==RESISTANCE): goto "cops"
+	? (side player ==WEST): goto "bikers"	
+	? (side player ==EAST): goto "mafia"
+	
+	; else... wenn Seite "enemy"
+	goto "hop"
+	
+	#mafia
+		ctrlSetText [509,localize "STR_SCORE_BUILDINGS"];  
+		_id = lbAdd [508, format["Bars: %1/%2",mbarpointer-mbars_razziacounter, mbarpointer]];
+		_id = lbAdd [508, format["Casinos: %1/%2",mcasinopointer-mcasinos_razziacounter,mcasinopointer]];
+		_id = lbAdd [508, format[localize "STR_SCORE_BROTHELS",mbordellpointer]];
+		_id = lbAdd [508, format[localize "STR_SCORE_HOOKERS","n/a"]];
+		_id = lbAdd [508, format[localize "STR_SCORE_SHEDS",mshedpointer]];
+		
+				_j = 0;
+		#fork
+			? (alive (mafiosi select _j)):	_id = lbAdd [504, name(mafiosi select _j)];	
+		  
+  			_j = _j + 1
+  		?_j < (count bikers) : goto "fork"
+		
+		goto "hop"
+	
+
+	#bikers
+		ctrlSetText [509,localize "STR_SCORE_BUILDINGS"];  
+		_id = lbAdd [508, format["Bars: %1/%2",bbarpointer-bbars_razziacounter, bbarpointer]];
+		_id = lbAdd [508, format["Casinos: %1/%2",bcasinopointer-bcasinos_razziacounter,bcasinopointer]];		
+		_id = lbAdd [508, format[localize "STR_SCORE_BROTHELS",bbordellpointer]];
+		_id = lbAdd [508, format[localize "STR_SCORE_HOOKERS","n/a"]];
+		_id = lbAdd [508, format[localize "STR_SCORE_SHEDS",bshedpointer]];
+		
+		
+		_j = 0;
+		#forj
+			? (alive (bikers select _j)):	_id = lbAdd [504, name(bikers select _j)];	
+		  
+  			_j = _j + 1
+  		?_j < (count bikers) : goto "forj"
+		
+		
+		goto "hop"
+	
+	#cops
+	
+		ctrlSetText [509,localize "STR_SCORE_RECENTCRIMESCENES"];  
+		_id = lbAdd [508, crimescene_log select 9];
+		_id = lbAdd [508, crimescene_log select 8];
+		_id = lbAdd [508, crimescene_log select 7];
+		_id = lbAdd [508, crimescene_log select 6];
+		_id = lbAdd [508, crimescene_log select 5];		
+		_id = lbAdd [508, crimescene_log select 4];	
+		_id = lbAdd [508, crimescene_log select 3];
+		_id = lbAdd [508, crimescene_log select 2];
+		_id = lbAdd [508, crimescene_log select 1];		
+		_id = lbAdd [508, crimescene_log select 0];	
+		
+		_i = 0;
+		
+		#fori
+			? (alive (cops select _i)):	_id = lbAdd [504, name(cops select _i)];	
+		  
+  			_i = _i + 1
+  		?_i < (count cops) : goto "fori"
+					
+	
+	#hop
+		
+
+
+	~2
+goto "Update"
+
+exit; 

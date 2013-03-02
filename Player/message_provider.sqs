@@ -1,0 +1,69 @@
+; Message Provider
+; erhält einen Aufruf über pV von send_message.sqs [msg_side,msg_hint,[pv_msg_nachricht,var1,var2,var3]]
+
+
+messages = [];
+
+
+;nur auf allen clients, dem Server sind Nachrichten egal
+? !(local player): exit; 
+
+;#include (hirnschmalz)
+
+
+_myside = side player;
+
+s = 0; 		; self
+c = 1  		; cops
+m = 2  		; mafia
+b = 3		; bikers
+cmb = 4;	; cops, mafia, bikers
+cm = 5;		; cops, mafia
+mb = 6;		; mafia, bikers
+cb = 7;		; cops, bikers
+all = cmb; 	; cops, mafia, bikers
+g = mb; 	; gangster = mafia,bikers
+
+
+ ? (_myside == RESISTANCE): _myside_1 = c; _myside_2 = cm; _myside_3 = cb; _myside_4 = cmb;
+ ? (_myside == EAST): _myside_1 = m; _myside_2 = cm; _myside_3 = mb; _myside_4 = cmb;
+ ? (_myside == WEST): _myside_1 = b; _myside_2 = cb; _myside_3 = mb; _myside_4 = cmb; 
+
+
+
+
+msg_hint = 0;
+msg_global = 1;
+msg_side = 2;
+msg_group = 3;
+msg_title = 4;
+
+; Übergabevariablen
+	
+
+	pv_msg_nachricht = -1;
+ 
+	
+
+#loop
+
+	@(pV_msg_nachricht !=-1)
+	
+		? !((pV_msg_side==_myside_1) OR (pV_msg_side==_myside_2) OR (pV_msg_side==_myside_3) OR (pV_msg_side==_myside_4) OR (pV_msg_side==s)): goto "neutralisieren"
+	
+		
+	
+	
+		? (pV_msg_type == msg_hint): hint format [Localize (messages select pv_msg_nachricht),pV_msg_var1,pV_msg_var2,pV_msg_var3];
+		? (pV_msg_type == msg_global): glPet globalchat format [Localize (messages select pv_msg_nachricht),pV_msg_var1,pV_msg_var2,pV_msg_var3];
+		? (pV_msg_type == msg_side): player sidechat format [Localize (messages select pv_msg_nachricht),pV_msg_var1,pV_msg_var2,pV_msg_var3];
+		? (pV_msg_type == msg_group): player groupchat format [Localize (messages select pv_msg_nachricht),pV_msg_var1,pV_msg_var2,pV_msg_var3];
+		? (pV_msg_type == msg_title): titlecut [format [Localize (messages select pv_msg_nachricht),pV_msg_var1,pV_msg_var2,pV_msg_var3];,"PLAIN DOWN"];
+	
+
+	#neutralisieren
+	pV_msg_side = -1;
+	pV_msg_type = -1;
+	pv_msg_nachricht = -1;
+	
+goto "loop"

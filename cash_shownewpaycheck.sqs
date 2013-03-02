@@ -1,0 +1,54 @@
+; show_paycheckhint
+;regelt die Paychecks für Cops, Mafia und Biker
+; by Haretuerk
+
+
+
+
+; nur lokal
+ ? !(local player): exit
+
+; Polizeiloop oder Gangsterloop?
+ ? (side player == east): goto "loopmafia"
+ ? (side player == RESISTANCE): goto "loopcops"
+
+
+#loopbiker
+
+	@newpaycheck
+
+	; daten kommen aus paycheck.sqs
+	
+	 
+	? (newpaycheck): hint format [localize "STR_PAYCHECK_BIKERS",bikers_income_bars,bikers_income_casinos,bikerprotection,bikerhookers,bikerpateninc,banwaltskosten,(bikers_income_bars+bikers_income_casinos+bikerprotection+bikerhookers+bikerpateninc-banwaltskosten),accountbikers,accountmafia,accountpolice];
+	
+	newpaycheck = false;
+
+goto "loopbiker";
+
+#loopmafia
+
+	@newpaycheck
+
+	; daten kommen aus paycheck.sqs
+	 
+	? (newpaycheck): hint format [localize "STR_PAYCHECK_MAFIA",mafia_income_bars,mafia_income_casinos,mafiaprotection,mafiahookers,mafiapateninc,manwaltskosten,(mafia_income_bars+mafia_income_casinos+mafiaprotection+mafiahookers+mafiapateninc-manwaltskosten),accountmafia, accountbikers,accountpolice];
+	newpaycheck = false;
+
+goto "loopmafia";
+
+
+#loopcops
+	@newpaycheck
+	
+	? (newpaycheck): hint format[localize "STR_PAYCHECK_COPS",(gcount*c_pc_income_cops),accountpolice, accountmafia,accountbikers];
+	
+	newpaycheck = false;
+
+goto "loopcops";
+
+
+
+
+
+exit

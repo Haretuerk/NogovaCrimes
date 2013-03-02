@@ -1,0 +1,1628 @@
+; Gameover.sqs
+; fuer das Ende der Mission
+; NC Standard version
+
+
+;server spielt outro nicht...
+? !(local player): goto "keinoutro"
+
+; warten, bis das Signal von finisher.sqs gesendet wird
+@finish_this_mission
+
+commissioner setdammage 0
+donpepper setdammage 0
+dirtyhare setdammage 0
+
+commissioner setbehaviour "careless"
+donpepper setbehaviour "careless"
+dirtyhare setbehaviour "careless"
+
+commissioner disableAI "AUTOTARGET"
+donpepper disableAI "AUTOTARGET"
+dirtyhare disableAI "AUTOTARGET"
+
+commissioner switchmove "StandBase"
+donpepper switchmove "StandBase"
+dirtyhare switchmove "StandBase"
+
+_camtime=2.5
+
+1 FadeMusic 0.5
+
+
+? (accountpolice > accountbikers) AND (accountpolice > accountmafia): _winner = "Cops"; playmusic "twisted"; goto "copswin"
+? (accountpolice < accountbikers) AND (accountmafia < accountbikers): _winner = "Bikers"; playmusic "dopes2infinity"; goto "bikerswin"
+? (accountmafia > accountbikers) AND (accountpolice < accountmafia): _winner = "Mafia"; playmusic "extremeways"; goto "mafiawin"
+
+#copswin
+
+  _text = format["%1 won this round!\n\nCops: %2 $\nMafia: %3 $\nBikers: %4 $",_winner,accountpolice,accountmafia,accountbikers]
+ 
+ titleCut [_text,"Plain",7]
+ 
+_camera = "camera" camcreate [0,0,0]
+_camera cameraeffect ["internal", "back"]
+_camera camSetTarget getpos endspot
+_camera camSetPos [(getpos endspot select 0),(getpos endspot select 1)-10,(getpos endspot select 2)+7]
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+~9
+
+
+_po1string = format ["%1", po1]
+? (_po1string == "scalar bool array string 0xfcffffef"): goto "copt2"
+_target=po1
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#copt2
+
+_po2string = format ["%1", po2]
+? (_po2string == "scalar bool array string 0xfcffffef"): goto "copt3"
+_target=po2
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#copt3
+
+_po3string = format ["%1", po3]
+? (_po3string == "scalar bool array string 0xfcffffef"): goto "copt4"
+_target=po3
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#copt4
+
+_po4string = format ["%1", po4]
+? (_po4string == "scalar bool array string 0xfcffffef"): goto "copt5"
+_target=po4
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#copt5
+
+_po5string = format ["%1", po5]
+? (_po5string == "scalar bool array string 0xfcffffef"): goto "copt6"
+_target=po5
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#copt6
+
+_po6string = format ["%1", po6]
+? (_po6string == "scalar bool array string 0xfcffffef"): goto "copt7"
+_target=po6
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#copt7
+
+_po7string = format ["%1", po7]
+? (_po7string == "scalar bool array string 0xfcffffef"): goto "copt8"
+_target=po7
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#copt8
+
+_po8string = format ["%1", po8]
+? (_po8string == "scalar bool array string 0xfcffffef"): goto "copt9"
+_target=po8
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#copt9
+
+_po9string = format ["%1", po9]
+? (_po9string == "scalar bool array string 0xfcffffef"): goto "copend"
+_target=po9
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#copend
+endlight inflame true
+
+_target = commissioner
+
+_target setdir 180
+donpepper setdir 180
+dirtyhare setdir 180
+
+
+_target setpos getpos endspot
+donpepper setpos [(getpos _target select 0)+2.5,(getpos _target select 1),(getpos _target select 2)]
+dirtyhare setpos [(getpos _target select 0)-2.5,(getpos _target select 1),(getpos _target select 2)]
+
+
+_camera camSetTarget getpos _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-10,(getpos _target select 2)+7]
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+_target dowatch _camera
+dirtyhare dowatch _camera
+donpepper dowatch _camera
+
+_target dotarget _camera
+dirtyhare dotarget_camera
+donpepper dotarget _camera
+
+_camera camSetTarget [(getpos _target  select 0),(getpos _target  select 1),(getpos _target  select 2)+0.5] 
+_camera camSetPos [(getpos _target  select 0),(getpos _target  select 1)-6,(getpos _target  select 2)+0.5]
+_camera camSetFOV 0.700
+_camera camCommit 5
+@camCommitted _camera
+
+
+_camera camSetTarget [(getpos _target  select 0),(getpos _target  select 1),(getpos _target  select 2)+0.6]
+_camera camSetPos [(getpos _target  select 0),(getpos _target  select 1)-2.5,(getpos _target  select 2)]
+_camera camSetFOV 0.700
+_camera camCommit 10
+
+~3
+
+donpepper switchmove "StandDying"
+dirtyhare switchmove "StandDying"
+~1
+_target switchmove "EffectStandSalute"
+
+
+titleCut ["G A M E   O V E R","Plain",5]
+;7 FadeMusic 0
+~8
+
+@camCommitted _camera
+
+_camera cameraeffect ["terminate", "back"]
+camdestroy _camera;
+
+goto "finishALL";
+
+exit
+
+
+; ---------------------------------------------------
+
+
+#bikerswin
+
+ _text = format["%1 won this round!\n\nCops: %2 $\nMafia: %3 $\nBikers: %4 $",_winner,accountpolice,accountmafia,accountbikers]
+ 
+ titleCut [_text,"Plain",7]
+
+
+_camera = "camera" camcreate [0,0,0]
+_camera cameraeffect ["internal", "back"]
+_camera camSetTarget getpos endspot
+_camera camSetPos [(getpos endspot select 0),(getpos endspot select 1)-10,(getpos endspot select 2)+7]
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+~9
+
+
+
+
+
+_gg1string = format ["%1", gg1]
+? (_gg1string == "scalar bool array string 0xfcffffef"): goto "bikert2"
+_target=gg1
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#bikert2
+
+_gg2string = format ["%1", gg2]
+? (_gg2string == "scalar bool array string 0xfcffffef"): goto "bikert3"
+_target=gg2
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#bikert3
+
+_gg3string = format ["%1", gg3]
+? (_gg3string == "scalar bool array string 0xfcffffef"): goto "bikert4"
+_target=gg3
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#bikert4
+
+_gg4string = format ["%1", gg4]
+? (_gg4string == "scalar bool array string 0xfcffffef"): goto "bikert5"
+_target=gg4
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#bikert5
+
+_gg5string = format ["%1", gg5]
+? (_gg5string == "scalar bool array string 0xfcffffef"): goto "bikert6"
+_target=gg5
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#bikert6
+
+_gg6string = format ["%1", gg6]
+? (_gg6string == "scalar bool array string 0xfcffffef"): goto "bikerend"
+_target=gg6
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#bikerend
+endlight inflame true
+
+_target = dirtyhare
+
+_target setdir 180
+commissioner setdir 180
+donpepper setdir 180
+
+
+_target setpos getpos endspot
+commissioner setpos [(getpos _target select 0)+2.5,(getpos _target select 1),(getpos _target select 2)]
+donpepper setpos [(getpos _target select 0)-2.5,(getpos _target select 1),(getpos _target select 2)]
+
+
+_camera camSetTarget getpos _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-10,(getpos _target select 2)+7]
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+
+_target dowatch _camera
+commissioner dowatch _camera
+donpepper dowatch _camera
+
+_target dotarget _camera
+commissioner dotarget_camera
+donpepper dotarget _camera
+
+
+_camera camSetTarget [(getpos _target  select 0),(getpos _target  select 1),(getpos _target  select 2)+0.5] 
+_camera camSetPos [(getpos _target  select 0),(getpos _target  select 1)-6,(getpos _target  select 2)+0.5]
+_camera camSetFOV 0.700
+_camera camCommit 5
+@camCommitted _camera
+
+
+_camera camSetTarget [(getpos _target  select 0),(getpos _target  select 1),(getpos _target  select 2)+0.6]
+_camera camSetPos [(getpos _target  select 0),(getpos _target  select 1)-2.5,(getpos _target  select 2)]
+_camera camSetFOV 0.700
+_camera camCommit 10
+
+~3
+
+donpepper switchmove "StandDying"
+commissioner switchmove "StandDying"
+~1
+_target switchmove "EffectStandSalute"
+
+
+titleCut ["G A M E   O V E R","Plain",5]
+;7 FadeMusic 0
+~8
+
+@camCommitted _camera
+
+_camera cameraeffect ["terminate", "back"]
+camdestroy _camera;
+
+goto "finishALL";
+
+
+
+
+; ---------------------------------------------------
+
+
+#mafiawin
+
+
+ _text = format["%1 won this round!\n\nCops: %2 $\nMafia: %3 $\nBikers: %4 $",_winner,accountpolice,accountmafia,accountbikers]
+  
+ titleCut [_text,"Plain",7]
+
+_camera = "camera" camcreate [0,0,0]
+_camera cameraeffect ["internal", "back"]
+_camera camSetTarget getpos endspot
+_camera camSetPos [(getpos endspot select 0),(getpos endspot select 1)-10,(getpos endspot select 2)+7]
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+~9
+
+
+? (isnull ge1): goto "mafiat2"
+_ge1string = format ["%1", ge1]
+? (_ge1string == "scalar bool array string 0xfcffffef"): goto "mafiat2"
+_target=ge1
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#mafiat2
+
+_ge2string = format ["%1", ge2]
+? (_ge2string == "scalar bool array string 0xfcffffef"): goto "mafiat3"
+_target=ge2
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#mafiat3
+
+_ge3string = format ["%1", ge3]
+? (_ge3string == "scalar bool array string 0xfcffffef"): goto "mafiat4"
+_target=ge3
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#mafiat4
+
+_ge4string = format ["%1", ge4]
+? (_ge4string == "scalar bool array string 0xfcffffef"): goto "mafiat5"
+_target=ge4
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+#mafiat5
+
+_ge5string = format ["%1", ge5]
+? (_ge5string == "scalar bool array string 0xfcffffef"): goto "mafiat6"
+_target=ge5
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#mafiat6
+
+_ge6string = format ["%1", ge6]
+? (_ge6string == "scalar bool array string 0xfcffffef"): goto "mafiaend"
+_target=ge6
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit 0
+@camCommitted _camera
+
+titleText [format ["%1",name _target], "PLAIN DOWN",5]
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)+3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)+4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)+3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-4.5,(getpos _target select 1),(getpos _target select 2)+4]
+_camera camSetFOV 0.600
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)-3,(getpos _target select 1)-3,(getpos _target select 2)+3]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-4.5,(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+3,(getpos _target select 1)-3,(getpos _target select 2)+1]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+_camera camSetTarget _target 
+_camera camSetPos [(getpos _target select 0)+4.5,(getpos _target select 1),(getpos _target select 2)+2]
+_camera camSetFOV 0.700
+_camera camCommit _camtime
+@camCommitted _camera
+
+
+
+#mafiaend
+endlight inflame true
+
+_target = donpepper 
+
+_target setdir 180
+commissioner setdir 180
+dirtyhare setdir 180
+
+
+_target setpos getpos endspot
+dirtyhare  setpos [(getpos _target select 0)+2.5,(getpos _target select 1),(getpos _target select 2)]
+commissioner setpos [(getpos _target select 0)-2.5,(getpos _target select 1),(getpos _target select 2)]
+
+
+_camera camSetTarget getpos _target 
+_camera camSetPos [(getpos _target select 0),(getpos _target select 1)-10,(getpos _target select 2)+7]
+_camera camSetFOV 0.700
+_camera camCommit 0
+
+_target dowatch _camera
+commissioner dowatch _camera
+dirtyhare dowatch _camera
+
+_target dotarget _camera
+commissioner dotarget_camera
+dirtyhare dotarget _camera
+
+_camera camSetTarget [(getpos _target  select 0),(getpos _target  select 1),(getpos _target  select 2)+0.5] 
+_camera camSetPos [(getpos _target  select 0),(getpos _target  select 1)-6,(getpos _target  select 2)+0.5]
+_camera camSetFOV 0.700
+_camera camCommit 5
+@camCommitted _camera
+
+
+_camera camSetTarget [(getpos _target  select 0),(getpos _target  select 1),(getpos _target  select 2)+0.6]
+_camera camSetPos [(getpos _target  select 0),(getpos _target  select 1)-2.5,(getpos _target  select 2)]
+_camera camSetFOV 0.700
+_camera camCommit 10
+
+~3
+
+dirtyhare switchmove "StandDying"
+commissioner switchmove "StandDying"
+~1
+_target switchmove "EffectStandSalute"
+
+
+titleCut ["G A M E   O V E R","Plain",5]
+;7 FadeMusic 0
+~8
+
+@camCommitted _camera
+
+_camera cameraeffect ["terminate", "back"]
+camdestroy _camera;
+
+goto "finishALL"
+
+;=================================================================================
+
+#finishall
+; finish for all players
+
+	[] exec "open_statistics.sqs"
+	
+	
+	;für den Endtrigger
+	;finish_this_mission2= true;
+	; wird in der Statistik erledigt;
+
+exit
+
+
+#keinoutro 
+~30
+exit

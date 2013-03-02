@@ -1,0 +1,159 @@
+; buy car
+; by Haretuerk
+
+	_pricebike = c_price_bike;
+	_priceskoda = c_price_skoda;
+	_pricetrabant = c_price_trabant;
+	_pricerapid = c_price_rapid;
+
+
+ _autotyp = _this select 2;
+ _spieler = _this select 1;
+ 
+ 
+	
+? (_autotyp == cs_redbike): goto "redbike";
+? (_autotyp == cs_bluebike): goto "bluebike";
+? (_autotyp == cs_blackbike): goto "blackbike";
+
+? (_autotyp == cs_redskoda): goto "redskoda";
+? (_autotyp == cs_blueskoda): goto "blueskoda";
+? (_autotyp == cs_yellowskoda): goto "yellowskoda";
+? (_autotyp == cs_greenskoda): goto "greenskoda";
+
+? (_autotyp == cs_blackrapid): goto "blackrapid";
+? (_autotyp == cs_dbluerapid): goto "dbluerapid";
+? (_autotyp == cs_greenrapid): goto "greenrapid";
+? (_autotyp == cs_lbluerapid): goto "lbluerapid"; 
+? (_autotyp == cs_orangerapid): goto "orangerapid";
+? (_autotyp == cs_pinkrapid): goto "pinkrapid";
+? (_autotyp == cs_redrapid): goto "redrapid";
+? (_autotyp == cs_whiterapid): goto "whiterapid";
+? (_autotyp == cs_yellowrapid): goto "yellowrapid";
+
+exit
+
+#redbike
+	?(cash<_pricebike):goto "pleite"
+	_car = "pepjawa" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	cash = cash - _pricebike;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#bluebike
+	?(cash<_pricebike):goto "pleite"
+	_car = "pepjawablue" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricebike;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#blackbike
+	?(cash<_pricebike):goto "pleite"
+	_car = "pepjawabla" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricebike;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#redskoda
+	?(cash<_priceskoda):goto "pleite"
+	_car = "pepskodar" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _priceskoda;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#blueskoda
+	?(cash<_priceskoda):goto "pleite"
+	_car = "pepskodab" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _priceskoda;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#yellowskoda
+	?(cash<_priceskoda):goto "pleite"
+	_car = "pepskoday" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _priceskoda;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#greenskoda
+	?(cash<_priceskoda):goto "pleite"
+	_car = "pepskodag" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _priceskoda;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+;doenstwork
+#blackrapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapidbla1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#pinkrapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapidpink1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#greenrapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapidgreen1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#whiterapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapidw1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#orangerapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapidora1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#lbluerapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapidlblue1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#dbluerapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapiddblue1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+#yellowrapid
+	?(cash<_pricerapid):goto "pleite"
+	_car = "peprapidY1" CreateVehicle getpos nearestObject[player,"HeliHEmpty"]
+	
+	cash = cash - _pricerapid;	
+	hint "Your new vehicle is waiting outsides";
+exit;
+
+
+#pleite
+	hint "I take only cash here.\nYou don't have enough money for that car!";
+exit;

@@ -1,0 +1,76 @@
+? (ge1 == Player) AND (pf6) : hint "Get up first!"; exit
+? (ge2 == Player) AND (pf7) : hint "Get up first!"; exit
+? (ge3 == Player) AND (pf8) : hint "Get up first!"; exit
+? (ge4 == Player) AND (pf9) : hint "Get up first!"; exit
+? (ge5 == Player) AND (pf10) : hint "Get up first!"; exit
+? (ge6 == Player) AND (pf11) : hint "Get up first!"; exit
+
+? (gg1 == Player) AND (pf12) : hint "Get up first!"; exit
+? (gg2 == Player) AND (pf13) : hint "Get up first!"; exit
+? (gg3 == Player) AND (pf14) : hint "Get up first!"; exit
+? (gg4 == Player) AND (pf15) : hint "Get up first!"; exit
+? (gg5 == Player) AND (pf16) : hint "Get up first!"; exit
+? (gg6 == Player) AND (pf17) : hint "Get up first!"; exit
+
+v = _this select 0 
+
+;verhindert dass man doppelt cr bekommt, wenn man bereits im auto sitzt:
+? !(vehicle player == player): goto "unlocknow" 
+
+? !(local player):exit
+?(side player==RESISTANCE):goto "cops";
+
+hint "You're trying to steal this Car"
+DisableUserInput True
+
+; Art des Autos überprüfen und Schwierigkeit des Diebstahls festlegen...
+; chance ob das autoknacken klappt oder nicht...
+
+;[v] exec "crime.sqs" old style
+
+[getpos v,0] exec "crimescene_send.sqs"
+[player,1,1] exec "statistics_send.sqs"
+
+player switchmove "CombatToMedic" 
+~2
+	stealthiscar = v;
+	publicVariable "stealthiscar";
+	~1
+
+	@(isNull stealthiscar)
+
+	~1
+DisableUserInput false
+
+	crimerate = crimerate + c_cr_stealcar;
+	? (crimerate >= 360 AND !mepate): goto "pate"
+	? (crimerate >= 300 AND crimeranking<5): crimeranking=5; exit;
+	? (crimerate >= 250 AND crimeranking<4): crimeranking=4; exit;
+	? (crimerate >= 150 AND crimeranking<3): crimeranking=3; exit;
+	? (crimerate >= 90 AND crimeranking<2): crimeranking=2; exit;
+	? (crimerate >= 30 AND crimeranking<1): crimeranking=1; exit;
+
+exit;
+
+
+
+#cops
+	titlecut ["You are here to protect and to serve.","BLACK IN",5]
+
+exit
+
+
+#unlocknow
+ 
+(vehicle player) lock false
+hint "you are in a car...\nit's now unlocked";
+exit
+
+#pate
+
+crimeranking=6; 
+mepate=true;
+?(side player==east):mafiapaten=mafiapaten+1; publicvariable "mafiapaten"; exit
+?(side player==west):bikerpaten=bikerpaten+1; publicvariable "bikerpaten"; exit
+
+exit;

@@ -1,0 +1,165 @@
+; Taxi by Haretuerk
+
+
+go = false;
+_unit = player
+_taxi = _this select 0;
+_dlg = createDialog "TaxiDialog"
+~0.5
+
+
+lbClear 104
+
+_dis = (player distance GLAir) - (player distance GLAir) MOD 1;
+_id = lbAdd [104, format["Airport %1m",_dis]];
+lbSetValue [104, _id, 0];
+
+_dis = (player distance GLBit) - (player distance GLBit) MOD 1;
+_id = lbAdd [104, format["Bitov %1m",_dis]];
+lbSetValue [104, _id, 1];
+
+_dis = (player distance GLDav) - (player distance GLDav) MOD 1;
+_id = lbAdd [104, format["Davle %1m",_dis]];
+lbSetValue [104, _id, 2];
+
+_dis = (player distance GLDol) - (player distance GLDol) MOD 1;
+_id = lbAdd [104, format["Dolina %1m",_dis]];
+lbSetValue [104, _id, 3];
+
+_dis = (player distance GLFry) - (player distance GLFry) MOD 1;
+_id = lbAdd [104, format["Frymburg %1m",_dis]];
+lbSetValue [104, _id, 4];
+
+_dis = (player distance GLJou) - (player distance GLJou) MOD 1;
+_id = lbAdd [104, format["Joudov %1m",_dis]];
+lbSetValue [104, _id, 5];
+
+_dis = (player distance GLKo) - (player distance GLKo) MOD 1;
+_id = lbAdd [104, format["Kost %1m",_dis]];
+lbSetValue [104, _id, 6];
+
+_dis = (player distance GLLip) - (player distance GLLip) MOD 1;
+_id = lbAdd [104, format["Lipany %1m",_dis]];
+lbSetValue [104, _id, 7];
+
+_dis = (player distance GLLil) - (player distance GLLil) MOD 1;
+_id = lbAdd [104, format["Littleton %1m",_dis]];
+lbSetValue [104, _id, 8];
+
+_dis = (player distance GLMineW) - (player distance GLMineW) MOD 1;
+_id = lbAdd [104, format["Mine West %1m",_dis]];
+lbSetValue [104, _id, 9];
+
+_dis = (player distance GLMir) - (player distance GLMir) MOD 1;
+_id = lbAdd [104, format["Mirov %1m",_dis]];
+lbSetValue [104, _id, 10];
+
+_dis = (player distance GLModra) - (player distance GLModra) MOD 1;
+_id = lbAdd [104, format["Modrava %1m",_dis]];
+lbSetValue [104, _id, 11];
+
+_dis = (player distance GLOkr) - (player distance GLokr) MOD 1;
+_id = lbAdd [104, format["Okrouhlo %1m",_dis]];
+lbSetValue [104, _id, 12];
+
+_dis = (player distance GLOp) - (player distance GLOp) MOD 1;
+_id = lbAdd [104, format["Opatov %1m",_dis]];
+lbSetValue [104, _id, 13];
+
+_dis = (player distance GLPep) - (player distance GLPep) MOD 1;
+_id = lbAdd [104, format["Pepperov %1m",_dis]];
+lbSetValue [104, _id, 14];
+
+_dis = (player distance GLPet) - (player distance GLPet) MOD 1;
+_id = lbAdd [104, format["Petrovice %1m",_dis]];
+lbSetValue [104, _id, 15];
+
+_dis = (player distance GLSlap) - (player distance GLSlap) MOD 1;
+_id = lbAdd [104, format["Slapy %1m",_dis]];
+lbSetValue [104, _id, 16];
+
+_dis = (player distance GLSkal) - (player distance GLSkal) MOD 1;
+_id = lbAdd [104, format["Skalice %1m",_dis]];
+lbSetValue [104, _id, 17];
+
+_dis = (player distance GLhare) - (player distance GLhare) MOD 1;
+_id = lbAdd [104, format["St. Hare %1m",_dis]];
+lbSetValue [104, _id, 18];
+
+_dis = (player distance GLSt) - (player distance GLSt) MOD 1;
+_id = lbAdd [104, format["St. Sedlo %1m",_dis]];
+lbSetValue [104, _id, 19];
+
+_dis = (player distance GLTros) - (player distance GLTros) MOD 1;
+_id = lbAdd [104, format["Trosky %1m",_dis]];
+lbSetValue [104, _id, 20];
+
+_dis = (player distance GLVart) - (player distance GLVart) MOD 1;
+_id = lbAdd [104, format["Varta %1m",_dis]];
+lbSetValue [104, _id, 21];
+
+_dis = (player distance GLVel) - (player distance GLVel) MOD 1;
+_id = lbAdd [104, format["Velka Ves %1m",_dis]];
+lbSetValue [104, _id, 22];
+
+_dis = (player distance GLVid) - (player distance GLVid) MOD 1;
+_id = lbAdd [104, format["Vidlakov %1m",_dis]];
+lbSetValue [104, _id, 23];
+
+
+
+lbSetCurSel [104,0];
+
+
+#Update
+
+	? !(dialog): Exit
+	? !(alive _unit): Exit
+
+	? go : goto "go";
+	
+		
+	_value = lbValue [104,lbCurSel 104]  
+	
+	
+~0.5
+goto "Update"
+
+	
+	
+
+#go
+	? (_value == 0): [_taxi] exec "taxi2air.sqs";	
+	? (_value == 1): [_taxi] exec "taxi2bit.sqs";	
+	? (_value == 2): [_taxi] exec "taxi2dav.sqs";
+	? (_value == 3): [_taxi] exec "taxi2dol.sqs";	
+	? (_value == 4): [_taxi] exec "taxi2fry.sqs";	
+	? (_value == 5): [_taxi] exec "taxi2jou.sqs";
+	? (_value == 6): [_taxi] exec "taxi2ko.sqs";	
+	? (_value == 7): [_taxi] exec "taxi2lip.sqs";	
+	? (_value == 8): [_taxi] exec "taxi2lit.sqs";
+	? (_value == 9): [_taxi] exec "taxi2mine.sqs";
+	? (_value == 10): [_taxi] exec "taxi2mir.sqs";	
+	? (_value == 11): [_taxi] exec "taxi2modra.sqs";	
+	? (_value == 12): [_taxi] exec "taxi2okr.sqs";
+	? (_value == 13): [_taxi] exec "taxi2op.sqs";	
+	? (_value == 14): [_taxi] exec "taxi2pep.sqs";	
+	? (_value == 15): [_taxi] exec "taxi2pet.sqs";
+	? (_value == 16): [_taxi] exec "taxi2slap.sqs";	
+	? (_value == 17): [_taxi] exec "taxi2skal.sqs";	
+	? (_value == 18): [_taxi] exec "taxi2sthare.sqs";
+	? (_value == 19): [_taxi] exec "taxi2st.sqs";
+	? (_value == 20): [_taxi] exec "taxi2tros.sqs";	
+	? (_value == 21): [_taxi] exec "taxi2vart.sqs";	
+	? (_value == 22): [_taxi] exec "taxi2vel.sqs";
+	? (_value == 23): [_taxi] exec "taxi2vid.sqs";	
+	
+	; Fenster schlieﬂen	
+	closeDialog 0
+	go = false;
+	
+goto "Update";
+	
+
+	
+	

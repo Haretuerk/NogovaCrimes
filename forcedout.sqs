@@ -1,0 +1,14 @@
+; Haut einen aus dem Auto raus!
+; korresponidert mit forcedout_loop.sqs
+
+; nur für Cops
+? !(side player == RESISTANCE): exit; 	
+
+
+	player RemoveAction rausda;
+
+	pv_forcedout = forcedout
+	publicVariable "pv_forcedout"
+
+
+exit;

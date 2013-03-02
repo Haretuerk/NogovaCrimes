@@ -1,0 +1,141 @@
+_price = 600; 
+_gun = "pep_tommy"
+_ammo = "pep_TommyDrumMag";
+
+? (crimeranking >=4): _price=450; glpet sidechat "Because of your reputation, you get this gun for 450$."
+
+; Geld vorhanden?
+	? (cash<_price): goto "pleite"
+	cash = cash - _price;
+
+#return5
+
+	hint format["You bought a %1 for %2$",_gun,_price]
+
+
+_pWeap = primaryWeapon player
+
+? (_pWeap=="m4"): goto "simple"
+? (_pWeap=="m16"): goto "simple"
+? (_pWeap=="ak47"): goto "simple"
+? (_pWeap=="ak74"): goto "simple"
+? (_pWeap=="hk"): goto "simple"
+? (_pWeap=="m60"): goto "simple"
+? (_pWeap=="SVDDragunov"): goto "simple"
+? (_pWeap=="pk"): goto "simple"
+? (_pWeap=="m21"): goto "simple"
+
+?(_pWeap=="KEGak103"): goto "removemags"
+?(_pWeap=="KEGak107"): goto "removemags"
+?(_pWeap=="Bizon"): goto "removemags"
+?(_pWeap=="G36A"): goto "removemags"
+?(_pWeap=="Steyr"):goto "removemags"
+?(_pWeap=="FAL"): goto "removemags"
+?(_pWeap=="HKG3"): goto "removemags"
+?(_pWeap=="UZI"): goto "removemags"
+?(_pWeap=="Drg_m870"): goto "removemags"
+?(_pWeap=="Drg_590"): goto "removemags"
+?(_pWeap=="DRG_Spas12"): goto "removemags"
+?(_pWeap=="HuntingRifle"): goto "removemags"
+?(_pWeap=="cmo_M82A1"): goto "removemags"
+
+?(_pWeap=="XMS"): _pmags="m4"; goto "removespec"
+?(_pWeap=="AK74SU"): _pmags="ak74"; goto "removespec"
+?(_pWeap=="AK47CZ"): _pmags="AK47"; goto "removespec"
+?(_pWeap=="MM1"): _pmags="MM1Magazine "; goto "removespec"
+?(_pWeap=="6G30"): _pmags="6G30Magazine"; goto "removespec"
+?(_pWeap=="Drg_870"): _pmags="Drg_m870mag"; goto "removespec"
+?(_pWeap=="Drg_590s"): _pmags="Drg_590mag"; goto "removespec"
+?(_pWeap=="DRG_Spas12ext"): _pmags="DRG_Spas12mag"; goto "removespec"
+?(_pWeap=="pep_tommy"): _pmags="pep_TommyDrumMag"; goto "removespec"
+
+?(_pWeap=="M16grenadelauncher"): _pmags="m16"; _pmags2="GrenadeLauncher"; goto "removespec2"
+?(_pWeap=="AK74GrenadeLauncher"): _pmags="ak74"; _pmags2="GrenadeLauncher"; goto "removespec2"
+?(_pWeap=="AK47GrenadeLauncher"): _pmags="AK47"; _pmags2="GrenadeLauncher"; goto "removespec2"
+?(_pWeap=="Kozlice"): _pmags="KozliceShell"; _pmags2="Kozliceball"; goto "removespec2"
+
+
+#removemags
+_pmags="x"
+_pmags=_pWeap+"mag"
+
+#removespec
+
+player removeweapon _pWeap
+player removeMagazines _pmags
+
+goto "addtommy"
+exit
+
+#removespec2
+
+player removeweapon _pWeap
+player removeMagazines _pmags
+player removeMagazines _pmags2
+
+goto "addtommy"
+exit
+
+
+#simple
+
+player removeweapon _pWeap
+player removeMagazines _pWeap
+
+goto "addtommy"	
+exit;
+
+
+#addtommy
+
+player AddMagazine "pep_TommyDrumMag"
+player AddMagazine "pep_TommyDrumMag"
+player AddMagazine "pep_TommyDrumMag"
+player AddMagazine "pep_TommyDrumMag"
+player AddMagazine "pep_TommyDrumMag"
+player AddWeapon "pep_tommy"
+
+player selectWeapon "pep_tommy"
+
+	
+	
+exit;
+
+
+
+#pleite
+
+? ((crimeranking >=5) AND (side player==east)): "goto checkaccM"
+? ((crimeranking >=5) AND (side player==west)): "goto checkaccB"
+
+	hint "You don't have enough money for that!";
+exit;
+
+#checkaccM
+	?(accountmafia<_price): goto "wirklichpleite"
+	
+	player groupchat "I pay from the teamaccount."
+	accountmafia = accountmafia - _price
+	publicvariable "accountmafia"	
+	goto "return5"
+
+exit
+
+#checkaccB
+	?(accountbikers<_price): goto "wirklichpleite"
+
+	player groupchat "I pay from the teamaccount."
+	accountbikers = accountbikers - _price
+	publicvariable "accountbikers"	
+	goto "return5"
+
+exit
+
+
+
+
+#wirklichpleite
+
+hint "you cannot afford a tommy gun..."
+
+exit

@@ -1,0 +1,15 @@
+0 fadesound 0
+
+titlecut ["","black out",0.000001];
+
+titletext ["","plain"]
+~4
+
+?(side player == RESISTANCE): player addweapon "pep_csshell";
+
+5 fadesound 0.5
+
+introready=1
+publicvariable "introready"
+
+exit

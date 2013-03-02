@@ -1,0 +1,83 @@
+; Loopt und wartet auf requests
+; by Haretuerk 
+; übernommen von Dr.Pepper für Schutzgeldzeug ;)
+
+; hmm script läuft nur auf dem Server
+; sendet ein Signal an alle Clients, shop_receiver.sqs fängt das auf und markiert den Shop korrekt
+
+	newshoprobbed = -1; 
+	publicVariable "newshoprobbed"
+
+
+;NARF !!! Bitte in Zukunft nicht mehr ? (local player): exit schreiben, sonst werd ich wahnsinnig ;beim local testen, weil der script einfach nicht ausgeführt wird und ich ewig den fehler suche... :P
+
+? !(local server): exit
+
+#loop			
+				
+	@!(isNull shoprequest)
+	_gesuchtershop = shoprequest
+	
+	shoprequest = ObjNull;
+	publicvariable "shoprequest"
+	
+	_count = count shopowners;
+	_i = 0;
+
+		
+				#next
+				
+					? (( _gesuchtershop) == ( shopowners select _i)): goto "gefunden"
+					_i = _i + 1
+					
+					? (_i < _count) : goto "next"
+					player globalChat "shop not found"
+				goto "loop"
+
+			
+	#gefunden
+
+	oldshopcontroler=(Shopcontrol select _i)
+		
+		; Abfrage, ob neuer Besitzer?
+		?(oldshopcontroler==Shopcontroler): goto "alterBesitzer"	
+		?(oldshopcontroler!=Shopcontroler): goto "neuerBesitzer"	
+		
+		#alterBesitzer
+		
+			; keine Sendung an alle Clients, weil sich nix ändert
+			
+			; send return-codes
+			shop_returncode = 44;
+			publicVariable "shop_returncode"
+
+		goto "loop"
+		
+		#neuerBesitzer
+		
+			; Daten auf dem Server abspeichern
+			shopcontrol set [_i,Shopcontroler]; 
+			
+			;Sendung an alle Clients (shop_receiver.sqs)	
+			newshoprobbed = _i; 
+			publicVariable "newshoprobbed"
+			newshopcontroler = Shopcontroler;
+			publicVariable "newshopcontroler"
+			
+			; send return-codes
+			shop_returncode = 66;
+			publicVariable "shop_returncode"
+
+
+	
+		goto "loop"
+
+
+
+
+
+
+
+
+
+exit

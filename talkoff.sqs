@@ -1,0 +1,16 @@
+? !(side player==RESISTANCE): exit
+
+player removeaction talkoff
+player removeaction talkon
+talkon = player addaction ["Talkmenu","talkon.sqs"] 
+
+player removeaction say_halt
+player removeaction say_getout
+player removeaction say_holdyourfire
+player removeaction say_getdown
+player removeaction say_underfire
+player removeaction say_standup
+player removeaction say_atease
+player removeaction say_ivegothim
+
+exit
